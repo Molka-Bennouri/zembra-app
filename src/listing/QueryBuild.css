@@ -1,10 +1,5 @@
 .query-build-container {
-  display: grid;
-  grid-template-columns: 800px 1fr;
-  gap: 24px;
   width: 100%;
-  max-width: 100%;
-  align-items: start;
 }
 
 .query-card {
@@ -40,7 +35,7 @@
 }
 
 .required-badge {
-  background-color: #cfe3fe;
+  background-color: #ebeefb;
   color: #0046FF;
   padding: 4px 12px;
   border-radius: 20px;

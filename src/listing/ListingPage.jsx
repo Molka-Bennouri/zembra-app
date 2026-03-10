@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './ListingPage.css';
 import QueryBuild from './QueryBuild';
+import QueryResponse from './QueryResponse';
+import CurlRequest from './CurlRequest';
 
 const ListingPage = () => {
   const [activeTab, setActiveTab] = useState('visual');
@@ -39,9 +41,14 @@ const ListingPage = () => {
         </section>
 
         <div className="tab-content">
-          {activeTab === 'visual' && <QueryBuild />}
-          {activeTab === 'curl' && <div>cURL content here</div>}
-        </div>
+  {activeTab === 'visual' && (
+  <div className="visual-layout">
+    <QueryBuild />
+    <QueryResponse />
+  </div>
+)}
+  {activeTab === 'curl' && <CurlRequest />}
+</div>
       </main>
     </div>
   );

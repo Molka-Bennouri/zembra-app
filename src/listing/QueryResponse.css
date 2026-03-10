@@ -1,0 +1,90 @@
+.response-card {
+  width: 100%;
+  max-width: 768px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.response-header {
+  padding: 16px 20px;
+  border-bottom: none;
+}
+
+.response-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.response-content {
+  padding: 0 20px 16px;
+}
+
+.response-code-block {
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.response-pre {
+  margin: 0;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.response-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  white-space: pre;
+  color: #374151;
+}
+
+.json-key {
+  color: #6b7280;
+}
+
+.json-string {
+  color: #6b7280;
+}
+
+.json-number {
+  color: #374151;
+}
+
+.json-boolean {
+  color: #374151;
+}
+
+.json-null {
+  color: #374151;
+}
+
+.response-footer {
+  padding: 0 20px 20px;
+}
+
+.response-copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #6366f1;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.response-copy-button:hover {
+  background-color: #4f46e5;
+}

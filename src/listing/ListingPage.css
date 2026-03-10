@@ -16,7 +16,7 @@
 .hero-section {
   background-color: #ebeefb;
   border-radius: 16px;
-  padding: 36px 40px;
+  padding: 25px 40px;
   margin-bottom: 40px;
 }
 
@@ -87,10 +87,17 @@
   color: black;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .tab.active {
   color: #1f2937;
   background-color: #ffffff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+.visual-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 24px;
+  align-items: start;
 }
