@@ -1,0 +1,96 @@
+.api-query-builder {
+  width: 100%;
+  min-height: 100vh;
+  
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Main Content */
+.main-content {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: #ebeefb;
+  border-radius: 16px;
+  padding: 36px 40px;
+  margin-bottom: 40px;
+}
+
+.hero-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 24px;
+}
+
+.badge-icon {
+  font-size: 18px;
+  color: #0046FF;
+}
+
+.badge-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0046FF;
+}
+
+.hero-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.hero-description {
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 520px;
+   text-align: left;
+}
+
+/* Tab Section */
+.tabs-section {
+  margin-bottom: 40px;
+  background-color: #e5e7eb;
+  padding: 5px;
+  border-radius: 10px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tabs-container {
+  display: flex;
+  align-items: center;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 250px;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  color: #1f2937;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
