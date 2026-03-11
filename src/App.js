@@ -1,11 +1,11 @@
 import './App.css';
 
-import QueryResponse from './listing/QueryResponse';
+import HeaderProfile from './profile/HeaderProfile';
 
 function App() {
   return (
     <div className="App">
-    <QueryResponse/>
+    <HeaderProfile/>
     </div>
   );
 }
