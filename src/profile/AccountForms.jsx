@@ -1,6 +1,6 @@
 import './AccountForms.css';
 
-const PersonalInformation = () => {
+const AccountForms = () => {
   return (
     <div className="form-container">
 
@@ -56,9 +56,12 @@ const PersonalInformation = () => {
       <div className="btn-row">
         <button className="btn-primary">Save</button>
       </div>
+      <div className="btn-row">
+        <button className="btn-danger">Delete your account</button>
+      </div>
 
     </div>
   );
 };
 
-export default PersonalInformation;
+export default AccountForms;
