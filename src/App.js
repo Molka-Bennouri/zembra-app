@@ -8,10 +8,10 @@ import ProfilePage from "./profile/ProfilePage";
 function App() {
   return (
     <Router>
-      <Navbar/>
+      <Navbar />
       <Routes>
-        <Route path="/listing" element={<ListingPage/>} />
-        <Route path="/profile" element={<ProfilePage/>} />
+        <Route path="/listing" element={<ListingPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </Router>
   );
