@@ -1,11 +1,19 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
+import Navbar from "./navbar/Navbar";
+
+import ListingPage from './listing/ListingPage';
+import ProfilePage from "./profile/ProfilePage";
 
 function App() {
   return (
-    <div className="App">
-      <div className='container'>
-      </div>
-    </div>
+    <Router>
+      <Navbar/>
+      <Routes>
+        <Route path="/listing" element={<ListingPage/>} />
+        <Route path="/profile" element={<ProfilePage/>} />
+      </Routes>
+    </Router>
   );
 }
 
