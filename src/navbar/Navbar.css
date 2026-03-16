@@ -11,7 +11,7 @@
 .navbar-content {
   max-width: 1280px;
   margin: 0 auto;
-  height: 80px; 
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -26,8 +26,8 @@
 }
 
 .navbar-logo-mark {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50px;
   object-fit: contain;
 }
@@ -88,6 +88,7 @@
 /* ── Dropdown menu ── */
 .nav-dropdown-menu {
   position: absolute;
+  overflow: hidden;
   top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%) translateY(-6px) scale(0.97);
@@ -97,11 +98,12 @@
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
   padding: 6px;
+  box-sizing: border-box;
   z-index: 100;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-dropdown-menu.open {
@@ -137,6 +139,7 @@
   cursor: pointer;
   text-align: left;
   transition: background 0.15s ease;
+  box-sizing: border-box;
 }
 
 .nav-dropdown-item:hover {
@@ -151,7 +154,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0046FF;
+  color: #2E5AF4;
   flex-shrink: 0;
 }
 
@@ -255,6 +258,7 @@
 /* ── User dropdown menu ── */
 .user-dropdown-menu {
   position: absolute;
+  overflow: hidden;
   top: calc(100% + 8px);
   right: 0;
   min-width: 160px;
@@ -263,12 +267,13 @@
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
   padding: 6px;
+  box-sizing: border-box;
   z-index: 100;
   opacity: 0;
   pointer-events: none;
   transform: translateY(-6px) scale(0.97);
   transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .user-dropdown-menu.open {
@@ -303,9 +308,10 @@
   cursor: pointer;
   text-align: left;
   transition: background 0.15s ease;
+  box-sizing: border-box;
 }
 
-a.user-dropdown-item ,
+a.user-dropdown-item,
 a.nav-dropdown-item {
   text-decoration: none;
   display: flex;

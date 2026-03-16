@@ -197,7 +197,7 @@ function UserDropdown({ userName }) {
         <div className="user-menu-divider" />
 
         {/* Logout */}
-        <button className="user-dropdown-item logout" onClick={() => setOpen(false)}>
+        <Link to='/login' className="user-dropdown-item logout" onClick={() => setOpen(false)}>
           <span className="user-menu-icon">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -206,7 +206,7 @@ function UserDropdown({ userName }) {
             </svg>
           </span>
           <span className="user-menu-label">Logout</span>
-        </button>
+        </Link>
       </div>
     </div>
   )

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useState } from "react"
 import "./Login.css"
 
@@ -178,9 +179,9 @@ function Login({ onLogin, onForgotPassword, onSignUp }) {
 
                     <p className="login-signup-text">
                         {"Don't have an account? "}
-                        <button type="button" className="login-signup-link" onClick={onSignUp}>
+                        <Link to="/signup" className="login-signup-link">
                             Sign up for free
-                        </button>
+                        </Link>
                     </p>
                 </div>
             </div>

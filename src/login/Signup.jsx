@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useState } from "react"
 import "./Signup.css"
 
@@ -307,9 +308,9 @@ function Signup({ onSignup, onLogin, onGoogleSignup, onGithubSignup }) {
 
                     <p className="signup-login-text">
                         Already have an account?{" "}
-                        <button type="button" className="signup-login-link" onClick={onLogin}>
+                        <Link to="/login" className="login-signup-link">
                             Sign in
-                        </button>
+                        </Link>
                     </p>
                 </div>
             </div>

@@ -7,7 +7,7 @@
 .login-left {
   flex: 1;
   display: none;
-  background-color: #5b34e7;
+  background-color: #2E5AF4;
   padding: 48px;
   color: #fff;
 }
@@ -48,7 +48,7 @@
 .login-subheadline {
   font-size: 18px;
   line-height: 1.6;
-  color: #a1a1a1;
+  color: white;
   margin: 0 0 48px 0;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .login-feature svg {
-  color: #22c55e;
+  color: #1FFFD0;
   flex-shrink: 0;
 }
 
@@ -208,7 +208,7 @@
   font-size: 16px;
   font-weight: 600;
   color: #fff;
-  background-color:#5b34e7;
+  background-color:#2E5AF4;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -221,7 +221,7 @@
 }
 
 .login-submit:hover {
-  background-color: #333;
+  background-color: #2449d8;
 }
 
 .login-submit:disabled {
@@ -298,6 +298,7 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  text-decoration: none;
 }
 
 .login-signup-link:hover {
