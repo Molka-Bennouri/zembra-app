@@ -27,7 +27,7 @@
 
 /* Current Plan Banner */
 .current-plan-banner {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+background: linear-gradient(135deg, #2E5AF4 0%, #3b6fff 100%);
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 40px;
@@ -74,7 +74,7 @@
 
 .usage-bar {
   height: 100%;
-  background-color: #10b981;
+  background-color:#1fffd0;
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -160,14 +160,14 @@
 }
 
 .plan-card.recommended {
-  border-color: #10b981;
+  border-color:#ef4444;
 }
 
 .recommended-badge {
   position: absolute;
   top: -12px;
   right: 20px;
-  background-color: #10b981;
+  background-color:#ef4444;
   color: #ffffff;
   font-size: 11px;
   font-weight: 600;
@@ -223,7 +223,7 @@
 .feature-check {
   width: 18px;
   height: 18px;
-  color: #10b981;
+  color: #1fffd0;
   flex-shrink: 0;
 }
 
@@ -246,13 +246,13 @@
 }
 
 .plan-button.current {
-  background-color: #4f46e5;
-  border-color: #4f46e5;
+  background-color: #2E5AF4;
+  border-color: #2E5AF4;
   color: #ffffff;
 }
 
 .plan-button.current:hover {
-  background-color: #4338ca;
+  background-color: #2E5AF4;
 }
 
 /* Payment Methods Section */
@@ -265,7 +265,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background-color: #4f46e5;
+  background-color: #2E5AF4;
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -276,7 +276,7 @@
 }
 
 .add-card-btn:hover {
-  background-color: #4338ca;
+  background-color:#2E5AF4;
 }
 
 .payment-methods-list {
@@ -301,7 +301,7 @@
 }
 
 .payment-method-card.default {
-  border-color: #4f46e5;
+  border-color:#2E5AF4;
   background-color: #faf5ff;
 }
 
@@ -341,7 +341,7 @@
 }
 
 .default-badge {
-  background-color: #4f46e5;
+  background-color:#2E5AF4;
   color: #ffffff;
   font-size: 11px;
   font-weight: 600;
@@ -436,7 +436,7 @@
 
 .status-badge.paid {
   background-color: #ecfdf5;
-  color: #059669;
+  color:#1fffd0;
 }
 
 .status-badge.pending {
@@ -548,7 +548,7 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #4f46e5;
+  border-color: #2E5AF4;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
@@ -590,7 +590,7 @@
 
 .btn-save {
   padding: 10px 20px;
-  background-color: #4f46e5;
+  background-color:#2E5AF4;
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -601,7 +601,7 @@
 }
 
 .btn-save:hover {
-  background-color: #4338ca;
+  background-color:#2E5AF4;
 }
 
 /* Responsive */
