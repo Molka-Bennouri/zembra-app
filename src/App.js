@@ -7,6 +7,7 @@ import ListingPage from './listing/ListingPage';
 import ProfilePage from "./profile/ProfilePage";
 import ManagePayment from './payment/ManagePayment';
 import PaymentHistory from './payment/PaymentHistory';
+import Invoices from './payment/Invoices';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/payment" element={<ManagePayment />} />
           <Route path="/paymenthistory" element={<PaymentHistory />} />
+          <Route path="/invoices" element={<Invoices />} />
         </Route>
       </Routes>
     </Router>

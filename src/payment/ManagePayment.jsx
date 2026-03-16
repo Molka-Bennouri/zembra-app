@@ -47,7 +47,7 @@ export default function ManagePayment() {
       id: "Enterprise",
       name: "Enterprise",
       price: 5000,
-      period: "30 days",
+      period: "month",
       features: [
         "9,360 pages",
         "2,340,000 reviews",
@@ -95,8 +95,7 @@ export default function ManagePayment() {
 
       {/* Plans Section */}
       <section className="plans-section">
-        <h2 className="section-title">Plans & Pricing</h2>
-        <p className="section-subtitle">Choose the plan that fits your needs</p>
+      
 
         <div className="plans-grid">
           {plans.map((plan) => (

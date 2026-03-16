@@ -123,7 +123,7 @@ export default function PaymentHistory() {
             <polyline points="7 10 12 15 17 10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
-          Export CSV
+          Export PDF
         </button>
       </header>
 
