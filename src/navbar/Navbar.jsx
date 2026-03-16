@@ -44,17 +44,8 @@ const navItems = [
     label: "Payments",
     items: [
       {
-        label: "Load credits",
-        icon: (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <polyline points="19 12 12 5 5 12" />
-          </svg>
-        ),
-        desc: "Add credits to your account"
-      },
-      {
         label: "Manage payments",
+        path : "/payment",
         icon: (
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />

@@ -228,6 +228,10 @@
 }
 
 .signup-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   color: #3b82f6;
   text-decoration: none;
 }
@@ -268,8 +272,13 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .signup-divider {

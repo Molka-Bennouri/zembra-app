@@ -1,10 +1,10 @@
 .form-container {
-  padding: 24px 80px;
+  padding: 32px;
   background: #ffffff;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
-  max-width: 1280px;
-  margin: 24px auto 0;  /* was: 0 auto */
+  margin-top: 32px;
+  width: 100%;
 }
 
 .form-container h2 {

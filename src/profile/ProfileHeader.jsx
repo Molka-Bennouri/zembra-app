@@ -3,37 +3,50 @@ import "./ProfileHeader.css"
 export default function ProfileHeader({ user, activities, activeTab, setActiveTab, AccountForms }) {
   return (
     <>
+      {/* Hero Section */}
+      <section className="hero-section">
+        <h1 className="hero-title">Manage Your Profile</h1>
+        <p className="hero-description">
+          Update your personal information, manage your account settings, and view your recent activity.
+        </p>
+      </section>
+
       {/* Tabs */}
-      <div className="profile-tabs">
-        <button
-          onClick={() => setActiveTab("account")}
-          className={`profile-tab ${activeTab === "account" ? "active" : ""}`}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-          Account
-        </button>
-        <button
-          onClick={() => setActiveTab("activity")}
-          className={`profile-tab ${activeTab === "activity" ? "active" : ""}`}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-          </svg>
-          Account Activity
-        </button>
-      </div>
+      <section className="tabs-section">
+        <div className="tabs-container">
+          <button
+            onClick={() => setActiveTab("account")}
+            className={`tab ${activeTab === "account" ? "active" : ""}`}
+          >
+            <span className="tab-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </span>
+            Account
+          </button>
+          <button
+            onClick={() => setActiveTab("activity")}
+            className={`tab ${activeTab === "activity" ? "active" : ""}`}
+          >
+            <span className="tab-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+            </span>
+            Account Activity
+          </button>
+        </div>
+      </section>
 
       {/* Tab Content */}
-      {activeTab === "account" ? (
-        <div className="account-tab-content">
-          {/* Profile Card */}
-          <div className="profile-card">
-            <div className="profile-banner" />
-            <div className="profile-info">
-              <div className="profile-top-row">
+      <div className="tab-content">
+        {activeTab === "account" ? (
+          <div className="account-tab-content">
+            {/* Profile Card */}
+            <div className="profile-card">
+              <div className="profile-avatar-container">
                 <div className="profile-avatar">{user.initials}</div>
               </div>
               <div className="profile-details">
@@ -58,27 +71,27 @@ export default function ProfileHeader({ user, activities, activeTab, setActiveTa
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Forms */}
-          <AccountForms />
-        </div>
-      ) : (
-        <div className="profile-card activity-card">
-          <h2 className="activity-title">Recent Activity</h2>
-          <div className="activity-list">
-            {activities.map((activity, index) => (
-              <div key={index} className="activity-item">
-                <div className="activity-info">
-                  <p className="activity-action">{activity.action}</p>
-                  <p className="activity-location">{activity.location}</p>
-                </div>
-                <span className="activity-time">{activity.time}</span>
-              </div>
-            ))}
+            {/* Forms */}
+            <AccountForms />
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="profile-card activity-card">
+            <h2 className="hero-title activity-title">Recent Activity</h2>
+            <div className="activity-list">
+              {activities.map((activity, index) => (
+                <div key={index} className="activity-item">
+                  <div className="activity-info">
+                    <p className="activity-action">{activity.action}</p>
+                    <p className="activity-location">{activity.location}</p>
+                  </div>
+                  <span className="activity-time">{activity.time}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </>
   )
 }
