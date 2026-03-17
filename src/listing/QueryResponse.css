@@ -1,6 +1,6 @@
 .response-card {
   width: 100%;
-  max-width: 768px;
+  max-width: 1200px;
   background-color: #fff;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
@@ -24,8 +24,8 @@
 }
 
 .response-code-block {
-  background-color: #f3f4f6;
-  border: 1px solid #e5e7eb;
+  background-color: #ebeefb;
+  border: 1px solid #ebeefb;
   border-radius: 8px;
   padding: 16px;
   max-height: 400px;
@@ -42,31 +42,33 @@
 .response-code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   white-space: pre;
-  color: #374151;
+  color: #000000; /* était #374151 */
 }
 
 .json-key {
-  color: #6b7280;
+  color: #000000; /* était #6b7280 */
 }
 
 .json-string {
-  color: #6b7280;
+  color: #000000; /* était #6b7280 */
 }
 
 .json-number {
-  color: #374151;
+  color: #000000; /* était #374151 */
 }
 
 .json-boolean {
-  color: #374151;
+  color: #000000; /* était #374151 */
 }
 
 .json-null {
-  color: #374151;
+  color: #000000; /* était #374151 */
 }
 
 .response-footer {
   padding: 0 20px 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .response-copy-button {
@@ -78,7 +80,7 @@
   font-size: 14px;
   font-weight: 500;
   color: #fff;
-  background-color: #6366f1;
+  background-color: #2E5AF4;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -86,5 +88,5 @@
 }
 
 .response-copy-button:hover {
-  background-color: #4f46e5;
+  background-color: #2449d8;
 }

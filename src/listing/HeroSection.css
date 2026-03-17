@@ -1,0 +1,43 @@
+.hero-section {
+  background-color: #ebeefb;
+  border-radius: 16px;
+  padding: 25px 40px;
+  margin-bottom: 40px;
+}
+
+.hero-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 24px;
+}
+
+.badge-icon {
+  font-size: 18px;
+  color: #0046FF;
+}
+
+.badge-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0046FF;
+}
+
+.hero-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.hero-description {
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 520px;
+  text-align: left;
+}

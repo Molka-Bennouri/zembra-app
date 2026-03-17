@@ -11,7 +11,7 @@
 }
 
 .section-block {
-  padding-bottom: 24px;
+  padding-bottom: 10px;
 }
 
 .section-block:not(:last-child) {
@@ -170,22 +170,38 @@
 }
 
 .execute-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: #0046FF;
+  width: fit-content;
+  padding: 8px 20px;
+  background-color: #2E5AF4;
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
   transition: background 0.2s ease;
+  margin-left: auto;
+  margin-top: 30px;
 }
 
 .execute-btn:hover {
-  background-color: #2235b8;
+  background-color: #2449d8;
+}
+
+.query-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.query-left {
+  padding-right: 28px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.query-right {
+  padding-left: 28px;
 }

@@ -8,6 +8,8 @@ import ProfilePage from "./profile/ProfilePage";
 import ManagePayment from './payment/ManagePayment';
 import PaymentHistory from './payment/PaymentHistory';
 import Invoices from './payment/Invoices';
+import ReviewPage from "./listing/ReviewPage";
+import MatchPage from "./listing/MatchPage";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         {/* With navbar */}
         <Route element={<><Navbar /><Outlet /></>}>
           <Route path="/listing" element={<ListingPage />} />
+          <Route path="/reviews" element={<ReviewPage />} />
+          <Route path="/match" element={<MatchPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/payment" element={<ManagePayment />} />
           <Route path="/paymenthistory" element={<PaymentHistory />} />

@@ -1,8 +1,7 @@
 .api-query-builder {
   width: 100%;
   min-height: 100vh;
-  
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 /* Main Content */
@@ -12,8 +11,8 @@
   margin: 0 auto;
 }
 
-/* Tab Section */
-.api-query-builder .tabs-section {
+/* Tabs */
+.tabs-section {
   margin-bottom: 40px;
   background-color: #e5e7eb;
   padding: 5px;
@@ -23,17 +22,17 @@
   margin-right: auto;
 }
 
-.api-query-builder .tabs-container {
+.tabs-container {
   display: flex;
   align-items: center;
 }
 
-.api-query-builder .tab {
+.tab {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 245px;
+  padding: 10px 120px; /* 👈 mieux que 245px (responsive) */
   background: none;
   border: none;
   border-radius: 10px;
@@ -45,11 +44,13 @@
   white-space: nowrap;
 }
 
-.api-query-builder .tab.active {
+.tab.active {
   color: #1f2937;
   background-color: #ffffff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
+
+/* Layout */
 .visual-layout {
   display: flex;
   flex-direction: column;

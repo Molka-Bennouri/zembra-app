@@ -72,12 +72,10 @@ function CurlRequest({
           </svg>
           {copied ? "Copied" : "Copy"}
         </button>
-        <button className="curl-button" onClick={onGenerate}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-           
-          </svg>
-          Run
-        </button>
+        <button className="curl-button" onClick={() => {}}>
+  <i className="fa-solid fa-play" style={{marginRight: '6px'}}></i>
+  Run
+</button>
       </div>
     </div>
   )

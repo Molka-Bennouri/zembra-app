@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import './ListingPage.css';
+import { useState } from 'react';
+import './ReviewPage.css';
+
 import HeroSection from './HeroSection';
-import QueryBuild from './QueryBuild';
+import ReviewQueryBuilder from './ReviewQueryBuilder';
 import QueryResponse from './QueryResponse';
 import CurlRequest from './CurlRequest';
 
-const ListingPage = () => {
+const ReviewPage = () => {
   const [activeTab, setActiveTab] = useState('visual');
 
   return (
     <div className="api-query-builder">
       <main className="main-content">
+
         <HeroSection
           badge="API Query Builder"
           title="Build Your Query"
@@ -18,37 +20,46 @@ const ListingPage = () => {
           icon="fa-solid fa-bolt fa-xs"
         />
 
+        {/* Tabs */}
         <section className="tabs-section">
           <div className="tabs-container">
             <button
               className={`tab ${activeTab === 'visual' ? 'active' : ''}`}
               onClick={() => setActiveTab('visual')}
             >
-              <span className="tab-icon"><i class="fa-solid fa-code"></i></span>
+              <span className="tab-icon">
+                <i className="fa-solid fa-code"></i>
+              </span>
               Visual Builder
             </button>
+
             <button
               className={`tab ${activeTab === 'curl' ? 'active' : ''}`}
               onClick={() => setActiveTab('curl')}
             >
-              <span className="tab-icon"><i class="fa-solid fa-code"></i></span>
+              <span className="tab-icon">
+                <i className="fa-solid fa-code"></i>
+              </span>
               cURL Code
             </button>
           </div>
         </section>
 
+        {/* Content */}
         <div className="tab-content">
           {activeTab === 'visual' && (
             <div className="visual-layout">
-              <QueryBuild />
+              <ReviewQueryBuilder/>
               <QueryResponse />
             </div>
           )}
+
           {activeTab === 'curl' && <CurlRequest />}
         </div>
+
       </main>
     </div>
   );
 };
 
-export default ListingPage;
+export default ReviewPage;
