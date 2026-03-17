@@ -455,3 +455,16 @@
     margin-bottom: 0.5rem;
   }
 }
+.payments-section {
+    margin-top: 1.5rem;
+}
+
+.payments-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: 0 6px 20px rgba(188, 18, 18, 0.04);
+    max-width: 1100px;
+    margin: 0 auto;
+}

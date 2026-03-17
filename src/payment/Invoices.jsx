@@ -1,166 +1,153 @@
-"use client"
-
 import { useState } from "react"
 import "./Invoices.css"
 
 export default function Invoices() {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [filterStatus, setFilterStatus] = useState("all")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [sortBy, setSortBy] = useState("date") 
-  const [sortOrder, setSortOrder] = useState("desc")
-  const itemsPerPage = 10
+    const [currentPage, setCurrentPage] = useState(1)
+    const [filterStatus, setFilterStatus] = useState("all")
+    const [searchTerm, setSearchTerm] = useState("")
+    const [sortBy, setSortBy] = useState("date")
+    const [sortOrder, setSortOrder] = useState("desc")
+    const itemsPerPage = 10
 
-  const invoices = [
-    {
-      id: "INV-2026-049",
-      date: "March 1, 2026",
-      dueDate: "March 16, 2026",
-      description: "Startup Plan - Monthly",
-      amount: 500,
-      status: "sent",
-      customer: "Tech Startup Inc",
-      items: 1
-    },
-    {
-      id: "INV-2026-048",
-      date: "February 20, 2026",
-      dueDate: "March 7, 2026",
-      description: "Business Plan - Monthly",
-      amount: 1000,
-      status: "paid",
-      customer: "Enterprise Solutions",
-      items: 1
-    },
-    {
-      id: "INV-2026-047",
-      date: "February 15, 2026",
-      dueDate: "March 2, 2026",
-      description: "Additional API Credits",
-      amount: 150,
-      status: "paid",
-      customer: "Tech Startup Inc",
-      items: 1
-    },
-    {
-      id: "INV-2026-046",
-      date: "February 1, 2026",
-      dueDate: "February 16, 2026",
-      description: "Startup Plan - Monthly",
-      amount: 500,
-      status: "paid",
-      customer: "Acme Corp",
-      items: 1
-    },
-    {
-      id: "INV-2026-044",
-      date: "January 15, 2026",
-      dueDate: "January 30, 2026",
-      description: "Basic Plan - Monthly",
-      amount: 50,
-      status: "paid",
-      customer: "Startup Hub",
-      items: 1
-    },
-    {
-      id: "INV-2026-043",
-      date: "January 1, 2026",
-      dueDate: "January 16, 2026",
-      description: "Startup Plan - Monthly",
-      amount: 500,
-      status: "paid",
-      customer: "Tech Startup Inc",
-      items: 1
-    },
-    {
-      id: "INV-2026-042",
-      date: "December 15, 2025",
-      dueDate: "December 30, 2025",
-      description: "Additional Storage",
-      amount: 75,
-      status: "overdue",
-      customer: "Web Services Ltd",
-      items: 1
-    },
-    {
-      id: "INV-2026-041",
-      date: "December 1, 2025",
-      dueDate: "December 16, 2025",
-      description: "Basic Plan - Monthly",
-      amount: 50,
-      status: "paid",
-      customer: "Startup Hub",
-      items: 1
-    }
-  ]
+    const invoices = [
+        {
+            id: "INV-2026-048",
+            date: "February 20, 2026",
+            dueDate: "March 7, 2026",
+            description: "Business Plan - Monthly",
+            amount: 1000,
+            status: "paid",
+            customer: "Enterprise Solutions",
+            items: 1
+        },
+        {
+            id: "INV-2026-047",
+            date: "February 15, 2026",
+            dueDate: "March 2, 2026",
+            description: "Additional API Credits",
+            amount: 150,
+            status: "paid",
+            customer: "Tech Startup Inc",
+            items: 1
+        },
+        {
+            id: "INV-2026-046",
+            date: "February 1, 2026",
+            dueDate: "February 16, 2026",
+            description: "Startup Plan - Monthly",
+            amount: 500,
+            status: "paid",
+            customer: "Acme Corp",
+            items: 1
+        },
+        {
+            id: "INV-2026-044",
+            date: "January 15, 2026",
+            dueDate: "January 30, 2026",
+            description: "Basic Plan - Monthly",
+            amount: 50,
+            status: "paid",
+            customer: "Startup Hub",
+            items: 1
+        },
+        {
+            id: "INV-2026-043",
+            date: "January 1, 2026",
+            dueDate: "January 16, 2026",
+            description: "Startup Plan - Monthly",
+            amount: 500,
+            status: "paid",
+            customer: "Tech Startup Inc",
+            items: 1
+        },
+        {
+            id: "INV-2026-042",
+            date: "December 15, 2025",
+            dueDate: "December 30, 2025",
+            description: "Additional Storage",
+            amount: 75,
+            status: "overdue",
+            customer: "Web Services Ltd",
+            items: 1
+        },
+        {
+            id: "INV-2026-041",
+            date: "December 1, 2025",
+            dueDate: "December 16, 2025",
+            description: "Basic Plan - Monthly",
+            amount: 50,
+            status: "paid",
+            customer: "Startup Hub",
+            items: 1
+        }
+    ]
 
-  let filtered = filterStatus === "all" 
-    ? invoices 
-    : invoices.filter(i => i.status === filterStatus)
+    let filtered = filterStatus === "all"
+        ? invoices
+        : invoices.filter(i => i.status === filterStatus)
 
-  if (searchTerm) {
-    filtered = filtered.filter(i => 
-      i.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      i.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      i.description.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  }
-
-  // Apply sorting
-  const sorted = [...filtered].sort((a, b) => {
-    let aVal, bVal
-
-    switch (sortBy) {
-      case "amount":
-        aVal = a.amount
-        bVal = b.amount
-        break
-      case "customer":
-        aVal = a.customer.toLowerCase()
-        bVal = b.customer.toLowerCase()
-        break
-      case "status":
-        aVal = a.status
-        bVal = b.status
-        break
-      case "date":
-      default:
-        aVal = new Date(a.date)
-        bVal = new Date(b.date)
+    if (searchTerm) {
+        filtered = filtered.filter(i =>
+            i.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            i.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            i.description.toLowerCase().includes(searchTerm.toLowerCase())
+        )
     }
 
-    if (aVal < bVal) return sortOrder === "asc" ? -1 : 1
-    if (aVal > bVal) return sortOrder === "asc" ? 1 : -1
-    return 0
-  })
+    // Apply sorting
+    const sorted = [...filtered].sort((a, b) => {
+        let aVal, bVal
 
-  const totalPages = Math.ceil(sorted.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const paginatedInvoices = sorted.slice(startIndex, startIndex + itemsPerPage)
-  const sentTotal = invoices.filter(i => i.status === "sent").reduce((sum, i) => sum + i.amount, 0)
-  const paidTotal = invoices.filter(i => i.status === "paid").reduce((sum, i) => sum + i.amount, 0)
-  const overdueTotal = invoices.filter(i => i.status === "overdue").reduce((sum, i) => sum + i.amount, 0)
+        switch (sortBy) {
+            case "amount":
+                aVal = a.amount
+                bVal = b.amount
+                break
+            case "customer":
+                aVal = a.customer.toLowerCase()
+                bVal = b.customer.toLowerCase()
+                break
+            case "status":
+                aVal = a.status
+                bVal = b.status
+                break
+            case "date":
+            default:
+                aVal = new Date(a.date)
+                bVal = new Date(b.date)
+        }
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value)
-    setCurrentPage(1)
-  }
+        if (aVal < bVal) return sortOrder === "asc" ? -1 : 1
+        if (aVal > bVal) return sortOrder === "asc" ? 1 : -1
+        return 0
+    })
 
-  const handleFilterChange = (status) => {
-    setFilterStatus(status)
-    setCurrentPage(1)
-  }
+    const totalPages = Math.ceil(sorted.length / itemsPerPage)
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const paginatedInvoices = sorted.slice(startIndex, startIndex + itemsPerPage)
+    const paidTotal = invoices.filter(i => i.status === "paid").reduce((sum, i) => sum + i.amount, 0)
+    const overdueTotal = invoices.filter(i => i.status === "overdue").reduce((sum, i) => sum + i.amount, 0)
 
-  const handleSort = (newSortBy) => {
-    if (sortBy === newSortBy) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc")
-    } else {
-      setSortBy(newSortBy)
-      setSortOrder("desc")
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value)
+        setCurrentPage(1)
     }
-  }
 
-  const downloadCSV = () => {
+    const handleFilterChange = (status) => {
+        setFilterStatus(status)
+        setCurrentPage(1)
+    }
+
+    const handleSort = (newSortBy) => {
+        if (sortBy === newSortBy) {
+            setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+        } else {
+            setSortBy(newSortBy)
+            setSortOrder("desc")
+        }
+    }
+
+   const downloadCSV = () => {
     const headers = ["Invoice ID", "Customer", "Date", "Due Date", "Amount", "Status", "Description"]
     const rows = sorted.map(inv => [
       inv.id,
@@ -209,7 +196,7 @@ export default function Invoices() {
       <header className="invoices-header">
         <div>
           <h1 className="invoices-title">Invoices</h1>
-          <p className="invoices-subtitle">Send,download and manage your invoices</p>
+          <p className="invoices-subtitle">Create, send, and manage your invoices</p>
         </div>
         <div className="header-actions">
           <div className="download-menu">
@@ -220,9 +207,6 @@ export default function Invoices() {
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
               Download
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
             </button>
             <div className="download-menu-items">
               <button onClick={downloadCSV} className="menu-item">
@@ -241,247 +225,212 @@ export default function Invoices() {
               </button>
             </div>
           </div>
-
         </div>
       </header>
 
-      {/* Summary Cards */}
-      <div className="summary-cards">
-        <div className="summary-card">
-          <div className="summary-icon sent">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-            </svg>
-          </div>
-          <div className="summary-content">
-            <span className="summary-label">Sent</span>
-            <span className="summary-value">${sentTotal.toLocaleString()}</span>
-          </div>
-        </div>
-        <div className="summary-card">
-          <div className="summary-icon paid">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-          </div>
-          <div className="summary-content">
-            <span className="summary-label">Paid</span>
-            <span className="summary-value">${paidTotal.toLocaleString()}</span>
-          </div>
-        </div>
-        <div className="summary-card">
-          <div className="summary-icon overdue">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-          </div>
-          <div className="summary-content">
-            <span className="summary-label">Overdue</span>
-            <span className="summary-value">${overdueTotal.toLocaleString()}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Filter Bar */}
-      <div className="filter-bar">
-        <div className="filter-tabs">
-          <button 
-            className={`filter-tab ${filterStatus === "all" ? "active" : ""}`}
-            onClick={() => handleFilterChange("all")}
-          >
-            All
-          </button>
-          <button 
-            className={`filter-tab ${filterStatus === "sent" ? "active" : ""}`}
-            onClick={() => handleFilterChange("sent")}
-          >
-            Sent
-          </button>
-          <button 
-            className={`filter-tab ${filterStatus === "paid" ? "active" : ""}`}
-            onClick={() => handleFilterChange("paid")}
-          >
-            Paid
-          </button>
-          <button 
-            className={`filter-tab ${filterStatus === "overdue" ? "active" : ""}`}
-            onClick={() => handleFilterChange("overdue")}
-          >
-            Overdue
-          </button>
-        </div>
-        <div className="search-box">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <input 
-            type="text" 
-            placeholder="Search invoices..." 
-            className="search-input"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-        </div>
-      </div>
-
-      {/* Invoices Table */}
-      <div className="invoices-table">
-        <div className="table-header">
-          <span className="col-invoice">Invoice</span>
-          <span className="col-customer">
-            <button className="sort-btn" onClick={() => handleSort("customer")}>
-              Customer
-              {sortBy === "customer" && (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: sortOrder === "asc" ? "rotate(180deg)" : "" }}>
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              )}
-            </button>
-          </span>
-          <span className="col-date">
-            <button className="sort-btn" onClick={() => handleSort("date")}>
-              Date
-              {sortBy === "date" && (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: sortOrder === "asc" ? "rotate(180deg)" : "" }}>
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              )}
-            </button>
-          </span>
-          <span className="col-due">Due Date</span>
-          <span className="col-amount">
-            <button className="sort-btn" onClick={() => handleSort("amount")}>
-              Amount
-              {sortBy === "amount" && (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: sortOrder === "asc" ? "rotate(180deg)" : "" }}>
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              )}
-            </button>
-          </span>
-          <span className="col-status">
-            <button className="sort-btn" onClick={() => handleSort("status")}>
-              Status
-              {sortBy === "status" && (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: sortOrder === "asc" ? "rotate(180deg)" : "" }}>
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              )}
-            </button>
-          </span>
-          <span className="col-actions">Actions</span>
-        </div>
-
-        {paginatedInvoices.length === 0 ? (
-          <div className="empty-state">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="16" y1="13" x2="8" y2="13" />
-              <line x1="16" y1="17" x2="8" y2="17" />
-              <polyline points="10 9 9 9 8 9" />
-            </svg>
-            <p>No invoices found</p>
-          </div>
-        ) : (
-          paginatedInvoices.map((invoice) => (
-            <div key={invoice.id} className="table-row">
-              <span className="col-invoice">
-                <span className="invoice-id">{invoice.id}</span>
-              </span>
-              <span className="col-customer">
-                <span className="customer-name">{invoice.customer}</span>
-              </span>
-              <span className="col-date">{invoice.date}</span>
-              <span className="col-due">
-                <span className="due-date">{invoice.dueDate}</span>
-              </span>
-              <span className="col-amount">${invoice.amount.toLocaleString()}</span>
-              <span className="col-status">
-                <span className={`status-badge ${invoice.status}`}>
-                  {invoice.status === "sent" && (
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                      <polyline points="22 2 11 13 22 24 22 2" />
-                      <path d="M22 2H2" />
-                    </svg>
-                  )}
-                  {invoice.status === "paid" && (
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                  {invoice.status === "overdue" && (
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                  )}
-                  {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
-                </span>
-              </span>
-              <span className="col-actions">
-                <button className="action-btn" title="Edit">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                  </svg>
-                </button>
-                <button className="action-btn" title="Download">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7 10 12 15 17 10" />
-                    <line x1="12" y1="15" x2="12" y2="3" />
-                  </svg>
-                </button>
-                <button className="action-btn" title="Send">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                  </svg>
-                </button>
-              </span>
+            {/* Summary Cards */}
+            <div className="summary-cards">
+                <div className="summary-card">
+                    <div className="summary-icon paid">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    <div className="summary-content">
+                        <span className="summary-label">Paid</span>
+                        <span className="summary-value">${paidTotal.toLocaleString()}</span>
+                    </div>
+                </div>
+                <div className="summary-card">
+                    <div className="summary-icon overdue">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                    <div className="summary-content">
+                        <span className="summary-label">Overdue</span>
+                        <span className="summary-value">${overdueTotal.toLocaleString()}</span>
+                    </div>
+                </div>
             </div>
-          ))
-        )}
-      </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button 
-            className="pagination-btn"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(p => p - 1)}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-            Previous
-          </button>
-          <div className="pagination-numbers">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-              <button
-                key={page}
-                className={`pagination-number ${currentPage === page ? "active" : ""}`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-          <button 
-            className="pagination-btn"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(p => p + 1)}
-          >
-            Next
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
+            {/* Filter Bar */}
+            <div className="filter-bar">
+                <div className="filter-tabs">
+                    <button
+                        className={`filter-tab ${filterStatus === "all" ? "active" : ""}`}
+                        onClick={() => handleFilterChange("all")}
+                    >
+                        All
+                    </button>
+                    <button
+                        className={`filter-tab ${filterStatus === "paid" ? "active" : ""}`}
+                        onClick={() => handleFilterChange("paid")}
+                    >
+                        Paid
+                    </button>
+                    <button
+                        className={`filter-tab ${filterStatus === "overdue" ? "active" : ""}`}
+                        onClick={() => handleFilterChange("overdue")}
+                    >
+                        Overdue
+                    </button>
+                </div>
+                <div className="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input
+                        type="text"
+                        placeholder="Search invoices..."
+                        className="search-input"
+                        value={searchTerm}
+                        onChange={handleSearch}
+                    />
+                </div>
+            </div>
+
+            {/* Invoices Table */}
+            <div className="invoices-section">
+                <div className="invoices-card">
+
+                    <div className="invoices-table">
+                        <div className="table-header">
+                            <span className="col-invoice">Invoice</span>
+                            <span className="col-customer">
+                                <button className="sort-btn" onClick={() => handleSort("customer")}>
+                                    Customer
+                                    {sortBy === "customer" && (
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: sortOrder === "asc" ? "rotate(180deg)" : "" }}>
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    )}
+                                </button>
+                            </span>
+
+                            <span className="col-date">
+                                <button className="sort-btn" onClick={() => handleSort("date")}>
+                                    Date
+                                    {sortBy === "date" && (
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: sortOrder === "asc" ? "rotate(180deg)" : "" }}>
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    )}
+                                </button>
+                            </span>
+
+                            <span className="col-due">Due Date</span>
+
+                            <span className="col-amount">
+                                <button className="sort-btn" onClick={() => handleSort("amount")}>
+                                    Amount
+                                    {sortBy === "amount" && (
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: sortOrder === "asc" ? "rotate(180deg)" : "" }}>
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    )}
+                                </button>
+                            </span>
+
+                            <span className="col-status">
+                                <button className="sort-btn" onClick={() => handleSort("status")}>
+                                    Status
+                                    {sortBy === "status" && (
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: sortOrder === "asc" ? "rotate(180deg)" : "" }}>
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    )}
+                                </button>
+                            </span>
+
+                            <span className="col-actions">Actions</span>
+                        </div>
+
+                        {paginatedInvoices.length === 0 ? (
+                            <div className="empty-state">
+                                <p>No invoices found</p>
+                            </div>
+                        ) : (
+                            paginatedInvoices.map((invoice) => (
+                                <div key={invoice.id} className="table-row">
+                                    <span className="col-invoice">
+                                        <span className="invoice-id">{invoice.id}</span>
+                                    </span>
+
+                                    <span className="col-customer">
+                                        <span className="customer-name">{invoice.customer}</span>
+                                    </span>
+
+                                    <span className="col-date">{invoice.date}</span>
+
+                                    <span className="col-due">
+                                        <span className="due-date">{invoice.dueDate}</span>
+                                    </span>
+
+                                    <span className="col-amount">
+                                        ${invoice.amount.toLocaleString()}
+                                    </span>
+
+                                    <span className="col-status">
+                                        <span className={`status-badge ${invoice.status}`}>
+                                            {invoice.status}
+                                        </span>
+                                    </span>
+
+                                    <span className="col-actions">
+                                        <button className="action-btn" title="Download">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                <polyline points="7 10 12 15 17 10" />
+                                                <line x1="12" y1="15" x2="12" y2="3" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </div>
+                            ))
+                        )}
+                    </div>
+
+                </div>
+            </div>
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <div className="pagination">
+                    <button
+                        className="pagination-btn"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(p => p - 1)}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polyline points="15 18 9 12 15 6" />
+                        </svg>
+                        Previous
+                    </button>
+                    <div className="pagination-numbers">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                            <button
+                                key={page}
+                                className={`pagination-number ${currentPage === page ? "active" : ""}`}
+                                onClick={() => setCurrentPage(page)}
+                            >
+                                {page}
+                            </button>
+                        ))}
+                    </div>
+                    <button
+                        className="pagination-btn"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage(p => p + 1)}
+                    >
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                    </button>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  )
+    )
 }

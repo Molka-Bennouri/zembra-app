@@ -10,6 +10,7 @@ import PaymentHistory from './payment/PaymentHistory';
 import Invoices from './payment/Invoices';
 import ReviewPage from "./listing/ReviewPage";
 import MatchPage from "./listing/MatchPage";
+import ModalCard from "./payment/ModalCard";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
           <Route path="/payment" element={<ManagePayment />} />
           <Route path="/paymenthistory" element={<PaymentHistory />} />
           <Route path="/invoices" element={<Invoices />} />
+          <Route path="/modalcard" element={<ModalCard />} />
+
         </Route>
       </Routes>
     </Router>
