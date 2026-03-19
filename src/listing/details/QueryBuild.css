@@ -26,14 +26,6 @@
   margin-bottom: 16px;
 }
 
-.card-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-  padding: 0;
-}
-
 .required-badge {
   background-color: #ebeefb;
   color: #0046FF;
@@ -102,7 +94,7 @@
 .parameter-label {
   display: block;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: #1f2937;
   margin-bottom: 8px;
 }
@@ -152,7 +144,7 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
-  accent-color: #0369a1;
+  accent-color: #3b82f6;
   margin: 0;
   padding: 0;
 }

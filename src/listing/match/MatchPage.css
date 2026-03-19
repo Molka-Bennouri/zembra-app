@@ -1,7 +1,6 @@
 .api-query-builder {
   width: 100%;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 /* Main Content */
@@ -32,7 +31,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 120px; /* 👈 mieux que 245px (responsive) */
+  padding: 10px 120px;
   background: none;
   border: none;
   border-radius: 10px;

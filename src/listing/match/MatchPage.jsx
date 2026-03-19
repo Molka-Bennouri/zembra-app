@@ -28,11 +28,10 @@ const MatchPage = () => {
         <div className="tab-content">
           {activeTab === 'visual' && (
             <div className="visual-layout">
-              <MatchQueryBuild/>
+              <MatchQueryBuild />
               <QueryResponse />
             </div>
           )}
-
           {activeTab === 'curl' && <CurlRequest />}
         </div>
 
