@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import './ListingPage.css';
 
-import HeroSection from '../common/HeroSection';
-import Tabs from '../common/Tabs';
-import QueryResponse from '../common/QueryResponse';
-import CurlRequest from '../common/CurlRequest';
+import HeroSection from '../components/HeroSection';
+import Tabs from '../components/Tabs';
+import QueryResponse from '../components/QueryResponse';
+import CurlRequest from '../components/CurlRequest';
 
 import QueryBuild from './QueryBuild';
 

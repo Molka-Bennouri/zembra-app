@@ -8,7 +8,27 @@ body {
   background-color: #f9fafb;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root {
+  --color-primary:       #2E5AF4;
+  --color-primary-hover: #2449d8;
+  --color-primary-light: #ebeefb;
+  --color-light-blue:    #3b82f6;
+
+  /* Background */
+  --color-bg:               #f9fafb;
+  --color-card-background:  #ffffff;
+
+  /* Text */
+  --color-text:        #111827;
+  --color-text-light:  #f9fafb;
+  --color-text-helper: #5b606c;
+
+  /* Borders */
+  --color-card-border: 1px solid #e5e7eb;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+  /* Radius */
+  --radius-card: 10px;
 }
