@@ -156,6 +156,7 @@
   justify-content: center;
   color: #2E5AF4;
   flex-shrink: 0;
+  font-size: 14px;
 }
 
 .nav-item-text {

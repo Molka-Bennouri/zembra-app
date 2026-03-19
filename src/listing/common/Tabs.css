@@ -1,19 +1,4 @@
-.api-query-builder {
-  width: 100%;
-  min-height: 100vh;
-  
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-}
-
-/* Main Content */
-.main-content {
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Tab Section */
-.api-query-builder .tabs-section {
+.tabs-section {
   margin-bottom: 40px;
   background-color: #e5e7eb;
   padding: 5px;
@@ -23,12 +8,12 @@
   margin-right: auto;
 }
 
-.api-query-builder .tabs-container {
+.tabs-container {
   display: flex;
   align-items: center;
 }
 
-.api-query-builder .tab {
+.tab {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,13 +30,8 @@
   white-space: nowrap;
 }
 
-.api-query-builder .tab.active {
+.tab.active {
   color: #1f2937;
   background-color: #ffffff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
-.visual-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 }

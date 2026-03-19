@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './QueryBuild.css';
+import '../details/QueryBuild.css';
 
 function MatchQueryBuild() {
     const [name, setName] = useState('');

@@ -1,102 +1,19 @@
-
 import { useState } from "react"
 import "./PaymentHistory.css"
 
 export default function PaymentHistory() {
-  const [currentPage, setCurrentPage] = useState(1)
   const [filterStatus, setFilterStatus] = useState("all")
-  const itemsPerPage = 10
 
   const paymentHistory = [
-    {
-      id: "INV-2026-001",
-      date: "March 1, 2026",
-      description: "Startup Plan - Monthly",
-      amount: 500,
-      status: "paid",
-      paymentMethod: "Visa **** 4242"
-    },
-    {
-      id: "INV-2026-002",
-      date: "February 15, 2026",
-      description: "Additional API Credits",
-      amount: 150,
-      status: "paid",
-      paymentMethod: "Visa **** 4242"
-    },
-    {
-      id: "INV-2026-003",
-      date: "February 1, 2026",
-      description: "Startup Plan - Monthly",
-      amount: 500,
-      status: "paid",
-      paymentMethod: "Mastercard **** 8888"
-    },
-    {
-      id: "INV-2025-012",
-      date: "January 1, 2026",
-      description: "Startup Plan - Monthly",
-      amount: 500,
-      status: "paid",
-      paymentMethod: "Visa **** 4242"
-    },
-    {
-      id: "INV-2025-011",
-      date: "December 1, 2025",
-      description: "Basic Plan - Monthly",
-      amount: 50,
-      status: "paid",
-      paymentMethod: "Visa **** 4242"
-    },
-    {
-      id: "INV-2025-010",
-      date: "November 15, 2025",
-      description: "Plan Upgrade Fee",
-      amount: 25,
-      status: "refunded",
-      paymentMethod: "Visa **** 4242"
-    },
-    {
-      id: "INV-2025-009",
-      date: "November 1, 2025",
-      description: "Basic Plan - Monthly",
-      amount: 50,
-      status: "paid",
-      paymentMethod: "Visa **** 4242"
-    },
-    {
-      id: "INV-2025-008",
-      date: "October 1, 2025",
-      description: "Basic Plan - Monthly",
-      amount: 50,
-      status: "paid",
-      paymentMethod: "Visa **** 4242"
-    },
-    {
-      id: "INV-2025-007",
-      date: "September 15, 2025",
-      description: "Additional Storage",
-      amount: 75,
-      status: "pending",
-      paymentMethod: "Visa **** 4242"
-    },
-    {
-      id: "INV-2025-006",
-      date: "September 1, 2025",
-      description: "Basic Plan - Monthly",
-      amount: 50,
-      status: "paid",
-      paymentMethod: "Visa **** 4242"
-    }
+    { id: "INV-2026-001", date: "March 1, 2026", description: "Startup Plan - Monthly", amount: 500, status: "paid", paymentMethod: "Visa **** 4242" },
+    { id: "INV-2025-010", date: "November 15, 2025", description: "Plan Upgrade Fee", amount: 25, status: "refunded", paymentMethod: "Visa **** 4242" },
+    { id: "INV-2025-007", date: "September 15, 2025", description: "Additional Storage", amount: 75, status: "pending", paymentMethod: "Visa **** 4242" },
+    { id: "INV-2025-006", date: "September 1, 2025", description: "Basic Plan - Monthly", amount: 50, status: "paid", paymentMethod: "Visa **** 4242" }
   ]
 
   const filteredPayments = filterStatus === "all"
     ? paymentHistory
     : paymentHistory.filter(p => p.status === filterStatus)
-
-  const totalPages = Math.ceil(filteredPayments.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const paginatedPayments = filteredPayments.slice(startIndex, startIndex + itemsPerPage)
 
   const totalPaid = paymentHistory
     .filter(p => p.status === "paid")
@@ -109,22 +26,23 @@ export default function PaymentHistory() {
   const totalPending = paymentHistory
     .filter(p => p.status === "pending")
     .reduce((sum, p) => sum + p.amount, 0)
-  
-  const downloadCSV = () => {
-  const content = paymentHistory.map(inv => 
-    `${inv.id} | ${inv.description} | ${inv.date} | $${inv.amount} | ${inv.status}`
-  ).join("\n")
 
-  const blob = new Blob([content], { type: "application/pdf" })
-  const url = window.URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = `invoices-${new Date().toISOString().split("T")[0]}.txt`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  window.URL.revokeObjectURL(url)
-}
+  const downloadCSV = () => {
+    const content = paymentHistory.map(inv =>
+      `${inv.id} | ${inv.description} | ${inv.date} | $${inv.amount} | ${inv.status}`
+    ).join("\n")
+
+    const blob = new Blob([content], { type: "application/pdf" })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `invoices-${new Date().toISOString().split("T")[0]}.txt`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="payment-history-container">
       <header className="payment-history-header">
@@ -146,9 +64,7 @@ export default function PaymentHistory() {
       <div className="summary-cards">
         <div className="summary-card">
           <div className="summary-icon paid">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
+            <i className="fa-solid fa-check"></i>
           </div>
           <div className="summary-content">
             <span className="summary-label">Total Paid</span>
@@ -157,10 +73,7 @@ export default function PaymentHistory() {
         </div>
         <div className="summary-card">
           <div className="summary-icon refunded">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="1 4 1 10 7 10" />
-              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-            </svg>
+            <i className="fa-solid fa-rotate-left"></i>
           </div>
           <div className="summary-content">
             <span className="summary-label">Total Refunded</span>
@@ -169,10 +82,7 @@ export default function PaymentHistory() {
         </div>
         <div className="summary-card">
           <div className="summary-icon pending">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
+            <i className="fa-regular fa-clock"></i>
           </div>
           <div className="summary-content">
             <span className="summary-label">Pending</span>
@@ -186,25 +96,25 @@ export default function PaymentHistory() {
         <div className="filter-tabs">
           <button
             className={`filter-tab ${filterStatus === "all" ? "active" : ""}`}
-            onClick={() => { setFilterStatus("all"); setCurrentPage(1); }}
+            onClick={() => setFilterStatus("all")}
           >
             All
           </button>
           <button
             className={`filter-tab ${filterStatus === "paid" ? "active" : ""}`}
-            onClick={() => { setFilterStatus("paid"); setCurrentPage(1); }}
+            onClick={() => setFilterStatus("paid")}
           >
             Paid
           </button>
           <button
             className={`filter-tab ${filterStatus === "refunded" ? "active" : ""}`}
-            onClick={() => { setFilterStatus("refunded"); setCurrentPage(1); }}
+            onClick={() => setFilterStatus("refunded")}
           >
             Refunded
           </button>
           <button
             className={`filter-tab ${filterStatus === "pending" ? "active" : ""}`}
-            onClick={() => { setFilterStatus("pending"); setCurrentPage(1); }}
+            onClick={() => setFilterStatus("pending")}
           >
             Pending
           </button>
@@ -221,7 +131,6 @@ export default function PaymentHistory() {
       {/* Payments Card */}
       <div className="payments-section">
         <div className="payments-card">
-
           <div className="payments-table">
             <div className="table-header">
               <span className="col-invoice">Invoice</span>
@@ -233,19 +142,12 @@ export default function PaymentHistory() {
               <span className="col-actions">Actions</span>
             </div>
 
-            {paginatedPayments.length === 0 ? (
+            {filteredPayments.length === 0 ? (
               <div className="empty-state">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="16" y1="13" x2="8" y2="13" />
-                  <line x1="16" y1="17" x2="8" y2="17" />
-                  <polyline points="10 9 9 9 8 9" />
-                </svg>
                 <p>No transactions found</p>
               </div>
             ) : (
-              paginatedPayments.map((payment) => (
+              filteredPayments.map((payment) => (
                 <div key={payment.id} className="table-row">
                   <span className="col-invoice">
                     <span className="invoice-id">{payment.id}</span>
@@ -293,46 +195,8 @@ export default function PaymentHistory() {
               ))
             )}
           </div>
-
         </div>
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button
-            className="pagination-btn"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(p => p - 1)}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-            Previous
-          </button>
-          <div className="pagination-numbers">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-              <button
-                key={page}
-                className={`pagination-number ${currentPage === page ? "active" : ""}`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-          <button
-            className="pagination-btn"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(p => p + 1)}
-          >
-            Next
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
-        </div>
-      )}
     </div>
   )
 }

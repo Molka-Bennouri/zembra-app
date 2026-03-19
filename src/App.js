@@ -3,13 +3,15 @@ import './App.css';
 import Login from './login/Login';
 import Signup from './login/Signup'
 import Navbar from "./navbar/Navbar";
-import ListingPage from './listing/ListingPage';
+import ListingPage from './listing/details/ListingPage';
+import ReviewPage from './listing/reviews/ReviewPage';
+import MatchPage from './listing/match/MatchPage';
 import ProfilePage from "./profile/ProfilePage";
 import ManagePayment from './payment/ManagePayment';
 import PaymentHistory from './payment/PaymentHistory';
 import Invoices from './payment/Invoices';
-import ReviewPage from "./listing/ReviewPage";
-import MatchPage from "./listing/MatchPage";
+
+
 import ModalCard from "./payment/ModalCard";
 
 function App() {

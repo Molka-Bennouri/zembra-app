@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import './MatchPage.css';
 
-import HeroSection from './HeroSection';
+import HeroSection from '../common/HeroSection';
+import Tabs from '../common/Tabs';
+import QueryResponse from '../common/QueryResponse';
+import CurlRequest from '../common/CurlRequest';
+
 import MatchQueryBuild from './MatchQueryBuild';
-import QueryResponse from './QueryResponse';
-import CurlRequest from './CurlRequest';
 
 const MatchPage = () => {
   const [activeTab, setActiveTab] = useState('visual');
@@ -20,30 +22,7 @@ const MatchPage = () => {
           icon="fa-solid fa-bolt fa-xs"
         />
 
-        {/* Tabs */}
-        <section className="tabs-section">
-          <div className="tabs-container">
-            <button
-              className={`tab ${activeTab === 'visual' ? 'active' : ''}`}
-              onClick={() => setActiveTab('visual')}
-            >
-              <span className="tab-icon">
-                <i className="fa-solid fa-code"></i>
-              </span>
-              Visual Builder
-            </button>
-
-            <button
-              className={`tab ${activeTab === 'curl' ? 'active' : ''}`}
-              onClick={() => setActiveTab('curl')}
-            >
-              <span className="tab-icon">
-                <i className="fa-solid fa-code"></i>
-              </span>
-              cURL Code
-            </button>
-          </div>
-        </section>
+        <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
         {/* Content */}
         <div className="tab-content">

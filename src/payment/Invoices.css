@@ -265,25 +265,23 @@
     width: 100%;
 }
 
-.table-header {
+.table-header,
+.table-row {
     display: grid;
     grid-template-columns:
-        140px
-        /* invoice */
-        220px
-        /* customer (fixe → réduit espace) */
-        120px
-        /* date */
-        120px
-        /* due */
-       110px
-        /* amount */
-        110px
-        /* status */
-        110px;
-    /* actions */
+        140px  /* invoice */
+        220px  /* customer */
+        120px  /* date */
+        140px  /* due date */
+        110px  /* amount */
+        120px  /* status */
+        60px;  /* actions */
     gap: 0.5rem;
-    padding: 0.75rem 0.75rem;
+    padding: 0.75rem;
+    align-items: center;
+}
+
+.table-header {
     background: var(--secondary);
     font-size: 0.75rem;
     font-weight: 600;
@@ -294,15 +292,9 @@
 
 .sort-btn {
     display: inline-flex;
-    /* Inline pour que la largeur suive le contenu */
-    flex-direction: column;
-    /* Colonne : texte en haut, icône en dessous si nécessaire */
-    justify-content: flex-start;
-    /* Aligne le contenu en haut de la cellule */
-    align-items: flex-start;
-    /* Aligne le texte à gauche */
+    flex-direction: row;
+    align-items: center;
     gap: 0.25rem;
-    /* Petit espace entre texte et icône */
     background: transparent;
     border: none;
     color: inherit;
@@ -313,7 +305,6 @@
     cursor: pointer;
     padding: 0;
     margin: 0;
-    /* Supprime tout margin */
     transition: color 0.2s ease;
 }
 
@@ -327,26 +318,7 @@
 }
 
 .table-row {
-    display: grid;
-    grid-template-columns:
-        140px
-        /* invoice */
-        220px
-        /* customer (fixe → réduit espace) */
-        120px
-        /* date */
-        140px
-        /* due */
-        110px
-        /* amount */
-        120px
-        /* status */
-        90px;
-    /* actions */
-    gap: 0.5rem;
-    padding: 1rem 0;
     border-bottom: 1px solid var(--border);
-    align-items: center;
     transition: background 0.2s ease;
 }
 
@@ -422,6 +394,8 @@
     display: flex;
     gap: 0.5rem;
     justify-content: flex-end;
+    width: 60px;
+    min-width: 60px;
 }
 
 .action-btn {
@@ -454,71 +428,6 @@
 .empty-state p {
     margin: 0;
     font-size: 0.9375rem;
-}
-
-/* Pagination */
-.pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1.5rem;
-}
-
-.pagination-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: var(--secondary);
-    color: var(--secondary-foreground);
-    border: none;
-    border-radius: var(--radius);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.pagination-btn:hover:not(:disabled) {
-    background: var(--accent);
-}
-
-.pagination-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.pagination-numbers {
-    display: flex;
-    gap: 0.25rem;
-}
-
-.pagination-number {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--muted-foreground);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.pagination-number:hover {
-    background: var(--secondary);
-    color: var(--foreground);
-}
-
-.pagination-number.active {
-    background: var(--primary);
-    color: var(--primary-foreground);
-    border-color: var(--primary);
 }
 
 /* Responsive */
@@ -587,17 +496,6 @@
         border-top: 1px solid var(--border);
         justify-content: flex-start;
     }
-
-    .pagination {
-        flex-wrap: wrap;
-    }
-
-    .pagination-numbers {
-        order: -1;
-        width: 100%;
-        justify-content: center;
-        margin-bottom: 0.5rem;
-    }
 }
 
 .invoices-section {
@@ -612,4 +510,13 @@
     box-shadow: 0 6px 20px rgba(188, 18, 18, 0.04);
     max-width: 1100px;
     margin: 0 auto;
+}
+
+.sort-icon {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+}
+
+.sort-icon.rotated {
+    transform: rotate(180deg);
 }

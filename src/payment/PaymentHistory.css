@@ -183,11 +183,16 @@
   overflow: hidden;
 }
 
-.table-header {
+.table-header,
+.table-row {
   display: grid;
-  grid-template-columns: 140px 120px 1.5fr 150px 100px 110px 90px;
+  grid-template-columns: 140px 120px 1.5fr 150px 100px 110px 60px;
   gap: 1rem;
   padding: 1rem 1.5rem;
+  align-items: center;
+}
+
+.table-header {
   background: var(--secondary);
   font-size: 0.75rem;
   font-weight: 600;
@@ -197,12 +202,7 @@
 }
 
 .table-row {
-  display: grid;
-  grid-template-columns: 140px 120px 1.5fr 150px 100px 110px 90px;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
   border-top: 1px solid var(--border);
-  align-items: center;
   transition: background 0.2s ease;
 }
 
@@ -269,6 +269,8 @@
   display: flex;
   gap: 0.5rem;
   justify-content: flex-end;
+  width: 60px;
+  min-width: 60px;
 }
 
 .action-btn {
@@ -301,71 +303,6 @@
 .empty-state p {
   margin: 0;
   font-size: 0.9375rem;
-}
-
-/* Pagination */
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 1.5rem;
-}
-
-.pagination-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: var(--secondary);
-  color: var(--secondary-foreground);
-  border: none;
-  border-radius: var(--radius);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pagination-btn:hover:not(:disabled) {
-  background: var(--accent);
-}
-
-.pagination-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pagination-numbers {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.pagination-number {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--muted-foreground);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pagination-number:hover {
-  background: var(--secondary);
-  color: var(--foreground);
-}
-
-.pagination-number.active {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  border-color: var(--primary);
 }
 
 /* Responsive */
@@ -444,16 +381,6 @@
     display: none;
   }
 
-  .pagination {
-    flex-wrap: wrap;
-  }
-
-  .pagination-numbers {
-    order: -1;
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 0.5rem;
-  }
 }
 .payments-section {
     margin-top: 1.5rem;

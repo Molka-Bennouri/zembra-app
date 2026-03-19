@@ -1,11 +1,11 @@
 import { useState } from "react"
 import "./CurlRequest.css"
 
-function CurlRequest({ 
-  network = "google", 
+function CurlRequest({
+  network = "google",
   slug = "mon-entreprise-123",
   apiKey = "hYPXWQH8jYS5JU5eIiUgVpDqNBnrXOCZX4fCGTiuC5pDSaiG45LCOT20bnf1GYYifHkMgQrVi2MPZGF6awVAoawySE2oVXYjHzLuxDFVBNXPPkZpUBFiavMxgK1E7jEu",
-  onGenerate 
+  onGenerate
 }) {
   const [copied, setCopied] = useState(false)
 
@@ -25,12 +25,12 @@ function CurlRequest({
 
   function highlightCurlSyntax(line) {
     const parts = line.split(/("[^"]*")/g)
-    
+
     return parts.map((part, index) => {
       if (part.startsWith('"') && part.endsWith('"')) {
         return <span key={index} className="curl-string">{part}</span>
-    }
-    
+      }
+
       if (part.includes('-X') || part.includes('-H')) {
         const flagParts = part.split(/(-X|-H)/g)
         return flagParts.map((flagPart, flagIndex) => {
@@ -40,7 +40,7 @@ function CurlRequest({
           return flagPart
         })
       }
-      
+
       return part
     })
   }
@@ -65,17 +65,13 @@ function CurlRequest({
       </div>
       <div className="curl-footer">
         <button className="curl-button" onClick={handleCopy}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-           <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-
-          </svg>
+          <i class="fa-regular fa-copy"></i>
           {copied ? "Copied" : "Copy"}
         </button>
-        <button className="curl-button" onClick={() => {}}>
-  <i className="fa-solid fa-play" style={{marginRight: '6px'}}></i>
-  Run
-</button>
+        <button className="curl-button" onClick={() => { }}>
+          <i class="fa-solid fa-play"></i>
+          Run
+        </button>
       </div>
     </div>
   )

@@ -19,10 +19,7 @@ export default function ProfileHeader({ user, activities, activeTab, setActiveTa
             className={`tab ${activeTab === "account" ? "active" : ""}`}
           >
             <span className="tab-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
+              <i className="fa-regular fa-user" style={{ fontSize: 12 }}></i>
             </span>
             Account
           </button>
@@ -53,18 +50,12 @@ export default function ProfileHeader({ user, activities, activeTab, setActiveTa
                 <h1 className="profile-name">{user.fullName}</h1>
                 <div className="profile-meta">
                   <div className="profile-location">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
+                    <i className="fa-solid fa-location-dot" style={{ fontSize: 12 }}></i>
                     <span>{user.location}</span>
                   </div>
                   {user.emailVerified && (
                     <div className="email-verified">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                        <path d="m9 11 3 3L22 4" />
-                      </svg>
+                      <i className="fa-regular fa-circle-check" style={{ fontSize: 12 }}></i>
                       <span>Email verified</span>
                     </div>
                   )}
