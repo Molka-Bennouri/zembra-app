@@ -50,7 +50,7 @@ export default function ManagePayment() {
 
   const handleBuyPlan = (planId) => {
     setSelectedPlan(planId);
-    setModalMode("buy");  // On ouvre la modal en mode Buy
+    setModalMode("buy");
     setShowAddCard(true);
   };
 
@@ -59,6 +59,19 @@ export default function ManagePayment() {
       {/* Header */}
       <div className="payment-header">
         <h1 className="payment-title">Load Credits</h1>
+      </div>
+      {/* Current Plan Banner */}
+      <div className="current-plan-banner">
+        <div className="current-plan-info">
+          <span className="current-plan-label">Current Plan</span>
+          <span className="current-plan-name">Startup</span>
+        </div>
+        <div className="current-plan-usage">
+          <div className="usage-bar-container">
+            <div className="usage-bar" style={{ width: "65%" }} />
+          </div>
+          <span className="usage-text">6,500 / 10,000 API requests used</span>
+        </div>
       </div>
 
       {/* Plans */}

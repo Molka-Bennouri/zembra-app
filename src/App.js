@@ -10,10 +10,8 @@ import ProfilePage from "./profile/ProfilePage";
 import ManagePayment from './payment/ManagePayment';
 import PaymentHistory from './payment/PaymentHistory';
 import Invoices from './payment/Invoices';
-
-
 import ModalCard from "./payment/ModalCard";
-
+import NotificationBell from "./Notification/NotificationBell"
 function App() {
   return (
     <Router>
@@ -32,6 +30,7 @@ function App() {
           <Route path="/paymenthistory" element={<PaymentHistory />} />
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/modalcard" element={<ModalCard />} />
+          <Route path="/notification" element={<NotificationBell />} />
 
         </Route>
       </Routes>

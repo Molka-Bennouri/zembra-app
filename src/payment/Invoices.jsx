@@ -121,7 +121,7 @@ export default function Invoices() {
       <header className="invoices-header">
         <div>
           <h1 className="invoices-title">Invoices</h1>
-          <p className="invoices-subtitle">Create, send, and manage your invoices</p>
+          <p className="invoices-subtitle">Send,and manage your invoices</p>
         </div>
         <div className="header-actions">
           <div className="download-menu">
@@ -192,7 +192,7 @@ export default function Invoices() {
           </button>
         </div>
         <div className="search-box">
-          <i className="fa-solid fa-magnifying-glass" style={{fontSize:12}}></i>
+          <i className="fa-solid fa-magnifying-glass" style={{ fontSize: 12 }}></i>
           <input
             type="text"
             placeholder="Search invoices..."
