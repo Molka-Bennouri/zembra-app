@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom"
-import { useState } from "react"
-import "./Login.css"
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import "./Login.css";
 
-function Login({ onLogin, onForgotPassword, onSignUp }) {
+function Login({onForgotPassword, onSignUp }) {
+    const navigate = useNavigate()
+    const { login } = useAuth()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
@@ -10,25 +13,24 @@ function Login({ onLogin, onForgotPassword, onSignUp }) {
     const [error, setError] = useState("")
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setError("")
+    e.preventDefault()
+    setError("")
 
-        if (!email || !password) {
-            setError("Please fill in all fields")
-            return
-        }
-
-        setIsLoading(true)
-        try {
-            if (onLogin) {
-                await onLogin({ email, password })
-            }
-        } catch (err) {
-            setError("Invalid email or password")
-        } finally {
-            setIsLoading(false)
-        }
+    if (!email || !password) {
+        setError("Please fill in all fields")
+        return
     }
+
+    setIsLoading(true)
+    const result = await login({ email, password })
+    setIsLoading(false)
+
+    if (result.success) {
+        navigate("/listing")
+    } else {
+        setError(result.error || "Invalid email or password")
+    }
+}
 
     return (
         <div className="login-container">

@@ -1,6 +1,10 @@
-import { useState, useRef, useEffect } from "react"
-import "./Navbar.css"
-import { Link } from "react-router-dom"
+import { useState, useRef, useEffect } from "react";
+import "./Navbar.css";
+import { Link } from "react-router-dom";
+import NotificationPanel from "../notifications/NotificationPanel";
+
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const navItems = [
   {
@@ -47,12 +51,7 @@ function NavDropdown({ label, items }) {
         <div className="nav-dropdown-arrow" />
         {items.map((item, i) =>
           item.path ? (
-            <Link
-              key={i}
-              to={item.path}
-              className="nav-dropdown-item"
-              onClick={() => setOpen(false)}
-            >
+            <Link key={i} to={item.path} className="nav-dropdown-item" onClick={() => setOpen(false)}>
               <span className="nav-item-icon">{item.icon}</span>
               <span className="nav-item-text">
                 <span className="nav-item-label">{item.label}</span>
@@ -60,11 +59,7 @@ function NavDropdown({ label, items }) {
               </span>
             </Link>
           ) : (
-            <button
-              key={i}
-              className="nav-dropdown-item"
-              onClick={() => setOpen(false)}
-            >
+            <button key={i} className="nav-dropdown-item" onClick={() => setOpen(false)}>
               <span className="nav-item-icon">{item.icon}</span>
               <span className="nav-item-text">
                 <span className="nav-item-label">{item.label}</span>
@@ -81,6 +76,14 @@ function NavDropdown({ label, items }) {
 function UserDropdown({ userName }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
+  const navigate = useNavigate()
+  const { logout } = useAuth()
+
+  const handleLogout = () => {
+    setOpen(false)
+    logout()                            // removes token
+    navigate("/login")                  // redirects
+  }
 
   useEffect(() => {
     const handler = (e) => {
@@ -105,25 +108,62 @@ function UserDropdown({ userName }) {
 
       <div className={`user-dropdown-menu ${open ? "open" : ""}`}>
         <div className="user-dropdown-arrow" />
-
-        {/* Profile */}
         <Link to="/profile" className="user-dropdown-item" onClick={() => setOpen(false)}>
           <span className="user-menu-icon">
             <i className="fa-regular fa-user text-gray-400" style={{ fontSize: 12 }}></i>
           </span>
           <span className="user-menu-label">Profile</span>
         </Link>
-
         <div className="user-menu-divider" />
-
-        {/* Logout */}
-        <Link to='/login' className="user-dropdown-item logout" onClick={() => setOpen(false)}>
+        <button className="user-dropdown-item logout" onClick={handleLogout}>
           <span className="user-menu-icon">
             <i className="fa-solid fa-arrow-right-from-bracket" style={{ fontSize: 12 }}></i>
           </span>
           <span className="user-menu-label">Logout</span>
-        </Link>
+        </button>
       </div>
+    </div>
+  )
+}
+
+function NotificationDropdown() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [])
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      <button
+        className="notification-btn"
+        onClick={() => setOpen(v => !v)}
+      >
+        <i className="fa-regular fa-bell" style={{ fontSize: 17 }}></i>
+        <span className="notification-badge" />
+      </button>
+
+      {open && (
+        <div style={{
+          position: "absolute",
+          top: "calc(100% + 12px)",
+          right: 0,
+          zIndex: 1000,
+          width: "380px",
+          background: "white",
+          borderRadius: "12px",
+          boxShadow: "0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)",
+          border: "1px solid #e5e7eb",
+          overflow: "hidden",
+        }}>
+          <NotificationPanel />
+        </div>
+      )}
     </div>
   )
 }
@@ -132,7 +172,6 @@ export default function Navbar({ userName = "Moika" }) {
   return (
     <header className="navbar">
       <div className="navbar-content">
-        {/* Left — Logo + Nav */}
         <div className="navbar-left">
           <img src="/zembra-logo.jpg" alt="Zembra" className="navbar-logo-mark" />
           <span className="navbar-logo-text">Zembra</span>
@@ -142,15 +181,8 @@ export default function Navbar({ userName = "Moika" }) {
           ))}
         </div>
 
-        {/* Right */}
         <div className="navbar-right">
-          {/* Notification Bell */}
-          <button className="notification-btn">
-            <i className="fa-regular fa-bell" style={{ fontSize: 17 }}></i>
-            <span className="notification-badge" />
-          </button>
-
-          {/* User Dropdown */}
+          <NotificationDropdown />
           <UserDropdown userName={userName} />
         </div>
       </div>

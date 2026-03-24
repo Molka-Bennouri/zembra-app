@@ -1,21 +1,20 @@
 import { useState } from 'react';
 import '../details/QueryBuild.css';
 
+import { useNetworks } from '../../hooks/useNetworks';
+import { validateSlug } from '../../utils/validateSlug';
+import { useReviewFields } from '../../hooks/useReviewFields';
+
 function ReviewQueryBuilder() {
     const [network, setNetwork] = useState('');
     const [slug, setSlug] = useState('');
-    const [setMonitoring] = useState('');
-    const [setRequestType] = useState('');
-
-    const [setFields] = useState({});
     const [includeRaw, setIncludeRaw] = useState(false);
 
-    const handleFieldChange = (field) => {
-        setFields(prev => ({
-            ...prev,
-            [field]: !prev[field]
-        }));
-    };
+    const { networks = [] } = useNetworks();
+    const { reviewFields = [], selectedFields = {}, handleFieldChange, loading, error } = useReviewFields();
+
+    const selectedPattern = networks.find(n => n.id === parseInt(network))?.slug_pattern ?? null;
+    const validation = validateSlug(slug, selectedPattern);
 
     return (
         <div className="query-build-container">
@@ -24,54 +23,6 @@ function ReviewQueryBuilder() {
 
                     {/* LEFT COLUMN */}
                     <div className="query-left">
-
-                        {/* Monitoring Level */}
-                        <div className="section-block">
-                            <div className="card-header">
-                                <label className="parameter-label">Monitoring Level</label>
-                            </div>
-
-                            {['None', 'Basic', 'Regular', 'Full'].map(level => (
-                                <div className="checkbox-group" key={level}>
-                                    <input
-                                        type="radio"
-                                        name="monitoring"
-                                        onChange={() => setMonitoring(level)}
-                                    />
-                                    <label className="checkbox-label">{level}</label>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Request Type */}
-                        <div className="section-block">
-                            <div className="card-header">
-                                <label className="parameter-label">Request Type</label>
-                            </div>
-
-                            <div className="checkbox-group">
-                                <input
-                                    type="radio"
-                                    name="request"
-                                    onChange={() => setRequestType('create')}
-                                />
-                                <label className="checkbox-label">
-                                    Create a review job
-                                </label>
-                            </div>
-
-                            <div className="checkbox-group">
-                                <input
-                                    type="radio"
-                                    name="request"
-                                    onChange={() => setRequestType('retrieve')}
-                                />
-                                <label className="checkbox-label">
-                                    Retrieve existing job
-                                </label>
-                            </div>
-                        </div>
-
                         {/* Network */}
                         <div className="section-block">
                             <div className="card-header">
@@ -84,9 +35,11 @@ function ReviewQueryBuilder() {
                                 onChange={(e) => setNetwork(e.target.value)}
                             >
                                 <option value=""></option>
-                                <option>Community Health Network</option>
-                                <option>Kununu</option>
-                                <option>Viator</option>
+                                {networks.map((n) => (
+                                    <option key={n.id} value={n.id}>
+                                        {n.name}
+                                    </option>
+                                ))}
                             </select>
 
                             <p className="helper-text">Please select a network</p>
@@ -105,11 +58,15 @@ function ReviewQueryBuilder() {
                                 placeholder="slug-per-network"
                                 value={slug}
                                 onChange={(e) => setSlug(e.target.value)}
+                                disabled={!network}
                             />
-
-                            <p className="helper-text">
-                                Unique identifier for your listing
-                            </p>
+                            {slug ? (
+                                <p className="helper-text" style={{ color: validation.valid ? 'green' : 'red' }}>
+                                    {validation.message}
+                                </p>
+                            ) : (
+                                <p className="helper-text">Unique identifier for your listing</p>
+                            )}
                         </div>
 
                         {/* Fields */}
@@ -118,33 +75,33 @@ function ReviewQueryBuilder() {
                                 <h3 className="parameter-label">Fields</h3>
                             </div>
 
-                            <div className="fields-grid">
-                                {[
-                                    'Review ID', 'Text', 'Timestamp', 'Last Edited',
-                                    'URL', 'Rating', 'Recommendation', 'Is hidden',
-                                    'Is deleted', 'Translation', 'Author', 'Photos',
-                                    'Replies', 'Edits', 'Reply URL'
-                                ].map(field => (
-                                    <div className="checkbox-group" key={field}>
-                                        <input
-                                            type="checkbox"
-                                            onChange={() => handleFieldChange(field)}
-                                            className="checkbox-input"
-                                        />
-                                        <label className="checkbox-label">
-                                            {field}
-                                        </label>
-                                    </div>
-                                ))}
-                            </div>
+                            {loading && <p className="helper-text">Loading fields...</p>}
+                            {error && <p className="helper-text" style={{ color: 'red' }}>{error}</p>}
+
+                            {!loading && !error && (
+                                <div className="fields-grid">
+                                    {reviewFields.map(field => (
+                                        <div className="checkbox-group" key={field.id} title={field.description}>
+                                            <input
+                                                type="checkbox"
+                                                id={field.name}
+                                                checked={selectedFields[field.name] ?? false}
+                                                onChange={() => handleFieldChange(field.name)}
+                                                className="checkbox-input"
+                                            />
+                                            <label htmlFor={field.name} className="checkbox-label">
+                                                {field.label}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
                     </div>
 
                     {/* RIGHT COLUMN */}
                     <div className="query-right">
-
-
 
                         {/* Include Raw */}
                         <div className="section-block">
@@ -192,40 +149,8 @@ function ReviewQueryBuilder() {
                             <input type="date" className="parameter-input" />
                         </div>
 
-                        {/* Toggles */}
-                        <div className="section-block">
-                            <div className="card-header">
-                                <h3 className="parameter-label">Options</h3>
-                            </div>
-
-                            <div className="fields-grid">
-                                {[
-                                    'Include deleted', 'Is hidden', 'Is not hidden',
-                                    'Has photos', 'Is recommended', 'Is not recommended',
-                                    'Has replies', 'Has edits', 'Has Translation'
-                                ].map(opt => (
-                                    <div className="checkbox-group" key={opt}>
-                                        <input type="checkbox" className="checkbox-input" />
-                                        <label className="checkbox-label">{opt}</label>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
                         {/* Actions */}
                         <div className="section-block" style={{ borderBottom: 'none' }}>
-                            <div className="card-header">
-                                <h3 className="parameter-label">Auto-renew job</h3>
-                            </div>
-
-                            <div style={{ display: 'flex', gap: '10px' }}>
-                                {['No change', 'Enable', 'Disable'].map(btn => (
-                                    <button key={btn} className="execute-btn" style={{ margin: 0 }}>
-                                        {btn}
-                                    </button>
-                                ))}
-                            </div>
-
                             <button className="execute-btn">
                                 <i className="fa-solid fa-bolt fa-xs"></i>
                                 Execute Query

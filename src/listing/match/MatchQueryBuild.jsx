@@ -1,26 +1,23 @@
 import { useState } from 'react';
 import '../details/QueryBuild.css';
 
+import { useNetworks } from '../../hooks/useNetworks';
+import { useFields } from '../../hooks/useFields';
+
 function MatchQueryBuild() {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
+    const [selectedNetworks, setSelectedNetworks] = useState({});
 
-    const [setNetworks] = useState({});
-    const [setFields] = useState({});
+    const { networks = [], loading: networksLoading, error: networksError } = useNetworks();
+    const { fields = [], selectedFields = {}, handleFieldChange, loading: fieldsLoading, error: fieldsError } = useFields();
 
-    const handleNetworkChange = (network) => {
-        setNetworks(prev => ({
+    const handleNetworkChange = (networkId) => {
+        setSelectedNetworks(prev => ({
             ...prev,
-            [network]: !prev[network]
-        }));
-    };
-
-    const handleFieldChange = (field) => {
-        setFields(prev => ({
-            ...prev,
-            [field]: !prev[field]
+            [networkId]: !prev[networkId]
         }));
     };
 
@@ -98,20 +95,27 @@ function MatchQueryBuild() {
                                 <label className="parameter-label">Networks</label>
                             </div>
 
-                            {[
-                                'Community Health Network',
-                                'Kununu',
-                                'Viator'
-                            ].map(net => (
-                                <div className="checkbox-group" key={net}>
-                                    <input
-                                        type="checkbox"
-                                        className="checkbox-input"
-                                        onChange={() => handleNetworkChange(net)}
-                                    />
-                                    <label className="checkbox-label">{net}</label>
+                            {networksLoading && <p className="helper-text">Loading networks...</p>}
+                            {networksError && <p className="helper-text" style={{ color: 'red' }}>{networksError}</p>}
+
+                            {!networksLoading && !networksError && (
+                                <div className="fields-grid">
+                                    {networks.map(n => (
+                                        <div className="checkbox-group" key={n.id}>
+                                            <input
+                                                type="checkbox"
+                                                id={`network-${n.id}`}
+                                                checked={selectedNetworks[n.id] ?? false}
+                                                onChange={() => handleNetworkChange(n.id)}
+                                                className="checkbox-input"
+                                            />
+                                            <label htmlFor={`network-${n.id}`} className="checkbox-label">
+                                                {n.name}
+                                            </label>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            )}
                         </div>
 
                     </div>
@@ -125,34 +129,27 @@ function MatchQueryBuild() {
                                 <h3 className="parameter-label">Fields</h3>
                             </div>
 
-                            <div className="fields-grid">
-                                {[
-                                    'Address components',
-                                    'Formatted address',
-                                    'Page ID',
-                                    'Review page slug',
-                                    'Review page URL',
-                                    'Aliases',
-                                    'Categories',
-                                    'Business Name',
-                                    'Phone',
-                                    'Photos',
-                                    'Price range',
-                                    'Profile image',
-                                    'Business website',
-                                    'Total review count',
-                                    'Overall Rating'
-                                ].map(field => (
-                                    <div className="checkbox-group" key={field}>
-                                        <input
-                                            type="checkbox"
-                                            className="checkbox-input"
-                                            onChange={() => handleFieldChange(field)}
-                                        />
-                                        <label className="checkbox-label">{field}</label>
-                                    </div>
-                                ))}
-                            </div>
+                            {fieldsLoading && <p className="helper-text">Loading fields...</p>}
+                            {fieldsError && <p className="helper-text" style={{ color: 'red' }}>{fieldsError}</p>}
+
+                            {!fieldsLoading && !fieldsError && (
+                                <div className="fields-grid">
+                                    {fields.map(field => (
+                                        <div className="checkbox-group" key={field.id} title={field.description}>
+                                            <input
+                                                type="checkbox"
+                                                id={field.name}
+                                                checked={selectedFields[field.name] ?? false}
+                                                onChange={() => handleFieldChange(field.name)}
+                                                className="checkbox-input"
+                                            />
+                                            <label htmlFor={field.name} className="checkbox-label">
+                                                {field.label}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
 
                             {/* Execute Button */}
                             <button className="execute-btn">

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Outlet  } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import './App.css';
 import Login from './login/Login';
 import Signup from './login/Signup'
@@ -11,12 +11,13 @@ import ManagePayment from './payment/ManagePayment';
 import PaymentHistory from './payment/PaymentHistory';
 import Invoices from './payment/Invoices';
 import ModalCard from "./payment/ModalCard";
-import NotificationBell from "./Notification/NotificationBell"
+
 function App() {
   return (
     <Router>
       <Routes>
         {/* No navbar */}
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -30,8 +31,6 @@ function App() {
           <Route path="/paymenthistory" element={<PaymentHistory />} />
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/modalcard" element={<ModalCard />} />
-          <Route path="/notification" element={<NotificationBell />} />
-
         </Route>
       </Routes>
     </Router>

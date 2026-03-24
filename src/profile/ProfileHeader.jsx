@@ -49,10 +49,6 @@ export default function ProfileHeader({ user, activities, activeTab, setActiveTa
               <div className="profile-details">
                 <h1 className="profile-name">{user.fullName}</h1>
                 <div className="profile-meta">
-                  <div className="profile-location">
-                    <i className="fa-solid fa-location-dot" style={{ fontSize: 12 }}></i>
-                    <span>{user.location}</span>
-                  </div>
                   {user.emailVerified && (
                     <div className="email-verified">
                       <i className="fa-regular fa-circle-check" style={{ fontSize: 12 }}></i>

@@ -9,7 +9,6 @@ export default function ProfilePage() {
   const user = {
     initials: "MB",
     fullName: "Moika Bennouri",
-    location: "Tunisia",
     emailVerified: true,
   }
 

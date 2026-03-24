@@ -103,7 +103,7 @@ function QueryResponse({ data = null }) {
       </div>
       <div className="response-footer">
         <button className="response-copy-button" onClick={handleCopy}>
-          <i class="fa-regular fa-copy"></i>
+          <i className="fa-regular fa-copy"></i>
           {copied ? "Copied!" : "Copy Response"}
         </button>
       </div>
