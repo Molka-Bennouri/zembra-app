@@ -3,7 +3,6 @@ import './ListingPage.css';
 
 import HeroSection from '../components/HeroSection';
 import Tabs from '../components/Tabs';
-import QueryResponse from '../components/QueryResponse';
 import CurlRequest from '../components/CurlRequest';
 
 import QueryBuild from './QueryBuild';
@@ -27,7 +26,7 @@ const ListingPage = () => {
           {activeTab === 'visual' && (
             <div className="visual-layout">
               <QueryBuild />
-              <QueryResponse />
+              
             </div>
           )}
           {activeTab === 'curl' && <CurlRequest />}

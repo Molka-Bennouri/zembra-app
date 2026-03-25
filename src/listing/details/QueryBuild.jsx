@@ -1,30 +1,60 @@
-import { useState } from 'react';
-import './QueryBuild.css';
+// QueryBuild.jsx
+import { useState } from "react";
+import "./QueryBuild.css";
 
-import { useNetworks } from '../../hooks/useNetworks';
-import { useFields } from '../../hooks/useFields';
-import { validateSlug } from '../../utils/validateSlug';
+import { useNetworks } from "../../hooks/useNetworks";
+import { useFields } from "../../hooks/useFields";
+import { validateSlug } from "../../utils/validateSlug";
+import { useQuery } from "../../hooks/useQuery";
+
+import CurlRequest from "../components/CurlRequest";
+import QueryResponse from "../components/QueryResponse";
+
+const API_KEY =
+  "hYPXWQH8jYS5JU5eIiUgVpDqNBnrXOCZX4fCGTiuC5pDSaiG45LCOT20bnf1GYYifHkMgQrVi2MPZGF6awVAoawySE2oVXYjHzLuxDFVBNXPPkZpUBFiavMxgK1E7jEu";
+const API_BASE = "https://api.zembra.io/listing";
 
 function QueryBuild() {
+  // Hooks pour réseaux et champs
   const { networks = [] } = useNetworks();
-  const [network, setNetwork] = useState('');
-  const [slug, setSlug] = useState('');
+  const {
+    fields = [],
+    selectedFields = {},
+    handleFieldChange,
+    activeFields,
+    loading: fieldsLoading,
+    error: fieldsError
+  } = useFields();
 
-  const { fields = [], selectedFields = {}, handleFieldChange, activeFields, loading, error } = useFields();
+  // States pour network et slug
+  const [network, setNetwork] = useState("");
+  const [slug, setSlug] = useState("");
 
-  // Get the pattern of the selected network
-  const selectedPattern = networks.find(n => n.id === parseInt(network))?.slug_pattern ?? null;
+  // Network sélectionné
+  const selectedNetwork = networks.find((n) => String(n.id) === String(network));
+  const networkName = selectedNetwork?.name ?? "";
 
-  // Validate on every keystroke
+  // Validation du slug
+  const selectedPattern = selectedNetwork?.slug_pattern ?? null;
   const validation = validateSlug(slug, selectedPattern);
+
+  // Hook API
+  const { responseData, loading: queryLoading, executeQuery } = useQuery({
+    apiBase: API_BASE,
+    apiKey: API_KEY
+  });
 
   return (
     <div className="query-build-container">
+
+      {/* QUERY BUILDER */}
       <div className="query-card">
         <div className="query-two-col">
-          {/* LEFT COLUMN */}
+
+          {/* LEFT : Network & Slug */}
           <div className="query-left">
-            {/* Network Section */}
+
+            {/* NETWORK */}
             <div className="section-block">
               <div className="card-header">
                 <label className="parameter-label">Network</label>
@@ -36,14 +66,13 @@ function QueryBuild() {
               >
                 <option value=""></option>
                 {networks.map((n) => (
-                  <option key={n.id} value={n.id}>
-                    {n.name}
-                  </option>
+                  <option key={n.id} value={n.id}>{n.name}</option>
                 ))}
               </select>
               <p className="helper-text">Please select a network</p>
             </div>
 
+            {/* SLUG */}
             <div className="section-block">
               <div className="card-header">
                 <label className="parameter-label">Slug / Page ID</label>
@@ -58,28 +87,32 @@ function QueryBuild() {
                 disabled={!network}
               />
               {slug ? (
-                <p className="helper-text" style={{ color: validation.valid ? 'green' : 'red' }}>
+                <p
+                  className="helper-text"
+                  style={{ color: validation.valid ? "green" : "red" }}
+                >
                   {validation.message}
                 </p>
               ) : (
                 <p className="helper-text">Unique identifier for your listing</p>
               )}
             </div>
+
           </div>
 
-          {/* RIGHT COLUMN */}
+          {/* RIGHT : Response Fields */}
           <div className="query-right">
-            <div className="section-block" style={{ borderBottom: 'none' }}>
+            <div className="section-block" style={{ borderBottom: "none" }}>
               <div className="card-header">
                 <h3 className="parameter-label">Response Fields</h3>
               </div>
 
-              {loading && <p className="helper-text">Loading fields...</p>}
-              {error && <p className="helper-text" style={{ color: 'red' }}>{error}</p>}
+              {fieldsLoading && <p className="helper-text">Loading fields...</p>}
+              {fieldsError && <p className="helper-text" style={{ color: "red" }}>{fieldsError}</p>}
 
-              {!loading && !error && (
+              {!fieldsLoading && !fieldsError && (
                 <div className="fields-grid">
-                  {fields.map(field => (
+                  {fields.map((field) => (
                     <div className="checkbox-group" key={field.id} title={field.description}>
                       <input
                         type="checkbox"
@@ -88,27 +121,40 @@ function QueryBuild() {
                         onChange={() => handleFieldChange(field.name)}
                         className="checkbox-input"
                       />
-                      <label htmlFor={field.name} className="checkbox-label">
-                        {field.label}
-                      </label>
+                      <label htmlFor={field.name} className="checkbox-label">{field.label}</label>
                     </div>
                   ))}
                 </div>
               )}
 
-              <div className="section-block" style={{ borderBottom: 'none', paddingBottom: 0 }}>
+              <div className="section-block" style={{ borderBottom: "none", paddingBottom: 0 }}>
                 <button
                   className="execute-btn"
-                  onClick={() => console.log('Active fields:', activeFields)}
+                  onClick={() => executeQuery({ networkName, slug, activeFields })}
+                  disabled={!networkName || !slug || queryLoading}
                 >
                   <i className="fa-solid fa-bolt fa-xs"></i>
-                  Execute Query
+                  {queryLoading ? "Loading..." : "Execute Query"}
                 </button>
               </div>
+
             </div>
           </div>
+
         </div>
       </div>
+
+      {/* CURL PREVIEW */}
+      <CurlRequest
+        network={networkName}
+        slug={slug}
+        fields={activeFields}
+        apiKey={API_KEY}
+      />
+
+      {/* RESPONSE */}
+      <QueryResponse data={responseData} />
+      
     </div>
   );
 }

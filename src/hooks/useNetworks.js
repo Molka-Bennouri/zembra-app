@@ -12,7 +12,7 @@ export function useNetworks() {
         return res.json();
       })
       .then((data) => {
-        setNetworks(data.networks ?? []);  // ← fallback if key is missing
+        setNetworks(data.networks ?? []); 
       })
       .catch((err) => {
         setError(err.message);
