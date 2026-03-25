@@ -5,6 +5,7 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 const request = async (method, endpoint, data = null, requiresAuth = false) => {
   const headers = {
     "Content-Type": "application/json",
+    "Accept": "application/json",
     ...(requiresAuth ? getAuthHeaders() : {}),
   };
 

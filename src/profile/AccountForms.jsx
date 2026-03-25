@@ -1,6 +1,38 @@
 import './AccountForms.css';
+import { useProfile } from "../hooks/useProfile";
+import { useEffect, useState } from "react";
 
 const AccountForms = () => {
+  const { profile, loading, error } = useProfile();
+
+  const [formData, setFormData] = useState({
+    full_name: "",
+    email: "",
+    phone: ""
+  });
+
+  // Fill form when profile is loaded
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        full_name: profile.full_name || "",
+        email: profile.email || "",
+        phone: profile.phone || ""
+      });
+    }
+  }, [profile]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading profile</p>;
+
   return (
     <div className="form-container">
 
@@ -9,23 +41,25 @@ const AccountForms = () => {
 
       <div className="form-row-2">
         <div className="form-group">
-          <label>First Name</label>
-          <input type="text" defaultValue="Molka" />
-        </div>
-        <div className="form-group">
-          <label>Last Name</label>
-          <input type="text" defaultValue="Bennouri" />
+          <label>Full Name</label>
+          <input
+            type="text"
+            name="full_name"
+            value={formData.full_name}
+            onChange={handleChange}
+          />
         </div>
       </div>
 
       <div className="form-row-2">
         <div className="form-group">
           <label>Email</label>
-          <input type="email" defaultValue="molka@zembratech.com" />
-        </div>
-        <div className="form-group">
-          <label>Phone</label>
-          <input type="tel" placeholder="phone" />
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
         </div>
       </div>
 
@@ -56,6 +90,7 @@ const AccountForms = () => {
       <div className="btn-row">
         <button className="btn-primary">Save</button>
       </div>
+
       <div className="btn-row">
         <button className="btn-danger">Delete your account</button>
       </div>

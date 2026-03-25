@@ -5,6 +5,7 @@ import NotificationPanel from "../notifications/NotificationPanel";
 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useProfile } from "../hooks/useProfile";
 
 const navItems = [
   {
@@ -168,7 +169,10 @@ function NotificationDropdown() {
   )
 }
 
-export default function Navbar({ userName = "Moika" }) {
+export default function Navbar() {
+  const { profile } = useProfile()
+  const userName = profile?.full_name || "User"
+
   return (
     <header className="navbar">
       <div className="navbar-content">

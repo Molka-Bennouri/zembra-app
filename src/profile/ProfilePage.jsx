@@ -2,15 +2,11 @@ import { useState } from "react"
 import ProfileHeader from "./ProfileHeader"
 import AccountForms from "./AccountForms"
 import "./ProfilePage.css"
+import { useProfile } from "../hooks/useProfile"
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("account")
-
-  const user = {
-    initials: "MB",
-    fullName: "Moika Bennouri",
-    emailVerified: true,
-  }
+  const { profile, loading, error } = useProfile()
 
   const activities = [
     { action: "Logged in", time: "2 hours ago", location: "Tunisia" },
@@ -19,11 +15,14 @@ export default function ProfilePage() {
     { action: "Created API key", time: "1 week ago", location: "Tunisia" },
   ]
 
+  if (loading) return <div className="profile-loading">Loading profile…</div>
+  if (error) return <div className="profile-error">Failed to load profile: {error}</div>
+
   return (
     <div className="profile-page">
       <main className="profile-main">
         <ProfileHeader
-          user={user}
+          user={profile}
           activities={activities}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
