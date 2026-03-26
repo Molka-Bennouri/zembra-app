@@ -9,7 +9,7 @@ export const useQuery = ({ apiBase, apiKey }) => {
   const buildUrl = useCallback(({ networkName, slug, activeFields }) => {
     if (!networkName || !slug) return null;
 
-    let url = `${apiBase}/${networkName}?slug=${slug}`;
+    let url = `${apiBase}/${networkName}?slug=${encodeURIComponent(slug)}`;
 
     if (activeFields?.length) {
       url += `&fields=${activeFields.join(",")}`;

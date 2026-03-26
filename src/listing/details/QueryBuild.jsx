@@ -10,9 +10,7 @@ import { useQuery } from "../../hooks/useQuery";
 import CurlRequest from "../components/CurlRequest";
 import QueryResponse from "../components/QueryResponse";
 
-const API_KEY =
-  "hYPXWQH8jYS5JU5eIiUgVpDqNBnrXOCZX4fCGTiuC5pDSaiG45LCOT20bnf1GYYifHkMgQrVi2MPZGF6awVAoawySE2oVXYjHzLuxDFVBNXPPkZpUBFiavMxgK1E7jEu";
-const API_BASE = "https://api.zembra.io/listing";
+const API_BASE = "http://localhost:8000/api/listing";
 
 function QueryBuild() {
   // Hooks pour réseaux et champs
@@ -40,9 +38,8 @@ function QueryBuild() {
 
   // Hook API
   const { responseData, loading: queryLoading, executeQuery } = useQuery({
-    apiBase: API_BASE,
-    apiKey: API_KEY
-  });
+  apiBase: API_BASE,
+});
 
   return (
     <div className="query-build-container">
@@ -134,7 +131,7 @@ function QueryBuild() {
                   disabled={!networkName || !slug || queryLoading}
                 >
                   <i className="fa-solid fa-bolt fa-xs"></i>
-                  {queryLoading ? "Loading..." : "Execute Query"}
+                  {queryLoading ? "Executing..." : "Execute Query"}
                 </button>
               </div>
 
@@ -149,7 +146,6 @@ function QueryBuild() {
         network={networkName}
         slug={slug}
         fields={activeFields}
-        apiKey={API_KEY}
       />
 
       {/* RESPONSE */}

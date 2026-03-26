@@ -5,29 +5,11 @@ function QueryResponse({ data = null }) {
   const [copied, setCopied] = useState(false)
 
   const defaultData = {
-    status: "success",
-    count: 5,
-    data: [
-      {
-        name: "Listing A",
-        ratings: 4.5,
-        reviews: 1240,
-        active: true,
-        region: "North"
-      },
-      {
-        name: "Listing B",
-        ratings: 4.2,
-        reviews: 856,
-        active: true,
-        region: "South"
-      }
-    ],
-    timestamp: "2026-03-09T13:07:58.467Z",
-    execution_time: "142ms"
-  }
+  status: "waiting",
+  message: "Execute a query to see the response here."
+}
 
-  const responseData = data || defaultData
+  const responseData = data ?? defaultData
 
   const handleCopy = async () => {
     try {
