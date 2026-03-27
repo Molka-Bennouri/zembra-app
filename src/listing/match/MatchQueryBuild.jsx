@@ -87,7 +87,7 @@ function MatchQueryBuild() {
                   {networks.map(n => (
                     <div className="checkbox-group" key={n.id}>
                       <input type="checkbox" id={`network-${n.id}`} checked={selectedNetworks[n.id] ?? false} onChange={() => handleNetworkChange(n.id)} className="checkbox-input" />
-                      <label htmlFor={`network-${n.id}`} className="checkbox-label">{n.name}</label>
+                      <label htmlFor={`network-${n.id}`} className="checkbox-label">{n.label}</label>
                     </div>
                   ))}
                 </div>

@@ -1,4 +1,3 @@
-// QueryBuild.jsx
 import { useState } from "react";
 import "./QueryBuild.css";
 
@@ -6,14 +5,14 @@ import { useNetworks } from "../../hooks/useNetworks";
 import { useFields } from "../../hooks/useFields";
 import { validateSlug } from "../../utils/validateSlug";
 import { useQuery } from "../../hooks/useQuery";
+import {api} from "../../utils/api";
 
 import CurlRequest from "../components/CurlRequest";
 import QueryResponse from "../components/QueryResponse";
 
-const API_BASE = "http://localhost:8000/api/listing";
+const API_BASE = `${api.getBaseUrl()}/listing`;
 
-function QueryBuild() {
-  // Hooks pour réseaux et champs
+function QueryBuild({ onQueryExecuted }) {
   const { networks = [] } = useNetworks();
   const {
     fields = [],
@@ -24,22 +23,23 @@ function QueryBuild() {
     error: fieldsError
   } = useFields();
 
-  // States pour network et slug
   const [network, setNetwork] = useState("");
   const [slug, setSlug] = useState("");
 
-  // Network sélectionné
   const selectedNetwork = networks.find((n) => String(n.id) === String(network));
   const networkName = selectedNetwork?.name ?? "";
 
-  // Validation du slug
   const selectedPattern = selectedNetwork?.slug_pattern ?? null;
   const validation = validateSlug(slug, selectedPattern);
 
-  // Hook API
   const { responseData, loading: queryLoading, executeQuery } = useQuery({
-  apiBase: API_BASE,
-});
+    apiBase: API_BASE,
+  });
+
+  const handleExecute = async () => {
+    await executeQuery({ networkName, slug, activeFields });
+    if (onQueryExecuted) onQueryExecuted();
+  };
 
   return (
     <div className="query-build-container">
@@ -63,7 +63,7 @@ function QueryBuild() {
               >
                 <option value=""></option>
                 {networks.map((n) => (
-                  <option key={n.id} value={n.id}>{n.name}</option>
+                  <option key={n.id} value={n.id}>{n.label}</option>
                 ))}
               </select>
               <p className="helper-text">Please select a network</p>
@@ -127,7 +127,7 @@ function QueryBuild() {
               <div className="section-block" style={{ borderBottom: "none", paddingBottom: 0 }}>
                 <button
                   className="execute-btn"
-                  onClick={() => executeQuery({ networkName, slug, activeFields })}
+                  onClick={handleExecute}
                   disabled={!networkName || !slug || queryLoading}
                 >
                   <i className="fa-solid fa-bolt fa-xs"></i>
@@ -143,14 +143,14 @@ function QueryBuild() {
 
       {/* CURL PREVIEW */}
       <CurlRequest
-        network={networkName}
-        slug={slug}
-        fields={activeFields}
-      />
+  method="GET"
+  api={`https://api.zembra.io/listing/${networkName}/?slug=${encodeURIComponent(slug)}`}
+  fields={activeFields}
+/>
 
       {/* RESPONSE */}
       <QueryResponse data={responseData} />
-      
+
     </div>
   );
 }

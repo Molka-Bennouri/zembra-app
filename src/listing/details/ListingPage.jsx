@@ -6,9 +6,15 @@ import Tabs from '../components/Tabs';
 import CurlRequest from '../components/CurlRequest';
 
 import QueryBuild from './QueryBuild';
+import ScrapingHistory from '../ScrapingHistory';
 
 const ListingPage = () => {
   const [activeTab, setActiveTab] = useState('visual');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const handleQueryExecuted = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
 
   return (
     <div className="api-query-builder">
@@ -25,11 +31,12 @@ const ListingPage = () => {
         <div className="tab-content">
           {activeTab === 'visual' && (
             <div className="visual-layout">
-              <QueryBuild />
-              
+              <QueryBuild onQueryExecuted={handleQueryExecuted} />
             </div>
           )}
-          {activeTab === 'curl' && <CurlRequest />}
+          {activeTab === 'history' && (
+            <ScrapingHistory refreshTrigger={refreshTrigger} />
+          )}
         </div>
       </main>
     </div>
