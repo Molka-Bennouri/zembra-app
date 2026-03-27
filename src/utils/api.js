@@ -5,7 +5,7 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 const request = async (method, endpoint, data = null, requiresAuth = false) => {
   const headers = {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    Accept: "application/json",
     ...(requiresAuth ? getAuthHeaders() : {}),
   };
 
@@ -17,17 +17,15 @@ const request = async (method, endpoint, data = null, requiresAuth = false) => {
 
   const response = await fetch(`${BASE_URL}${endpoint}`, config);
 
-  // Handle 401 — token expired or invalid
   if (response.status === 401) {
     removeToken();
-    window.location.href = "/login"; // adjust to your router path
+    window.location.href = "/login";
     throw new Error("Unauthorized. Please log in again.");
   }
 
   const json = await response.json();
 
   if (!response.ok) {
-    // Laravel validation errors come as { errors: { field: [...] } }
     const message =
       json?.message ||
       Object.values(json?.errors || {}).flat().join(" ") ||
@@ -50,4 +48,7 @@ export const api = {
 
   delete: (endpoint, requiresAuth = true) =>
     request("DELETE", endpoint, null, requiresAuth),
+
+  // SSO helper
+  getBaseUrl: () => BASE_URL,
 };

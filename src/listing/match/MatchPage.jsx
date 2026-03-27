@@ -3,7 +3,7 @@ import './MatchPage.css';
 
 import HeroSection from '../components/HeroSection';
 import Tabs from '../components/Tabs';
-import QueryResponse from '../components/QueryResponse';
+
 import CurlRequest from '../components/CurlRequest';
 
 import MatchQueryBuild from './MatchQueryBuild';
@@ -29,7 +29,6 @@ const MatchPage = () => {
           {activeTab === 'visual' && (
             <div className="visual-layout">
               <MatchQueryBuild />
-              <QueryResponse />
             </div>
           )}
           {activeTab === 'curl' && <CurlRequest />}

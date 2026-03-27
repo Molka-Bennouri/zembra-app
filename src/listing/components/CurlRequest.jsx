@@ -56,10 +56,6 @@ function CurlRequest({ network, slug, fields, apiKey }) {
           <i className="fa-regular fa-copy"></i>
           {copied ? "Copied" : "Copy"}
         </button>
-        <button className="curl-button" onClick={() => console.log("Run curl")}>
-          <i className="fa-solid fa-play"></i>
-          Run
-        </button>
       </div>
     </div>
   );

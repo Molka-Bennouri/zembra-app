@@ -3,7 +3,7 @@ import './ReviewPage.css';
 
 import HeroSection from '../components/HeroSection';
 import Tabs from '../components/Tabs';
-import QueryResponse from '../components/QueryResponse';
+
 import CurlRequest from '../components/CurlRequest';
 
 import ReviewQueryBuilder from './ReviewQueryBuilder';
@@ -29,7 +29,6 @@ const ReviewPage = () => {
           {activeTab === 'visual' && (
             <div className="visual-layout">
               <ReviewQueryBuilder/>
-              <QueryResponse />
             </div>
           )}
 

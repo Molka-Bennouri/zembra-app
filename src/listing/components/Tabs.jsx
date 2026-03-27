@@ -13,15 +13,7 @@ export default function Tabs({ activeTab, setActiveTab }) {
           </span>
           Visual Builder
         </button>
-        <button
-          className={`tab ${activeTab === "curl" ? "active" : ""}`}
-          onClick={() => setActiveTab("curl")}
-        >
-          <span className="tab-icon">
-            <i className="fa-solid fa-code"></i>
-          </span>
-          cURL Code
-        </button>
+    
       </div>
     </section>
   )

@@ -1,6 +1,6 @@
 .curl-card {
   width: 100%;
-  max-width: 768px;
+  max-width: 1200px;
   background-color: #fff;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
@@ -15,7 +15,7 @@
 
 .curl-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: #111827;
   margin: 0;
 }
@@ -29,6 +29,9 @@
   border: 1px solid #ebeefb;
   border-radius: 8px;
   padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 16px; /* espace entre le code et le footer */
 }
 
 .curl-pre {
@@ -40,17 +43,12 @@
 
 .curl-code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  white-space: pre-wrap;
-  word-break: break-word;
-  color: #1f2937;
-}
-
-.curl-line {
-  display: block;
+  white-space: pre;
+  color: #000000;
 }
 
 .curl-string {
-  color: #131217;
+  color: #000000;
 }
 
 .curl-flag {
@@ -60,26 +58,26 @@
 .curl-footer {
   padding: 0 20px 20px;
   display: flex;
-  gap: 16px;
+  justify-content: flex-end;
+  gap: 12px; /* espace entre les boutons */
 }
 
 .curl-button {
-  flex: 1;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
+  gap: 8px; /* espace entre l'icône et le texte du bouton */
+  padding: 10px 20px;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
+  color: #fff;
+  background-color: #2E5AF4;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .curl-button:hover {
-  background-color: #f9fafb;
+  background-color: #2449d8;
 }
