@@ -13,7 +13,16 @@ export default function Tabs({ activeTab, setActiveTab }) {
           </span>
           Visual Builder
         </button>
-    
+
+        <button
+          className={`tab ${activeTab === "history" ? "active" : ""}`}
+          onClick={() => setActiveTab("history")}
+        >
+          <span className="tab-icon">
+            <i className="fa-solid fa-clock-rotate-left"></i>
+          </span>
+          Scraping History
+        </button>
       </div>
     </section>
   )

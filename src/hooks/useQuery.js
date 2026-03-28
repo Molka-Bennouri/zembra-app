@@ -1,4 +1,3 @@
-// /hooks/useQuery.js
 import { useState, useCallback } from "react";
 
 export const useQuery = ({ apiBase, apiKey }) => {

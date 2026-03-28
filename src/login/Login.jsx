@@ -97,7 +97,11 @@ function Login({ onForgotPassword, onSignUp }) {
             <div className="login-field">
               <div className="login-label-row">
                 <label className="login-label" htmlFor="password">Password</label>
-                <button type="button" className="login-forgot" onClick={onForgotPassword}>
+                <button
+                  type="button"
+                  className="login-forgot"
+                  onClick={() => navigate("/forgot-password")}
+                >
                   Forgot password?
                 </button>
               </div>

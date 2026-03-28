@@ -1,42 +1,47 @@
 import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../utils/api";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import "./AuthForms.css"; // CSS commun
 
 export default function ResetPassword() {
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
   const token = searchParams.get("token");
   const email = searchParams.get("email");
 
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setMessage("");
+    setError("");
+    setLoading(true);
 
     try {
-      const res = await api.post("/password/reset", {
+      const res = await api.post("/clients/reset-password", {
         token,
         email,
         password,
         password_confirmation: passwordConfirm,
       });
       setMessage(res.message);
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => navigate("/login"), 3000);
     } catch (err) {
       setError(err.message || "Failed to reset password");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="auth-form-container">
       <h2>Reset Password</h2>
-      {message && <p style={{ color: "green" }}>{message}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {message && <p className="success">{message}</p>}
+      {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="password"
@@ -47,12 +52,14 @@ export default function ResetPassword() {
         />
         <input
           type="password"
-          placeholder="Confirm password"
+          placeholder="Confirm new password"
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}
           required
         />
-        <button type="submit">Reset Password</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Resetting..." : "Reset Password"}
+        </button>
       </form>
     </div>
   );

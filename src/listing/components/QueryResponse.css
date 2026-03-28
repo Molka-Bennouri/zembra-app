@@ -45,24 +45,27 @@
   color: #000000; /* était #374151 */
 }
 
-.json-key {
-  color: #000000; /* était #6b7280 */
-}
+/* JSON Syntax Highlighting - Light Mode */
 
-.json-string {
-  color: #000000; /* était #6b7280 */
-}
-
-.json-number {
-  color: #000000; /* était #374151 */
+.json-null {
+  color: #6b7280;
 }
 
 .json-boolean {
-  color: #000000; /* était #374151 */
+  color: #2563eb;
 }
 
-.json-null {
-  color: #000000; /* était #374151 */
+.json-number {
+  color: #16a34a;
+}
+
+.json-string {
+  color: #dc2626;
+}
+
+.json-key {
+  color: #7c3aed;
+  font-weight: 500;
 }
 
 .response-footer {
