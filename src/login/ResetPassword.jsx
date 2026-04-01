@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../utils/api";
-import "./AuthForms.css"; // CSS commun
+import "./AuthForms.css"; 
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
