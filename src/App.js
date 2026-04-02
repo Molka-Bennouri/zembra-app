@@ -16,12 +16,13 @@ import ScrapingHistory from "./listing/ScrapingHistory";
 import SSOCallback from "./login/SSOCallback";
 import ForgotPassword from "./login/ForgotPassword";
 import ResetPassword from "./login/ResetPassword";
-
+import LandingPage from "./landingpage/LandingPage";
 function App() {
   return (
     <Router>
       <Routes>
         {/* No navbar */}
+        <Route path="/landingpage" element={<LandingPage />} />
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -29,6 +30,7 @@ function App() {
         <Route path="/auth/callback" element={<SSOCallback />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+
 
 
         {/* With navbar */}
