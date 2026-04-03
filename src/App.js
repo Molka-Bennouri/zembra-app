@@ -16,6 +16,7 @@ import SSOCallback from "./login/SSOCallback";
 import ForgotPassword from "./login/ForgotPassword";
 import ResetPassword from "./login/ResetPassword";
 import LandingPage from "./landingpage/LandingPage";
+import Dashboard from "./dashboard/Dashboard";
 function App() {
   return (
     <Router>
@@ -35,6 +36,7 @@ function App() {
 
         {/* With navbar */}
         <Route element={<><Navbar /><Outlet /></>}>
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/listing" element={<ListingPage />} />
           <Route path="/reviews" element={<ReviewPage />} />
           <Route path="/match" element={<MatchPage />} />
