@@ -1,19 +1,30 @@
 import { useState, useEffect, useCallback } from 'react';
 import ResponseViewer from './components/QueryResponse';
-import './ScrapingHistory.css';
+import './QueryHistory.css';
+import { getAuthHeaders } from "../utils/auth";
 
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "http://localhost:8000/api/clients";
 
-const ScrapingHistory = ({ refreshTrigger }) => {
+const getHeaders = () => ({
+  "Content-Type": "application/json",
+  ...getAuthHeaders(),
+});
+
+const QueryHistory = ({ refreshTrigger, type }) => {
   const [history, setHistory] = useState([]);
   const [expanded, setExpanded] = useState(new Set());
   const [loading, setLoading] = useState(true);
 
-  // Load history from Laravel API
   const loadHistory = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/history`);
+        const url = type
+        ? `${API_BASE}/query-history?type=${type}`
+        : `${API_BASE}/query-history`;
+
+      const res = await fetch(url, {  // ← fixed
+        headers: getHeaders(),
+      });
       const data = await res.json();
       setHistory(data);
     } catch (e) {
@@ -21,7 +32,7 @@ const ScrapingHistory = ({ refreshTrigger }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [type]);
 
   useEffect(() => {
     loadHistory();
@@ -39,7 +50,10 @@ const ScrapingHistory = ({ refreshTrigger }) => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API_BASE}/history/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/query-history/${id}`, {  // ← fixed
+        method: 'DELETE',
+        headers: getHeaders(),
+      });
       setHistory(history.filter(item => item.id !== id));
     } catch (e) {
       console.error('Failed to delete:', e);
@@ -49,7 +63,10 @@ const ScrapingHistory = ({ refreshTrigger }) => {
   const handleClearAll = async () => {
     if (window.confirm('Are you sure you want to clear all history? This cannot be undone.')) {
       try {
-        await fetch(`${API_BASE}/history`, { method: 'DELETE' });
+        await fetch(`${API_BASE}/query-history`, {  // ← fixed
+          method: 'DELETE',
+          headers: getHeaders(),
+        });
         setHistory([]);
       } catch (e) {
         console.error('Failed to clear history:', e);
@@ -78,8 +95,8 @@ const ScrapingHistory = ({ refreshTrigger }) => {
     return (
       <div className="history-empty">
         <div className="history-empty-content">
-          <p className="history-empty-title">No scraping history yet</p>
-          <p className="history-empty-subtitle">Execute a query to see your scraping history here</p>
+          <p className="history-empty-title">No query history yet</p>
+          <p className="history-empty-subtitle">Execute a query to see your query history here</p>
         </div>
       </div>
     );
@@ -89,7 +106,7 @@ const ScrapingHistory = ({ refreshTrigger }) => {
     <div className="history-container">
       <div className="history-header">
         <div className="history-header-info">
-          <h3 className="history-title">Scraping History</h3>
+          <h3 className="history-title">Query History</h3>
           <p className="history-count">{history.length} queries</p>
         </div>
         {history.length > 0 && (
@@ -105,7 +122,7 @@ const ScrapingHistory = ({ refreshTrigger }) => {
           const isExpanded = expanded.has(item.id);
           const network = getNetworkInfo(item.network);
           const timestamp = new Date(item.executed_at).toLocaleString();
-          const status = item.response?.status ?? 'UNKNOWN';
+          const status = item.status ?? 'UNKNOWN';
           const fields = Array.isArray(item.fields) ? item.fields : [];
 
           return (
@@ -157,6 +174,10 @@ const ScrapingHistory = ({ refreshTrigger }) => {
                         <p className="history-card-detail-label">Slug</p>
                         <p className="history-card-detail-value">{item.slug}</p>
                       </div>
+                      <div className="history-card-detail-item">
+                        <p className="history-card-detail-label">Type</p>
+                        <p className="history-card-detail-value">{item.type}</p>
+                      </div>
                       <div className="history-card-detail-item history-card-detail-full">
                         <p className="history-card-detail-label">Fields</p>
                         <div className="history-card-detail-tags">
@@ -187,4 +208,4 @@ const ScrapingHistory = ({ refreshTrigger }) => {
   );
 };
 
-export default ScrapingHistory;
+export default QueryHistory;

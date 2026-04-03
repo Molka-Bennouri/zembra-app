@@ -11,7 +11,7 @@ import ManagePayment from './payment/ManagePayment';
 import PaymentHistory from './payment/PaymentHistory';
 import Invoices from './payment/Invoices';
 import ModalCard from "./payment/ModalCard";
-import ScrapingHistory from "./listing/ScrapingHistory";
+import QueryHistory from './listing/QueryHistory';
 
 import SSOCallback from "./login/SSOCallback";
 import ForgotPassword from "./login/ForgotPassword";
@@ -22,8 +22,7 @@ function App() {
     <Router>
       <Routes>
         {/* No navbar */}
-        <Route path="/landingpage" element={<LandingPage />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         
@@ -43,7 +42,7 @@ function App() {
           <Route path="/paymenthistory" element={<PaymentHistory />} />
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/modalcard" element={<ModalCard />} />
-          <Route path="/scrapinghistory" element={<ScrapingHistory />} />
+          <Route path="/scrapinghistory" element={<QueryHistory />} />
         </Route>
       </Routes>
     </Router>
