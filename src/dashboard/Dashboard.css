@@ -1,0 +1,287 @@
+/* LAYOUT */
+.db-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  background: #f4f6fb;
+}
+
+/* MAIN */
+.db-main {
+  padding: 40px;
+  max-width: 1400px;
+  margin: auto;
+  width: 100%;
+  overflow: auto;
+}
+
+/* TOPBAR */
+.db-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.db-topbar-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.db-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.db-badge-blue {
+  background: #e8edff;
+  color: #2E5AF4;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.db-badge-green {
+  background: #e6fffa;
+  color: #1FFFD0;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* METRICS */
+.db-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 1.5rem;
+}
+
+.db-metric {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.db-metric:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+}
+
+.db-metric-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.db-metric-value {
+  font-size: 26px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.db-metric-sub {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.db-metric-sub.up {
+  color: #3B6D11;
+}
+
+.db-metric-sub.down {
+  color: #A32D2D;
+}
+
+/* GRID 2 */
+.db-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 1.5rem;
+}
+
+/* CARD */
+.db-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+}
+
+.db-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+/* BARS */
+.db-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.db-bar-label {
+  font-size: 12px;
+  color: #6b7280;
+  width: 55px;
+  flex-shrink: 0;
+}
+
+.db-bar-track {
+  flex: 1;
+  background: #f3f4f6;
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.db-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+.db-bar-count {
+  font-size: 12px;
+  color: #9ca3af;
+  width: 30px;
+  text-align: right;
+}
+
+/* PLATFORMS */
+.db-platform-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 13px;
+  gap: 8px;
+}
+
+.db-platform-row:last-child {
+  border-bottom: none;
+}
+
+.db-platform-name {
+  color: #111827;
+  flex: 1;
+}
+
+.db-platform-count {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.db-platform-status {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.db-platform-status.s-active {
+  background: #e6fffa;
+  color: #1FFFD0;
+}
+
+.db-platform-status.s-idle {
+  background: #f1efe8;
+  color: #5F5E5A;
+}
+
+/* REVIEWS */
+.db-review-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.db-review-row:last-child {
+  border-bottom: none;
+}
+
+.db-review-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e8edff;
+  color: #2E5AF4;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.db-review-body {
+  flex: 1;
+}
+
+.db-review-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.db-review-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.db-review-platform {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.db-stars {
+  color: #BA7517;
+  font-size: 12px;
+}
+
+.db-review-text {
+  font-size: 12.5px;
+  color: #6b7280;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.db-sentiment {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-left: auto;
+  font-weight: 500;
+}
+
+.db-sentiment.positive {
+  background: #e6fffa;
+  color: #0f766e;
+}
+
+.db-sentiment.negative {
+  background: #FCEBEB;
+  color: #791F1F;
+}
+
+.db-sentiment.neutral {
+  background: #F1EFE8;
+  color: #444441;
+}

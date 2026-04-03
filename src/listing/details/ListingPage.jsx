@@ -3,10 +3,9 @@ import './ListingPage.css';
 
 import HeroSection from '../components/HeroSection';
 import Tabs from '../components/Tabs';
-import CurlRequest from '../components/CurlRequest';
 
 import QueryBuild from './QueryBuild';
-import ScrapingHistory from '../ScrapingHistory';
+import QueryHistory from '../QueryHistory';
 
 const ListingPage = () => {
   const [activeTab, setActiveTab] = useState('visual');
@@ -35,8 +34,8 @@ const ListingPage = () => {
             </div>
           )}
           {activeTab === 'history' && (
-            <ScrapingHistory refreshTrigger={refreshTrigger} />
-          )}
+  <QueryHistory refreshTrigger={refreshTrigger} type="listing" />
+)}
         </div>
       </main>
     </div>

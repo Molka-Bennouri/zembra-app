@@ -21,7 +21,7 @@ export default function Tabs({ activeTab, setActiveTab }) {
           <span className="tab-icon">
             <i className="fa-solid fa-clock-rotate-left"></i>
           </span>
-          Scraping History
+          Query History
         </button>
       </div>
     </section>

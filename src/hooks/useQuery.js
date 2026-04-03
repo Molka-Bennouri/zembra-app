@@ -1,19 +1,17 @@
 import { useState, useCallback } from "react";
+import { getAuthHeaders } from "../utils/auth";
 
-export const useQuery = ({ apiBase, apiKey }) => {
+export const useQuery = ({ apiBase }) => {
   const [responseData, setResponseData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const buildUrl = useCallback(({ networkName, slug, activeFields }) => {
     if (!networkName || !slug) return null;
-
     let url = `${apiBase}/${networkName}?slug=${encodeURIComponent(slug)}`;
-
     if (activeFields?.length) {
       url += `&fields=${activeFields.join(",")}`;
     }
-
     return url;
   }, [apiBase]);
 
@@ -29,23 +27,20 @@ export const useQuery = ({ apiBase, apiKey }) => {
         const res = await fetch(url, {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${apiKey}`,
+            ...getAuthHeaders(),
           },
         });
 
         const json = await res.json();
         setResponseData(json);
       } catch (err) {
-        setResponseData({
-          error: true,
-          message: err.message,
-        });
+        setResponseData({ error: true, message: err.message });
         setError(err.message);
       } finally {
         setLoading(false);
       }
     },
-    [apiKey, buildUrl]
+    [buildUrl]
   );
 
   return { responseData, loading, error, executeQuery };
