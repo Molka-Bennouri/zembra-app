@@ -2,10 +2,9 @@ import { useState } from "react";
 import { generateCurlCode } from "../../utils/curlUtils"; 
 import "./CurlRequest.css";
 
-function CurlRequest({ method, api, fields, apiKey }) {
+function CurlRequest({ method, api, fields, apiKey, sortBy, sortDirection, postedBefore, postedAfter, includeRaw }) {
+  const code = generateCurlCode({ method, api, fields, apiKey, sortBy, sortDirection, postedBefore, postedAfter, includeRaw });
   const [copied, setCopied] = useState(false);
-
-  const code = generateCurlCode({ method, api, fields, apiKey });
 
   const handleCopy = async () => {
     try {

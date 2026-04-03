@@ -37,7 +37,7 @@ const AccountForms = () => {
     <div className="form-container">
 
       {/* ── Section 1: Personal Info ── */}
-      <h2>Account &amp; Personal Info</h2>
+      <h2>Personal Information</h2>
 
       <div className="form-row-2">
         <div className="form-group">
@@ -70,7 +70,7 @@ const AccountForms = () => {
       <hr className="section-divider" />
 
       {/* ── Section 2: Change Password ── */}
-      <h2>Change Password</h2>
+      <h2>Security</h2>
 
       <div className="form-row-3">
         <div className="form-group">

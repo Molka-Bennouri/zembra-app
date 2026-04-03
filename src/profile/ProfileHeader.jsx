@@ -1,84 +1,36 @@
 import "./ProfileHeader.css"
 
-export default function ProfileHeader({ user, activities, activeTab, setActiveTab, AccountForms }) {
+export default function ProfileHeader({ user, AccountForms }) {
   return (
     <>
       {/* Hero Section */}
       <section className="hero-section">
         <h1 className="hero-title">Manage Your Profile</h1>
         <p className="hero-description">
-          Update your personal information, manage your account settings, and view your recent activity.
+          Update your personal information and manage your account settings.
         </p>
       </section>
 
-      {/* Tabs */}
-      <section className="tabs-section">
-        <div className="tabs-container">
-          <button
-            onClick={() => setActiveTab("account")}
-            className={`tab ${activeTab === "account" ? "active" : ""}`}
-          >
-            <span className="tab-icon">
-              <i className="fa-regular fa-user" style={{ fontSize: 12 }}></i>
-            </span>
-            Account
-          </button>
-          <button
-            onClick={() => setActiveTab("activity")}
-            className={`tab ${activeTab === "activity" ? "active" : ""}`}
-          >
-            <span className="tab-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-              </svg>
-            </span>
-            Account Activity
-          </button>
+      {/* Profile Card */}
+      <div className="profile-card">
+        <div className="profile-avatar-container">
+          <div className="profile-avatar">{user.initials}</div>
         </div>
-      </section>
-
-      {/* Tab Content */}
-      <div className="tab-content">
-        {activeTab === "account" ? (
-          <div className="account-tab-content">
-            {/* Profile Card */}
-            <div className="profile-card">
-              <div className="profile-avatar-container">
-                <div className="profile-avatar">{user.initials}</div>
+        <div className="profile-details">
+          <h1 className="profile-name">{user.fullName}</h1>
+          <div className="profile-meta">
+            {user.emailVerified && (
+              <div className="email-verified">
+                <i className="fa-regular fa-circle-check" style={{ fontSize: 12 }}></i>
+                <span>Email verified</span>
               </div>
-              <div className="profile-details">
-                <h1 className="profile-name">{user.fullName}</h1>
-                <div className="profile-meta">
-                  {user.emailVerified && (
-                    <div className="email-verified">
-                      <i className="fa-regular fa-circle-check" style={{ fontSize: 12 }}></i>
-                      <span>Email verified</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Forms */}
-            <AccountForms />
+            )}
           </div>
-        ) : (
-          <div className="profile-card activity-card">
-            <h2 className="hero-title activity-title">Recent Activity</h2>
-            <div className="activity-list">
-              {activities.map((activity, index) => (
-                <div key={index} className="activity-item">
-                  <div className="activity-info">
-                    <p className="activity-action">{activity.action}</p>
-                    <p className="activity-location">{activity.location}</p>
-                  </div>
-                  <span className="activity-time">{activity.time}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        </div>
       </div>
+
+      {/* Forms */}
+      <AccountForms />
     </>
   )
 }
