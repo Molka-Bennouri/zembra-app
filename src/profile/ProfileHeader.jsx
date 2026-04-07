@@ -7,7 +7,7 @@ export default function ProfileHeader({ user, AccountForms }) {
       <section className="hero-section">
         <h1 className="hero-title">Manage Your Profile</h1>
         <p className="hero-description">
-          Update your personal information and manage your account settings.
+          Update your personal information and manage your account.
         </p>
       </section>
 

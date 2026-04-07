@@ -1,9 +1,11 @@
 import './AccountForms.css';
 import { useProfile } from "../hooks/useProfile";
+import { useDeleteAccount } from "../hooks/useDeleteAccount";
 import { useEffect, useState } from "react";
 
 const AccountForms = () => {
   const { profile, loading, error } = useProfile();
+  const { deleteAccount, loading: deleting, error: deleteError } = useDeleteAccount();
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -11,7 +13,10 @@ const AccountForms = () => {
     phone: ""
   });
 
-  // Fill form when profile is loaded
+  // Delete account modal state
+  const [showModal, setShowModal] = useState(false);
+  const [password, setPassword] = useState("");
+
   useEffect(() => {
     if (profile) {
       setFormData({
@@ -24,22 +29,25 @@ const AccountForms = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!password) return;
+    await deleteAccount(password);
   };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading profile</p>;
 
   return (
-    <div className="form-container">
+  <div className="form-container">
+    <div className="two-col-layout">
 
-      {/* ── Section 1: Personal Info ── */}
-      <h2>Personal Information</h2>
+      {/* ── Column 1: Personal Info ── */}
+      <div className="settings-card">
+        <h2>Personal Information</h2>
 
-      <div className="form-row-2">
         <div className="form-group">
           <label>Full Name</label>
           <input
@@ -49,9 +57,7 @@ const AccountForms = () => {
             onChange={handleChange}
           />
         </div>
-      </div>
 
-      <div className="form-row-2">
         <div className="form-group">
           <label>Email</label>
           <input
@@ -61,18 +67,16 @@ const AccountForms = () => {
             onChange={handleChange}
           />
         </div>
+
+        <div className="btn-row">
+          <button className="btn-primary">Save</button>
+        </div>
       </div>
 
-      <div className="btn-row">
-        <button className="btn-primary">Save</button>
-      </div>
+      {/* ── Column 2: Security ── */}
+      <div className="settings-card">
+        <h2>Security</h2>
 
-      <hr className="section-divider" />
-
-      {/* ── Section 2: Change Password ── */}
-      <h2>Security</h2>
-
-      <div className="form-row-3">
         <div className="form-group">
           <label>Current Password</label>
           <input type="password" placeholder="current password" />
@@ -85,18 +89,57 @@ const AccountForms = () => {
           <label>Confirm Password</label>
           <input type="password" placeholder="re-enter password" />
         </div>
-      </div>
 
-      <div className="btn-row">
-        <button className="btn-primary">Save</button>
-      </div>
+        <div className="btn-row">
+          <button className="btn-primary">Save</button>
+        </div>
 
-      <div className="btn-row">
-        <button className="btn-danger">Delete your account</button>
+        <div className="danger-zone">
+          <button className="btn-danger" onClick={() => setShowModal(true)}>
+            Delete your account
+          </button>
+        </div>
       </div>
 
     </div>
-  );
+
+    {/* ── Delete Account Modal (unchanged) ── */}
+    {showModal && (
+      <div className="modal-overlay">
+        <div className="modal">
+          <h3>Delete Account</h3>
+          <p>This action is <strong>irreversible</strong>. Enter your password to confirm.</p>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            />
+          </div>
+          {deleteError && <p className="error-text">{deleteError}</p>}
+          <div className="modal-actions">
+            <button
+              className="btn-secondary"
+              onClick={() => { setShowModal(false); setPassword(""); }}
+              disabled={deleting}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn-danger"
+              onClick={handleDeleteConfirm}
+              disabled={deleting || !password}
+            >
+              {deleting ? "Deleting..." : "Yes, delete my account"}
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default AccountForms;
