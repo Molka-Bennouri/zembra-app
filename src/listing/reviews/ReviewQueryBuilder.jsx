@@ -4,7 +4,7 @@ import "../details/QueryBuild.css";
 import { useNetworks } from "../../hooks/useNetworks";
 import { useReviewFields } from "../../hooks/useReviewFields";
 import { useReviewQuery } from "../../hooks/useReviewQuery";
-import {api} from "../../utils/api";
+import { api } from "../../utils/api";
 import CurlRequest from "../components/CurlRequest";
 import QueryResponse from "../components/QueryResponse";
 
@@ -14,6 +14,11 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
   const [network, setNetwork] = useState("");
   const [slug, setSlug] = useState("");
   const [includeRaw, setIncludeRaw] = useState(false);
+
+  const [sortBy, setSortBy] = useState("");
+  const [sortDirection, setSortDirection] = useState("");
+  const [postedBefore, setPostedBefore] = useState("");
+  const [postedAfter, setPostedAfter] = useState("");
 
   const { networks = [] } = useNetworks();
   const {
@@ -31,7 +36,16 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
   const { responseData, loading: queryLoading, status, executeQuery } = useReviewQuery({ apiBase: API_BASE });
 
   const handleExecute = async () => {
-    await executeQuery({ network: networkName, slug, selectedFields });
+    await executeQuery({
+      network: networkName,
+      slug,
+      selectedFields,
+      includeRaw,
+      sortBy,
+      sortDirection,
+      postedBefore: postedBefore ? Math.floor(new Date(postedBefore).getTime() / 1000) : null,
+      postedAfter: postedAfter ? Math.floor(new Date(postedAfter).getTime() / 1000) : null,
+    });
     if (onQueryExecuted) onQueryExecuted();
   };
 
@@ -126,11 +140,27 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
               <div className="card-header">
                 <h3 className="parameter-label">Review Filters</h3>
               </div>
-              <select className="dropdown-select">
-                <option>Sorting attribute</option>
+
+              <label>Sorting attribute</label>
+              <select
+                className="dropdown-select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value=""></option>
+                <option value="timestamp">Publish time</option>
+                <option value="rating">Rating</option>
               </select>
-              <select className="dropdown-select">
-                <option>Sorting direction</option>
+
+              <label>Sorting direction</label>
+              <select
+                className="dropdown-select"
+                value={sortDirection}
+                onChange={(e) => setSortDirection(e.target.value)}
+              >
+                <option value=""></option>
+                <option value="ASC">Ascending</option>
+                <option value="DESC">Descending</option>
               </select>
               <input className="parameter-input" placeholder="Limit" />
               <input className="parameter-input" placeholder="Offset" />
@@ -140,8 +170,24 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
               <select className="dropdown-select">
                 <option>Max rating</option>
               </select>
-              <input type="date" className="parameter-input" />
-              <input type="date" className="parameter-input" />
+
+              <label>Posted before</label>
+              <input
+                id="postedBefore"
+                type="date"
+                className="parameter-input"
+                value={postedBefore}
+                onChange={(e) => setPostedBefore(e.target.value)}
+              />
+
+              <label>Posted after</label>
+              <input
+                id="postedAfter"
+                type="date"
+                className="parameter-input"
+                value={postedAfter}
+                onChange={(e) => setPostedAfter(e.target.value)}
+              />
             </div>
 
             {/* Status indicator */}
@@ -179,10 +225,15 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
 
       {/* CURL Request */}
       <CurlRequest
-  method="POST"
-  api={`https://api.zembra.io/reviews/${networkName}?slug=${encodeURIComponent(slug)}`}
-  fields={[...activeFields, includeRaw ? "include_raw=true" : null].filter(Boolean)}
-/>
+        method="POST"
+        api={`https://api.zembra.io/reviews/?network=${encodeURIComponent(networkName)}&slug=${encodeURIComponent(slug)}&monitoring=none`}
+        fields={activeFields}
+        includeRaw={includeRaw}
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        postedBefore={postedBefore}
+        postedAfter={postedAfter}
+      />
 
       {/* Query Response */}
       <QueryResponse data={responseData} />

@@ -122,7 +122,7 @@ const QueryHistory = ({ refreshTrigger, type }) => {
           const isExpanded = expanded.has(item.id);
           const network = getNetworkInfo(item.network);
           const timestamp = new Date(item.executed_at).toLocaleString();
-          const status = item.status ?? 'UNKNOWN';
+          const status = (item.status ?? 'UNKNOWN').toUpperCase();
           const fields = Array.isArray(item.fields) ? item.fields : [];
 
           return (

@@ -16,12 +16,19 @@ export const useReviewQuery = ({ apiBase }) => {
   };
 
   const executeQuery = useCallback(
-    async ({ network, slug, selectedFields }) => {
-      if (!network || !slug) return;
+    async ({ network, slug, selectedFields, includeRaw, sortBy, sortDirection, postedBefore, postedAfter }) => {
 
-      const params = `?network=${encodeURIComponent(network.toLowerCase())}&slug=${encodeURIComponent(slug)}`;
-      const fields = Object.keys(selectedFields).filter((k) => selectedFields[k]);
-      const fieldsParam = fields.length ? '&' + fields.map(f => `fields[]=${encodeURIComponent(f)}`).join('&') : '';
+  const params      = `?network=${encodeURIComponent(network.toLowerCase())}&slug=${encodeURIComponent(slug)}`;
+  const fields      = Object.keys(selectedFields).filter((k) => selectedFields[k]);
+  const fieldsParam = fields.length ? '&' + fields.map(f => `fields[]=${encodeURIComponent(f)}`).join('&') : '';
+  const rawParam    = includeRaw ? '&includeRawData=true' : '';
+  // after rawParam:
+  const sortParam   = sortBy        ? `&sortBy=${sortBy}`                   : '';
+  const dirParam    = sortDirection ? `&sortDirection=${sortDirection}`      : '';
+  const beforeParam = postedBefore  ? `&postedBefore=${postedBefore}`       : '';
+  const afterParam  = postedAfter   ? `&postedAfter=${postedAfter}`         : '';
+
+  const url = `${apiBase}/reviews${params}${fieldsParam}${rawParam}${sortParam}${dirParam}${beforeParam}${afterParam}`;
 
       setLoading(true);
       setError(null);
@@ -31,22 +38,21 @@ export const useReviewQuery = ({ apiBase }) => {
 
       try {
         // Step 1 — POST to create the job
-        const postRes = await fetch(`${apiBase}/reviews${params}${fieldsParam}`, {
+        const postRes = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            ...getAuthHeaders(), // ← auth token
+            ...getAuthHeaders(),
           },
         });
 
-        // Stop immediately if POST fails (402 balance, 401 unauth, etc.)
         if (!postRes.ok) {
-          const errData = await postRes.json();
+          const errData = await postRes.json().catch(() => ({}));
           setStatus('error');
           setResponseData(errData);
           setError(errData?.message ?? 'Request failed');
           setLoading(false);
-          return; // ← don't start polling
+          return;
         }
 
         // Step 2 — Poll GET until completed
@@ -56,11 +62,10 @@ export const useReviewQuery = ({ apiBase }) => {
           attempts++;
 
           try {
-            const res = await fetch(`${apiBase}/reviews${params}`, {
+            const res = await fetch(url, {
               headers: { ...getAuthHeaders() },
             });
 
-            // Stop polling on any HTTP error
             if (!res.ok) {
               const errData = await res.json().catch(() => ({}));
               setStatus('error');

@@ -46,8 +46,8 @@ export const api = {
   put: (endpoint, data, requiresAuth = true) =>
     request("PUT", endpoint, data, requiresAuth),
 
-  delete: (endpoint, requiresAuth = true) =>
-    request("DELETE", endpoint, null, requiresAuth),
+  delete: (endpoint, data = null, requiresAuth = true) =>
+    request("DELETE", endpoint, data, requiresAuth),
 
   // SSO helper
   getBaseUrl: () => BASE_URL,
