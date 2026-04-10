@@ -78,12 +78,12 @@ export const useReviewQuery = ({ apiBase }) => {
 
             const data = await res.json();
 
-            if (data?.status === 'SUCCESS' || data?.data) {
-              setResponseData(data);
-              setStatus('completed');
-              setLoading(false);
-              stopPolling();
-            } else if (attempts >= MAX_ATTEMPTS) {
+            if (data?.zembra || data?.status === 'SUCCESS' || data?.data) {
+  setResponseData(data);
+  setStatus('completed');
+  setLoading(false);
+  stopPolling();
+} else if (attempts >= MAX_ATTEMPTS) {
               setStatus('error');
               setError('Timed out waiting for results.');
               setResponseData({ error: true, message: 'Timed out waiting for results.' });

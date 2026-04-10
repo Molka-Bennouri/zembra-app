@@ -1,0 +1,139 @@
+/* AiSummary.css */
+.ai-summary {
+  margin-top: 16px;
+}
+
+/* Button */
+.ai-summary__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background-color: #6c47ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.ai-summary__btn:hover:not(:disabled) {
+  background-color: #5835e0;
+}
+
+.ai-summary__btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.ai-summary__spinner-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ai-summary__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error */
+.ai-summary__error {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+/* Results */
+.ai-summary__results {
+  margin-top: 20px;
+}
+
+.ai-summary__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e1e2e;
+  margin-bottom: 14px;
+}
+
+/* Cards */
+.ai-summary__cards {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ai-summary__card {
+  flex: 1;
+  min-width: 220px;
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+
+.ai-summary__card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ai-summary__card-header h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.ai-summary__icon {
+  font-size: 16px;
+}
+
+.ai-summary__card p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #444;
+  margin: 0;
+}
+
+/* Card variants */
+.ai-summary__card--positive {
+  background-color: #f0fdf4;
+  border-color: #86efac;
+}
+
+.ai-summary__card--positive .ai-summary__card-header h4 {
+  color: #15803d;
+}
+
+.ai-summary__card--neutral {
+  background-color: #fefce8;
+  border-color: #fde047;
+}
+
+.ai-summary__card--neutral .ai-summary__card-header h4 {
+  color: #a16207;
+}
+
+.ai-summary__card--negative {
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.ai-summary__card--negative .ai-summary__card-header h4 {
+  color: #b91c1c;
+}
