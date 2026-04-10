@@ -7,6 +7,7 @@ import { useReviewQuery } from "../../hooks/useReviewQuery";
 import { api } from "../../utils/api";
 import CurlRequest from "../components/CurlRequest";
 import QueryResponse from "../components/QueryResponse";
+import AiSummary from "./ai/AiSummary";
 
 const API_BASE = `${api.getBaseUrl()}`;
 
@@ -48,6 +49,8 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
     });
     if (onQueryExecuted) onQueryExecuted();
   };
+
+  const reviewTexts = responseData?.reviews ?? [];
 
   return (
     <div className="query-build-container">
@@ -236,7 +239,12 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
       />
 
       {/* Query Response */}
-      <QueryResponse data={responseData} />
+      <QueryResponse data={responseData?.zembra ?? responseData} />
+
+      {/* AI Summary */}
+{reviewTexts.length > 0 && (
+  <AiSummary reviews={reviewTexts} />
+)}
     </div>
   );
 }

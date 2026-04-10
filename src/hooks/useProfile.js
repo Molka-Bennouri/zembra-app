@@ -8,8 +8,8 @@ export const useProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-        console.log("Token:", localStorage.getItem("jwt_token"))
-  console.log("Fetching:", `http://127.0.0.1:8000/api/clients/me`)
+      console.log("Token:", localStorage.getItem("jwt_token"))
+      console.log("Fetching:", `http://127.0.0.1:8000/api/clients/me`)
       try {
         const data = await api.get("/clients/me")
 
@@ -35,5 +35,46 @@ export const useProfile = () => {
     fetchProfile()
   }, [])
 
-  return { profile, loading, error }
+  const updateProfile = async (fullName, email) => {
+    try {
+      const data = await api.put("/clients/profile", {
+        full_name: fullName,
+        email: email,
+      })
+
+      // Recompute initials after update
+      const nameParts = data.client.full_name?.trim().split(" ")
+      const initials =
+        nameParts.length >= 2
+          ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase()
+          : data.client.full_name?.slice(0, 2).toUpperCase() ?? "??"
+
+      setProfile((prev) => ({
+        ...prev,
+        full_name: data.client.full_name,
+        email: data.client.email,
+        initials,
+      }))
+
+      return { success: true, message: data.message }
+    } catch (err) {
+      return { success: false, message: err.message }
+    }
+  }
+
+  const updatePassword = async (currentPassword, newPassword, confirmPassword) => {
+    try {
+      const data = await api.put("/clients/password", {
+        current_password: currentPassword,
+        new_password: newPassword,
+        new_password_confirmation: confirmPassword,
+      })
+
+      return { success: true, message: data.message }
+    } catch (err) {
+      return { success: false, message: err.message }
+    }
+  }
+
+  return { profile, loading, error, updateProfile, updatePassword }
 }
