@@ -1,116 +1,225 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Dashboard.css";
+import useDashboard from "../hooks/useDashboard";
 
-const METRICS = [
-  { label: "Total reviews", value: "48,320", sub: "+12% this week", up: true },
-  { label: "Credits used", value: "6,841", sub: "of 10,000 free", up: null },
-  { label: "Platforms scraped", value: "18", sub: "+3 this month", up: true },
-];
+function CountUp({ target, duration = 1200 }) {
+  const [val, setVal] = useState(0);
+  const prev = useRef(0);
 
-const RATINGS = [
-  { stars: "5 stars", pct: 72, color: "#639922" },
-  { stars: "4 stars", pct: 15, color: "#378ADD" },
-  { stars: "3 stars", pct: 7,  color: "#BA7517" },
-  { stars: "2 stars", pct: 4,  color: "#D85A30" },
-  { stars: "1 star",  pct: 2,  color: "#E24B4A" },
-];
+  useEffect(() => {
+    const from = prev.current;
+    prev.current = target;
+    let start = null;
 
-const PLATFORMS = [
-  { name: "Airbnb",   count: "12,400 reviews", status: "active" },
-  { name: "Viator",   count: "8,920 reviews",  status: "active" },
-  { name: "Kununu",   count: "5,310 reviews",  status: "active" },
-  { name: "Justia",   count: "3,100 reviews",  status: "idle"   },
-  { name: "Lawtally", count: "1,870 reviews",  status: "idle"   },
-];
+    const step = (ts) => {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      setVal(Math.floor(from + p * (target - from)));
+      if (p < 1) requestAnimationFrame(step);
+    };
 
-const REVIEWS = [
-  { initials: "JM", name: "Jean Martin", platform: "Airbnb",  stars: 5, sentiment: "positive", text: "Excellent séjour, hôte très réactif et appartement conforme aux photos." },
-  { initials: "SL", name: "Sara Lopez",  platform: "Viator",  stars: 3, sentiment: "neutral",  text: "Tour correct mais guide peu disponible pour les questions du groupe." },
-  { initials: "AK", name: "Ali Karimi",  platform: "Kununu",  stars: 2, sentiment: "negative", text: "Management peu transparent, promesses non tenues lors de l'onboarding." },
-];
+    requestAnimationFrame(step);
+  }, [target, duration]);
 
-function Stars({ count }) {
-  return (
-    <span className="db-stars">
-      {"★".repeat(count)}{"☆".repeat(5 - count)}
-    </span>
-  );
+  return <span>{val.toLocaleString()}</span>;
 }
 
 export default function Dashboard() {
-  const [active] = useState("main");
+  const {
+    stats,
+    requests,
+    loading,
+    error,
+    lastUpdate,
+    refreshing,
+    refresh,
+  } = useDashboard();
+
+  const [activeTab, setActiveTab] = useState("all");
+
+  const networks = stats.networks || {
+    active: 0,
+    total: 0,
+    list: [],
+  };
+
+  // ✅ fallback AI (IMPORTANT FRONT ONLY)
+  const ai = stats.ai_insight || {
+    recommendation: "Waiting for backend AI analysis...",
+    generated_at: "-",
+  };
+
+  const hasRealAI = !!stats.ai_insight;
+
+  const filtered =
+    activeTab === "all"
+      ? requests
+      : requests.filter((r) => r.status === activeTab);
+
+  const lastUpdateLabel = lastUpdate
+    ? lastUpdate.toLocaleTimeString()
+    : "—";
 
   return (
-    <div className="db-layout">
-
-      <main className="db-main full">
-        <div className="db-topbar">
-          <span className="db-topbar-title">Overview</span>
-          <div className="db-topbar-right">
-            <span className="db-badge-blue">125+ platforms</span>
-            <span className="db-badge-green">API active</span>
+    <div className="sd-root">
+      <div className="sd-layout">
+        {/* ── HEADER ── */}
+        <header className="sd-page-header">
+          <div>
+            <h1 className="sd-page-title">Dashboard</h1>
+            <p className="sd-page-sub">
+              Overview of your scraping activity
+            </p>
           </div>
-        </div>
 
-        <div className="db-metrics">
-          {METRICS.map(m => (
-            <div className="db-metric" key={m.label}>
-              <div className="db-metric-label">{m.label}</div>
-              <div className="db-metric-value">{m.value}</div>
-              <div className={`db-metric-sub ${m.up === true ? "up" : m.up === false ? "down" : ""}`}>
-                {m.sub}
-              </div>
+          <div className="sd-header-actions">
+            {lastUpdate && (
+              <span className="sd-last-update">
+                Updated at {lastUpdateLabel}
+              </span>
+            )}
+
+            <button
+              className={`sd-refresh-btn ${refreshing ? "sd-refresh-btn--spinning" : ""
+                }`}
+              onClick={() => refresh(true)}
+              disabled={refreshing}
+            >
+              Refresh
+            </button>
+          </div>
+        </header>
+
+        {/* ── ERROR ── */}
+        {error && (
+          <div className="sd-error-banner">
+            Failed to load data — {error}
+            <button onClick={() => refresh(true)}>Retry</button>
+          </div>
+        )}
+
+        {/* ── KPIs ── */}
+        <section className="sd-kpis">
+          {/* Networks */}
+          <div className="sd-card">
+            <p className="sd-kpi__label">Networks</p>
+            <div className="sd-kpi__value">
+              <CountUp target={networks.active} />
+              <span className="sd-kpi__denom">
+                / {networks.total}
+              </span>
             </div>
-          ))}
-        </div>
-
-        <div className="db-grid2">
-          <div className="db-card">
-            <div className="db-card-title">Rating distribution</div>
-            {RATINGS.map(r => (
-              <div className="db-bar-row" key={r.stars}>
-                <span className="db-bar-label">{r.stars}</span>
-                <div className="db-bar-track">
-                  <div className="db-bar-fill" style={{ width: `${r.pct}%`, background: r.color }} />
-                </div>
-                <span className="db-bar-count">{r.pct}%</span>
-              </div>
-            ))}
           </div>
 
-          <div className="db-card">
-            <div className="db-card-title">Top platforms</div>
-            {PLATFORMS.map(p => (
-              <div className="db-platform-row" key={p.name}>
-                <span className="db-platform-name">{p.name}</span>
-                <span className="db-platform-count">{p.count}</span>
-                <span className={`db-platform-status ${p.status === "active" ? "s-active" : "s-idle"}`}>
-                  {p.status}
+          {/* Requests */}
+          <div className="sd-card">
+            <p className="sd-kpi__label">Requests (24h)</p>
+            <div className="sd-kpi__value">
+              <CountUp
+                target={stats.requests_24h?.total || 0}
+              />
+            </div>
+          </div>
+
+          {/* Success rate */}
+          <div className="sd-card">
+            <p className="sd-kpi__label">Success Rate</p>
+
+            <div className="sd-rate">
+              <div className="sd-rate__value">
+                {stats.success_rate || 0}%
+              </div>
+
+              <div className="sd-rate__stats">
+                <span className="sd-status-badge sd-status-badge--success">
+                  ✓ {stats.requests_24h?.success || 0}
+                </span>
+                <span className="sd-status-badge sd-status-badge--error">
+                  ✗ {stats.requests_24h?.errors || 0}
                 </span>
               </div>
-            ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── AI ANALYSIS ── */}
+        <div className="sd-card sd-ai-card">
+          <div className="sd-kpi__top">
+            <p className="sd-kpi__label">
+              AI Analysis {hasRealAI ? "" : "(Preview)"}
+            </p>
+            <span className="sd-table__muted">
+              {ai.generated_at}
+            </span>
+          </div>
+
+          <div className="sd-ai-content">
+            <div>
+              <p className="sd-table__muted">
+                Recommendation
+              </p>
+              <p className="sd-ai-text sd-ai-recommendation">
+                {ai.recommendation}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="db-card">
-          <div className="db-card-title">Recent reviews</div>
-          {REVIEWS.map(r => (
-            <div className="db-review-row" key={r.name}>
-              <div className="db-review-avatar">{r.initials}</div>
-              <div className="db-review-body">
-                <div className="db-review-meta">
-                  <span className="db-review-name">{r.name}</span>
-                  <span className="db-review-platform">· {r.platform}</span>
-                  <Stars count={r.stars} />
-                  <span className={`db-sentiment ${r.sentiment}`}>{r.sentiment}</span>
-                </div>
-                <p className="db-review-text">{r.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* ── TABLE ── */}
+        <div className="sd-card">
+          <div className="history-header-info">
+            <h2 className="history-title">
+              Recent Requests
+            </h2>
+            <p className="history-count">
+              {filtered.length} entries shown
+            </p>
+          </div>
 
-      </main>
+          <div className="sd-tabs">
+            {["all", "success", "error"].map((t) => (
+              <button
+                key={t}
+                className={`sd-tab ${activeTab === t ? "sd-tab--active" : ""
+                  }`}
+                onClick={() => setActiveTab(t)}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <p>Loading...</p>
+          ) : filtered.length === 0 ? (
+            <p>No requests found</p>
+          ) : (
+            <div className="sd-table">
+              <div className="sd-table__head">
+                <span>Network</span>
+                <span>Slug</span>
+                <span>Status</span>
+                <span>Code</span>
+                <span>Executed</span>
+              </div>
+
+              {filtered.map((r) => (
+                <div key={r.id} className="sd-table__row">
+                  <span className="sd-table__network">{r.network}</span>
+                  <span className="sd-table__slug">{r.slug}</span>
+                  <span className={`sd-status-badge sd-status-badge--${r.status}`}>
+                    {r.status}
+                  </span>
+                  <span className={`sd-code-badge sd-code-badge--${r.status}`}>
+                    {r.status_code ?? (r.status === "success" ? 200 : "—")}
+                  </span>
+                  <span className="sd-table__muted">{r.created_at}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

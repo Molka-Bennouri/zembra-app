@@ -133,16 +133,6 @@ export default function Invoices() {
               </svg>
               Download
             </button>
-            <div className="download-menu-items">
-              <button onClick={downloadCSV} className="menu-item">
-                <i class="fa-regular fa-file"></i>
-                Download as CSV
-              </button>
-              <button onClick={downloadPDF} className="menu-item">
-                <i class="fa-regular fa-file"></i>
-                Download as PDF
-              </button>
-            </div>
           </div>
         </div>
       </header>

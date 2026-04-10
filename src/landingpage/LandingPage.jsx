@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
+import { usePlatforms } from "../hooks/usePlatforms";
+import { motion } from "framer-motion";
 import "./LandingPage.css";
+
 
 const FEATURES = [
   { icon: "📋", title: "Listing", desc: "Connectez-vous à n'importe quelle plateforme en quelques minutes grâce à notre API RESTful intuitive." },
@@ -8,7 +11,7 @@ const FEATURES = [
   { icon: "🤖", title: "IA & Sentiment", desc: "Analyse automatique du sentiment, détection de tendances et alertes intelligentes en temps réel." },
 ];
 
-const PLATFORMS = ["Kununu", "Viator", "SSM Health", "Community Health Network", "Justia", "Lawtally", "Airbnb"];
+
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -49,6 +52,7 @@ export default function LandingPage() {
 
   const hv = heroVisible ? "visible" : "";
   const navBtn = { padding: "9px 22px", fontSize: 14 };
+  const { platforms, loading, error } = usePlatforms();
 
   return (
     <div>
@@ -85,12 +89,29 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <div className="lp-marquee-wrapper">
-        <div className="lp-marquee-track">
-          {[...PLATFORMS, ...PLATFORMS].map((p, i) => (
-            <span key={i} className="lp-platform-pill">● {p}</span>
-          ))}
-        </div>
+      {/* Remplacez le bloc marquee-wrapper par : */}
+      <div style={{ overflow: "hidden", padding: "20px 0", borderTop: "1px solid rgba(46,90,244,0.1)", borderBottom: "1px solid rgba(46,90,244,0.1)" }}>
+        {loading && <div className="marquee-loading">Chargement...</div>}
+        {error && <div className="marquee-error">Impossible de charger les plateformes.</div>}
+        {!loading && !error && (
+          <motion.div
+            style={{ display: "flex", width: "max-content" }}
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 25, ease: "linear", repeat: Infinity }}
+          >
+            {[...platforms, ...platforms].map((p, i) => (
+              <motion.span
+                key={i}
+                className="platform-pill"
+                whileHover={{ scale: 1.1, y: -3 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                style={{ cursor: "default" }}
+              >
+                ● {p.label}
+              </motion.span>
+            ))}
+          </motion.div>
+        )}
       </div>
 
       <section className="lp-features-section">
