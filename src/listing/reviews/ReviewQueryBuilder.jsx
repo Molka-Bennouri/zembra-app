@@ -4,6 +4,7 @@ import "../details/QueryBuild.css";
 import { useNetworks } from "../../hooks/useNetworks";
 import { useReviewFields } from "../../hooks/useReviewFields";
 import { useReviewQuery } from "../../hooks/useReviewQuery";
+import { validateSlug } from "../../utils/validateSlug";
 import { api } from "../../utils/api";
 import CurlRequest from "../components/CurlRequest";
 import QueryResponse from "../components/QueryResponse";
@@ -32,6 +33,8 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
   } = useReviewFields();
 
   const selectedNetwork = networks.find(n => String(n.id) === String(network));
+  const selectedPattern = selectedNetwork?.slug_pattern ?? null;
+  const validation = validateSlug(slug, selectedPattern);
   const networkName = selectedNetwork?.name ?? "";
 
   const { responseData, loading: queryLoading, status, executeQuery } = useReviewQuery({ apiBase: API_BASE });
@@ -91,6 +94,13 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
                 onChange={(e) => setSlug(e.target.value)}
                 disabled={!network}
               />
+              {slug ? (
+  <p className="helper-text" style={{ color: validation.valid ? "green" : "red" }}>
+    {validation.message}
+  </p>
+) : (
+  <p className="helper-text">Unique identifier for your listing</p>
+)}
             </div>
 
             {/* Fields */}
@@ -215,7 +225,7 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
               <button
                 className="execute-btn"
                 onClick={handleExecute}
-                disabled={!networkName || !slug || queryLoading}
+                disabled={!networkName || !slug || !validation.valid || queryLoading}
               >
                 <i className="fa-solid fa-bolt fa-xs"></i>
                 {queryLoading ? "Fetching reviews..." : "Execute Query"}

@@ -26,7 +26,7 @@ function Login({ onForgotPassword, onSignUp }) {
     setIsLoading(false);
 
     if (result.success) {
-      navigate("/listing");
+      navigate("/dashboard");
     } else {
       setError(result.error || "Invalid email or password");
     }
