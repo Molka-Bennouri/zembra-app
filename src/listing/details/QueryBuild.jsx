@@ -128,7 +128,7 @@ function QueryBuild({ onQueryExecuted }) {
                 <button
                   className="execute-btn"
                   onClick={handleExecute}
-                  disabled={!networkName || !slug || queryLoading}
+                  disabled={!networkName || !slug || !validation.valid || queryLoading}
                 >
                   <i className="fa-solid fa-bolt fa-xs"></i>
                   {queryLoading ? "Executing..." : "Execute Query"}

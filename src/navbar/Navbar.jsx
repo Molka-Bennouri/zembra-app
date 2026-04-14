@@ -9,6 +9,10 @@ import { useProfile } from "../hooks/useProfile";
 
 const navItems = [
   {
+    label: "Dashboard",
+    path: "/Dashboard",
+  },
+  {
     label: "API",
     items: [
       { label: "Listing details", path: "/listing", icon: <i className="fa-regular fa-file-lines"></i>, desc: "Retrieve detailed listing data" },
@@ -177,12 +181,20 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar-content">
         <div className="navbar-left">
-          <img src="/zembra-logo.jpg" alt="Zembra" className="navbar-logo-mark" />
-          <span className="navbar-logo-text">Zembra</span>
+          <Link to="/Dashboard" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
+  <img src="/zembra-logo.jpg" alt="Zembra" className="navbar-logo-mark" />
+  <span className="navbar-logo-text">Zembra</span>
+</Link>
           <div className="navbar-divider" />
-          {navItems.map(item => (
-            <NavDropdown key={item.label} label={item.label} items={item.items} />
-          ))}
+          {navItems.map(item =>
+  item.items ? (
+    <NavDropdown key={item.label} label={item.label} items={item.items} />
+  ) : (
+    <Link key={item.label} to={item.path} className="nav-simple-link">
+      {item.label}
+    </Link>
+  )
+)}
         </div>
 
         <div className="navbar-right">

@@ -72,50 +72,6 @@ export default function Invoices() {
     }
   }
 
-  const downloadCSV = () => {
-    const headers = ["Invoice ID", "Customer", "Date", "Due Date", "Amount", "Status", "Description"]
-    const rows = sorted.map(inv => [
-      inv.id,
-      inv.customer,
-      inv.date,
-      inv.dueDate,
-      `$${inv.amount}`,
-      inv.status,
-      inv.description
-    ])
-
-    const csvContent = [
-      headers.join(","),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
-    ].join("\n")
-
-    const blob = new Blob([csvContent], { type: "text/csv" })
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `invoices-${new Date().toISOString().split("T")[0]}.csv`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    window.URL.revokeObjectURL(url)
-  }
-
-  const downloadPDF = () => {
-    const content = sorted.map(inv =>
-      `${inv.id} | ${inv.customer} | ${inv.date} | $${inv.amount} | ${inv.status}`
-    ).join("\n")
-
-    const blob = new Blob([content], { type: "application/pdf" })
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `invoices-${new Date().toISOString().split("T")[0]}.txt`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    window.URL.revokeObjectURL(url)
-  }
-
   return (
     <div className="invoices-container">
       <header className="invoices-header">

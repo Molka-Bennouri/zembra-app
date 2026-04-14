@@ -197,3 +197,10 @@
 .query-right {
   padding-left: 28px;
 }
+.execute-btn:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}

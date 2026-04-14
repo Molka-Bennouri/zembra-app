@@ -357,3 +357,17 @@ a.nav-dropdown-item {
 .user-dropdown-trigger.active {
   background-color: #f3f4f6;
 }
+.nav-simple-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.nav-simple-link:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
