@@ -22,6 +22,9 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
   const [postedBefore, setPostedBefore] = useState("");
   const [postedAfter, setPostedAfter] = useState("");
 
+  const [minRating, setMinRating] = useState(null);
+  const [maxRating, setMaxRating] = useState(null);
+
   const { networks = [] } = useNetworks();
   const {
     reviewFields = [],
@@ -47,6 +50,8 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
       includeRaw,
       sortBy,
       sortDirection,
+      minRating,
+    maxRating,
       postedBefore: postedBefore ? Math.floor(new Date(postedBefore).getTime() / 1000) : null,
       postedAfter: postedAfter ? Math.floor(new Date(postedAfter).getTime() / 1000) : null,
     });
@@ -95,12 +100,12 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
                 disabled={!network}
               />
               {slug ? (
-  <p className="helper-text" style={{ color: validation.valid ? "green" : "red" }}>
-    {validation.message}
-  </p>
-) : (
-  <p className="helper-text">Unique identifier for your listing</p>
-)}
+                <p className="helper-text" style={{ color: validation.valid ? "green" : "red" }}>
+                  {validation.message}
+                </p>
+              ) : (
+                <p className="helper-text">Unique identifier for your listing</p>
+              )}
             </div>
 
             {/* Fields */}
@@ -175,14 +180,23 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
                 <option value="ASC">Ascending</option>
                 <option value="DESC">Descending</option>
               </select>
-              <input className="parameter-input" placeholder="Limit" />
-              <input className="parameter-input" placeholder="Offset" />
-              <select className="dropdown-select">
-                <option>Min rating</option>
-              </select>
-              <select className="dropdown-select">
-                <option>Max rating</option>
-              </select>
+              <label>Min rating</label>
+<select className="dropdown-select" onChange={e => setMinRating(e.target.value || null)}>
+  <option value="">select an option</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+</select>
+
+<label>Max rating</label>
+<select className="dropdown-select" onChange={e => setMaxRating(e.target.value || null)}>
+  <option value="">select an option</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+</select>
 
               <label>Posted before</label>
               <input
@@ -252,9 +266,9 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
       <QueryResponse data={responseData?.zembra ?? responseData} />
 
       {/* AI Summary */}
-{reviewTexts.length > 0 && (
-  <AiSummary reviews={reviewTexts} />
-)}
+      {reviewTexts.length > 0 && (
+        <AiSummary reviews={reviewTexts} />
+      )}
     </div>
   );
 }

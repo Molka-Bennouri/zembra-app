@@ -133,7 +133,6 @@ export default function PaymentHistory() {
         <div className="payments-card">
           <div className="payments-table">
             <div className="table-header">
-              <span className="col-invoice">Invoice</span>
               <span className="col-date">Date</span>
               <span className="col-description">Description</span>
               <span className="col-method">Payment Method</span>
@@ -149,9 +148,6 @@ export default function PaymentHistory() {
             ) : (
               filteredPayments.map((payment) => (
                 <div key={payment.id} className="table-row">
-                  <span className="col-invoice">
-                    <span className="invoice-id">{payment.id}</span>
-                  </span>
                   <span className="col-date">{payment.date}</span>
                   <span className="col-description">{payment.description}</span>
                   <span className="col-method">

@@ -2,13 +2,13 @@ import { useState, useCallback, useRef } from "react";
 import { getAuthHeaders } from "../utils/auth";
 
 const POLL_INTERVAL = 3000;
-const MAX_ATTEMPTS  = 20;
+const MAX_ATTEMPTS = 20;
 
 export const useReviewQuery = ({ apiBase }) => {
   const [responseData, setResponseData] = useState(null);
-  const [loading, setLoading]           = useState(false);
-  const [error, setError]               = useState(null);
-  const [status, setStatus]             = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState(null);
   const pollRef = useRef(null);
 
   const stopPolling = () => {
@@ -16,19 +16,22 @@ export const useReviewQuery = ({ apiBase }) => {
   };
 
   const executeQuery = useCallback(
-    async ({ network, slug, selectedFields, includeRaw, sortBy, sortDirection, postedBefore, postedAfter }) => {
+    async ({ network, slug, selectedFields, includeRaw, sortBy, sortDirection, postedBefore, postedAfter, minRating, maxRating }) => {
 
-  const params      = `?network=${encodeURIComponent(network.toLowerCase())}&slug=${encodeURIComponent(slug)}`;
-  const fields      = Object.keys(selectedFields).filter((k) => selectedFields[k]);
-  const fieldsParam = fields.length ? '&' + fields.map(f => `fields[]=${encodeURIComponent(f)}`).join('&') : '';
-  const rawParam    = includeRaw ? '&includeRawData=true' : '';
-  // after rawParam:
-  const sortParam   = sortBy        ? `&sortBy=${sortBy}`                   : '';
-  const dirParam    = sortDirection ? `&sortDirection=${sortDirection}`      : '';
-  const beforeParam = postedBefore  ? `&postedBefore=${postedBefore}`       : '';
-  const afterParam  = postedAfter   ? `&postedAfter=${postedAfter}`         : '';
+      const params = `?network=${encodeURIComponent(network.toLowerCase())}&slug=${encodeURIComponent(slug)}`;
+      const fields = Object.keys(selectedFields).filter((k) => selectedFields[k]);
+      const fieldsParam = fields.length ? '&' + fields.map(f => `fields[]=${encodeURIComponent(f)}`).join('&') : '';
+      const rawParam = includeRaw ? '&includeRawData=true' : '';
+      // after rawParam:
+      const sortParam = sortBy ? `&sortBy=${sortBy}` : '';
+      const dirParam = sortDirection ? `&sortDirection=${sortDirection}` : '';
+      const beforeParam = postedBefore ? `&postedBefore=${postedBefore}` : '';
+      const afterParam = postedAfter ? `&postedAfter=${postedAfter}` : '';
 
-  const url = `${apiBase}/reviews${params}${fieldsParam}${rawParam}${sortParam}${dirParam}${beforeParam}${afterParam}`;
+      const minRatingParam = minRating ? `&minRating=${minRating}` : '';
+      const maxRatingParam = maxRating ? `&maxRating=${maxRating}` : '';
+
+      const url = `${apiBase}/reviews${params}${fieldsParam}${rawParam}${sortParam}${dirParam}${beforeParam}${afterParam}${minRatingParam}${maxRatingParam}`;
 
       setLoading(true);
       setError(null);
@@ -79,11 +82,11 @@ export const useReviewQuery = ({ apiBase }) => {
             const data = await res.json();
 
             if (data?.zembra || data?.status === 'SUCCESS' || data?.data) {
-  setResponseData(data);
-  setStatus('completed');
-  setLoading(false);
-  stopPolling();
-} else if (attempts >= MAX_ATTEMPTS) {
+              setResponseData(data);
+              setStatus('completed');
+              setLoading(false);
+              stopPolling();
+            } else if (attempts >= MAX_ATTEMPTS) {
               setStatus('error');
               setError('Timed out waiting for results.');
               setResponseData({ error: true, message: 'Timed out waiting for results.' });

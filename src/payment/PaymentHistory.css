@@ -181,7 +181,7 @@
 .table-header,
 .table-row {
   display: grid;
-  grid-template-columns: 140px 120px 1fr 140px 100px 110px 60px;
+  grid-template-columns: 140px 1fr 160px 100px 110px 60px;
   padding: 1rem 1.25rem;
   gap: 1rem;
   align-items: center;
@@ -210,13 +210,10 @@
 }
 
 /* ── Content ── */
-.invoice-id {
-  font-weight: 600;
-  color: #0046FF;
-}
 
 .col-date {
-  color: #9ca3af;
+  font-weight: 600;
+  color: #0046FF;
 }
 
 .col-description {
