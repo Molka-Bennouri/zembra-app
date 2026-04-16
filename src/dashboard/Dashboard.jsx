@@ -43,14 +43,6 @@ export default function Dashboard() {
     list: [],
   };
 
-  // ✅ fallback AI (IMPORTANT FRONT ONLY)
-  const ai = stats.ai_insight || {
-    recommendation: "Waiting for backend AI analysis...",
-    generated_at: "-",
-  };
-
-  const hasRealAI = !!stats.ai_insight;
-
   const filtered =
     activeTab === "all"
       ? requests
@@ -141,29 +133,6 @@ export default function Dashboard() {
             </div>
           </div>
         </section>
-
-        {/* ── AI ANALYSIS ── */}
-        <div className="sd-card sd-ai-card">
-          <div className="sd-kpi__top">
-            <p className="sd-kpi__label">
-              AI Analysis {hasRealAI ? "" : "(Preview)"}
-            </p>
-            <span className="sd-table__muted">
-              {ai.generated_at}
-            </span>
-          </div>
-
-          <div className="sd-ai-content">
-            <div>
-              <p className="sd-table__muted">
-                Recommendation
-              </p>
-              <p className="sd-ai-text sd-ai-recommendation">
-                {ai.recommendation}
-              </p>
-            </div>
-          </div>
-        </div>
 
         {/* ── TABLE ── */}
         <div className="sd-card">
