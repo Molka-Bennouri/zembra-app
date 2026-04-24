@@ -6,7 +6,11 @@ import { useProfile } from "../hooks/useProfile"
 export default function ProfilePage() {
   const { profile, loading, error } = useProfile()
 
-  if (loading) return <div className="profile-loading">Loading profile…</div>
+  if (loading) return (
+    <div className="loader-container full-page">
+        <div className="spinner"></div>
+    </div>
+);
   if (error) return <div className="profile-error">Failed to load profile: {error}</div>
 
   return (

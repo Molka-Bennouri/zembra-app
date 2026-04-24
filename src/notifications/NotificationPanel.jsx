@@ -22,7 +22,7 @@ export default function NotificationPanel() {
             const data = await res.json();
             setNotifications(data.map(n => ({ ...n, read: n.seen })));
         } catch (err) {
-            setError('Failed to load notifications');
+            setError('Could not load notifications');
         } finally {
             setLoading(false);
         }
@@ -43,78 +43,91 @@ export default function NotificationPanel() {
     };
 
     const deleteNotification = async (id) => {
-        await fetch(`${API_BASE}/${id}`, { method: 'DELETE', headers: getHeaders() });
         setNotifications(prev => prev.filter(n => n.id !== id));
+        await fetch(`${API_BASE}/${id}`, { method: 'DELETE', headers: getHeaders() });
     };
 
     const clearAll = async () => {
-        await fetch(API_BASE, { method: 'DELETE', headers: getHeaders() });
         setNotifications([]);
+        await fetch(API_BASE, { method: 'DELETE', headers: getHeaders() });
     };
 
     const unreadCount = notifications.filter(n => !n.read).length;
 
     const formatTime = (dateStr) => {
         const diff = (Date.now() - new Date(dateStr)) / 1000;
-        if (diff < 60) return 'just now';
-        if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-        if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-        return `${Math.floor(diff / 86400)} days ago`;
+        if (diff < 60) return 'Just now';
+        if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+        if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+        return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
     return (
         <div className="notification-panel">
             <div className="notification-header">
-                <h3>Notifications {unreadCount > 0 && <span className="badge">{unreadCount}</span>}</h3>
+                <div className="header-title">
+                    <h3>Notifications</h3>
+                    {unreadCount > 0 && <span className="unread-badge">{unreadCount} new</span>}
+                </div>
                 <div className="notification-actions">
                     {unreadCount > 0 && (
-                        <button className="action-btn mark-all" onClick={markAllAsRead} title="Mark all as read">
-                            <i className="fa-solid fa-check"></i>
+                        <button className="icon-btn" onClick={markAllAsRead} title="Mark all as read">
+                            <i className="fa-solid fa-check-double"></i>
                         </button>
                     )}
                     {notifications.length > 0 && (
-                        <button className="action-btn clear-all" onClick={clearAll} title="Clear all notifications">
-                            <i className="fa-solid fa-x"></i>
+                        <button className="icon-btn delete" onClick={clearAll} title="Clear all">
+                            <i className="fa-solid fa-trash-can"></i>
                         </button>
                     )}
                 </div>
             </div>
 
             <div className="notification-list">
-                {loading && <div className="empty-state"><p>Loading...</p></div>}
-                {error && <div className="empty-state"><p>{error}</p></div>}
-                {!loading && !error && notifications.length === 0 && (
-                    <div className="empty-state">
-                        <i className="fa-solid fa-bell"></i>
-                        <p>No notifications</p>
+                {loading && (
+                    <div className="status-container">
+                        <div className="spinner"></div>
                     </div>
                 )}
+
+                {error && <div className="status-container error-text">{error}</div>}
+
+                {!loading && !error && notifications.length === 0 && (
+                    <div className="empty-state">
+                        <div className="empty-icon"><i className="fa-solid fa-bell-slash"></i></div>
+                        <p>No notifications yet</p>
+                    </div>
+                )}
+
                 {!loading && notifications.map(n => (
                     <div
                         key={n.id}
                         className={`notification-item ${n.type} ${!n.read ? 'unread' : ''}`}
-                        onClick={() => !n.read && markAsRead(n.id)}
-                    >
-                        <div className="notification-icon">
+                        onClick={() => !n.read && markAsRead(n.id)} >
+                            
+                        <div className="notification-icon-wrapper">
                             {n.type === 'success' && <i className="fa-solid fa-circle-check"></i>}
                             {n.type === 'warning' && <i className="fa-solid fa-triangle-exclamation"></i>}
                             {n.type === 'error' && <i className="fa-solid fa-circle-xmark"></i>}
                             {n.type === 'info' && <i className="fa-solid fa-circle-info"></i>}
                         </div>
+
                         <div className="notification-content">
-                            <div className="notification-title">{n.title ?? n.type}</div>
-                            <div className="notification-message">{n.message}</div>
-                            <div className="notification-time">{formatTime(n.created_at)}</div>
+                            <div className="notification-top">
+                                <span className="notification-title">{n.title ?? n.type}</span>
+                                <span className="notification-time">{formatTime(n.created_at)}</span>
+                            </div>
+                            <p className="notification-message">{n.message}</p>
                         </div>
-                        {!n.read && <div className="unread-indicator" />}
-                        <button
-                            className="delete-btn"
-                            onClick={(e) => { e.stopPropagation(); deleteNotification(n.id); }}
-                        >
-                            <i className="fa-solid fa-x"></i>
+
+                        <button className="item-delete-btn" onClick={(e) => { e.stopPropagation(); deleteNotification(n.id); }}>
+                            <i className="fa-solid fa-xmark"></i>
                         </button>
                     </div>
                 ))}
+            </div>
+
+            <div className="notification-footer">
             </div>
         </div>
     );
