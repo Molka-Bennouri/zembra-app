@@ -11,7 +11,7 @@ export const useAuth = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.post("/clients/register", {
+      const data = await api.post("/register", {
         full_name,
         email,
         password,
@@ -34,10 +34,11 @@ export const useAuth = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.post("/clients/login", { email, password });
+      const data = await api.post("/login", { email, password });
 
       const token = data.token ?? data.access_token ?? data;
       if (typeof token === "string") saveToken(token);
+      if (data.role) localStorage.setItem("role", data.role);  // ← ajouter
 
       return { success: true, data };
     } catch (err) {
@@ -51,7 +52,7 @@ export const useAuth = () => {
   // Logout
   const logout = () => {
     removeToken();
-    api.post("/clients/logout", {}, true).catch(() => {});
+    api.post("/logout", {}, true).catch(() => {});
   };
 
   // ==================== SSO AUTHENTICATION ====================
@@ -105,7 +106,7 @@ export const useAuth = () => {
   setLoading(true);
   setError(null);
   try {
-    const data = await api.post("/password/forgot", { email });
+    const data = await api.post("/forgot-password", { email });
     return { success: true, message: data.message };
   } catch (err) {
     setError(err.message);

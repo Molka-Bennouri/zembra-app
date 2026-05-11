@@ -22,7 +22,7 @@ export default function ResetPassword() {
     setLoading(true);
 
     try {
-      const res = await api.post("/clients/reset-password", {
+      const res = await api.post("/reset-password", {
         token,
         email,
         password,

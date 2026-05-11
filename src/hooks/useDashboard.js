@@ -23,7 +23,7 @@ export default function useDashboard() {
   // ── API calls ─────────────────────────
 
   const fetchKpis = useCallback(async () => {
-    const res = await fetch(`${API}/clients/kpis`, {
+    const res = await fetch(`${API}/kpis`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
       },
@@ -33,7 +33,7 @@ export default function useDashboard() {
   }, []);
 
   const fetchRequests = useCallback(async () => {
-    const res = await fetch(`${API}/clients/dashboard/requests`, {
+    const res = await fetch(`${API}/dashboard/requests`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
       },

@@ -9,7 +9,7 @@ export const useDeleteAccount = () => {
     setLoading(true)
     setError(null)
     try {
-      await api.delete("/clients/delete-account", { password })
+      await api.delete("/client/account", { password })
       // Clear token and redirect
       localStorage.removeItem("jwt_token")
       window.location.href = "/login"
