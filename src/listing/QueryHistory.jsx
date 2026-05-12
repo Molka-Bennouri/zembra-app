@@ -3,7 +3,7 @@ import ResponseViewer from './components/QueryResponse';
 import './QueryHistory.css';
 import { getAuthHeaders } from "../utils/auth";
 
-const API_BASE = "http://localhost:8000/api/clients";
+const API_BASE = "http://localhost:8000/api";
 
 const getHeaders = () => ({
   "Content-Type": "application/json",
