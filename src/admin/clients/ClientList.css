@@ -1,0 +1,440 @@
+/* ─────────────────────────────────────────
+   ClientList — Admin UI
+   Palette: white + #2E5AF4 accent
+   Font: "DM Sans" + mono fallback
+───────────────────────────────────────── */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Mono&display=swap");
+
+:root {
+  --cl-primary:        #2E5AF4;
+  --cl-primary-light:  #eef1fe;
+  --cl-primary-hover:  #2349d6;
+  --cl-danger:         #e5373a;
+  --cl-danger-light:   #fff0f0;
+  --cl-danger-hover:   #c9292c;
+
+  --cl-bg:             #f4f5f8;
+  --cl-surface:        #ffffff;
+  --cl-border:         #e8eaee;
+  --cl-border-focus:   #2E5AF4;
+
+  --cl-text-primary:   #111827;
+  --cl-text-secondary: #6b7280;
+  --cl-text-muted:     #9ca3af;
+
+  --cl-radius-card:    14px;
+  --cl-radius-btn:     8px;
+  --cl-radius-input:   8px;
+  --cl-radius-badge:   5px;
+
+  --cl-shadow-card:    0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+  --cl-shadow-dialog:  0 8px 40px rgba(0,0,0,.18);
+
+  --cl-font:           'DM Sans', sans-serif;
+  --cl-font-mono:      'Space Mono', monospace;
+}
+
+/* ── Layout ── */
+
+.cl-page {
+  font-family: var(--cl-font);
+  min-height: 100vh;
+  background: var(--cl-bg);
+  padding: 40px 32px;
+  box-sizing: border-box;
+}
+
+.cl-card {
+  background: var(--cl-surface);
+  border: 1px solid var(--cl-border);
+  border-radius: var(--cl-radius-card);
+  box-shadow: var(--cl-shadow-card);
+  overflow: hidden;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+
+.cl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--cl-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cl-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--cl-text-primary);
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+.cl-subtitle {
+  font-size: 12.5px;
+  color: var(--cl-text-secondary);
+  margin: 1px 0 0;
+}
+
+.cl-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Toolbar ── */
+
+.cl-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--cl-border);
+  background: #fafbfc;
+}
+
+.cl-search {
+  flex: 1;
+  max-width: 360px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--cl-border);
+  border-radius: var(--cl-radius-input);
+  background: var(--cl-surface);
+  font-family: var(--cl-font);
+  font-size: 13px;
+  color: var(--cl-text-primary);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.cl-search::placeholder { color: var(--cl-text-muted); }
+
+.cl-search:focus {
+  border-color: var(--cl-border-focus);
+  box-shadow: 0 0 0 3px rgba(46, 90, 244, 0.12);
+}
+
+.cl-count {
+  font-size: 12px;
+  color: var(--cl-text-muted);
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+/* ── Buttons ── */
+
+.cl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--cl-radius-btn);
+  font-family: var(--cl-font);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.13s, color 0.13s, border-color 0.13s, box-shadow 0.13s, opacity 0.13s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.cl-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cl-btn-primary {
+  background: var(--cl-primary);
+  color: #fff;
+  border-color: var(--cl-primary);
+}
+
+.cl-btn-primary:hover:not(:disabled) {
+  background: var(--cl-primary-hover);
+  border-color: var(--cl-primary-hover);
+}
+
+.cl-btn-ghost {
+  background: transparent;
+  color: var(--cl-text-secondary);
+  border-color: var(--cl-border);
+}
+
+.cl-btn-ghost:hover:not(:disabled) {
+  background: #f3f4f6;
+  color: var(--cl-text-primary);
+}
+
+.cl-btn-danger {
+  background: var(--cl-danger);
+  color: #fff;
+  border-color: var(--cl-danger);
+}
+
+.cl-btn-danger:hover:not(:disabled) {
+  background: var(--cl-danger-hover);
+}
+
+/* ── Body ── */
+
+.cl-body {
+  min-height: 160px;
+}
+
+/* ── States ── */
+
+.cl-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 28px;
+  padding: 12px 16px;
+  background: #fff5f5;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #b91c1c;
+  font-size: 13.5px;
+}
+
+.cl-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 20px;
+  color: var(--cl-text-muted);
+  font-size: 13.5px;
+  gap: 10px;
+}
+
+.cl-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 20px;
+  color: var(--cl-text-muted);
+  font-size: 13.5px;
+  text-align: center;
+}
+
+/* ── Table ── */
+
+.cl-table-wrap {
+  overflow-x: auto;
+}
+
+.cl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.cl-table thead tr {
+  border-bottom: 1px solid var(--cl-border);
+  background: #fafbfc;
+}
+
+.cl-table th {
+  padding: 11px 20px;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--cl-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cl-table th:first-child { padding-left: 28px; }
+.cl-table th:last-child  { padding-right: 28px; }
+
+.cl-table tbody tr {
+  border-bottom: 1px solid var(--cl-border);
+  transition: background 0.1s;
+}
+
+.cl-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.cl-table tbody tr:hover:not(.cl-row-deleting) {
+  background: #f9fafb;
+}
+
+.cl-row-deleting {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.cl-table td {
+  padding: 14px 20px;
+  color: var(--cl-text-primary);
+  vertical-align: middle;
+}
+
+.cl-table td:first-child { padding-left: 28px; }
+.cl-table td:last-child  { padding-right: 28px; }
+
+/* Cell: name */
+.cl-cell-name {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.cl-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cl-primary);
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* Cell: badge */
+.cl-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  background: var(--cl-primary-light);
+  color: var(--cl-primary);
+  border-radius: var(--cl-radius-badge);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.cl-badge-alt {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+/* Cell: mono */
+.cl-mono {
+  font-family: var(--cl-font-mono);
+  font-size: 12px;
+  color: var(--cl-text-secondary);
+}
+
+/* Cell: actions */
+.cl-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.cl-action-edit,
+.cl-action-delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-family: var(--cl-font);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+
+.cl-action-edit:disabled,
+.cl-action-delete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cl-action-edit {
+  background: var(--cl-primary-light);
+  color: var(--cl-primary);
+}
+
+.cl-action-edit:hover:not(:disabled) {
+  background: #dde5fd;
+}
+
+.cl-action-delete {
+    background: var(--cl-danger-light);
+  color: var(--cl-danger);
+  border-color: #fca5a5;
+}
+
+.cl-action-delete:hover:not(:disabled) {
+  background: #fecaca;
+  color: var(--cl-danger);
+  border-color: #f87171;
+}
+
+/* ── Confirm Dialog ── */
+
+.cl-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: cl-fade-in 0.15s ease;
+}
+
+@keyframes cl-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.cl-dialog {
+  background: var(--cl-surface);
+  border: 1px solid var(--cl-border);
+  border-radius: 14px;
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: var(--cl-shadow-dialog);
+  animation: cl-slide-up 0.18s ease;
+  text-align: center;
+}
+
+@keyframes cl-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cl-dialog h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cl-text-primary);
+  margin: 0 0 8px;
+}
+
+.cl-dialog p {
+  font-size: 13px;
+  color: var(--cl-text-secondary);
+  margin: 0 0 22px;
+  line-height: 1.55;
+}
+
+.cl-dialog-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.cl-dialog-actions .cl-btn {
+  flex: 1;
+  justify-content: center;
+}
