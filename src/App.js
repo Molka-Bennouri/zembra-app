@@ -23,6 +23,8 @@ import NetworkList from "./admin/networks/NetworkList";
 import AdminDashboard from "./admin/dashboard/AdminDashboard";
 import FieldList from "./admin/fields/FieldList";
 import ClientList from "./admin/clients/ClientList";
+import PlansList from "./admin/plans/PlansList";
+import AddPlanForm from "./admin/plans/AddPlanForm";
 
 function App() {
   return (
@@ -52,9 +54,11 @@ function App() {
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/AddNetworkForm" element={<AddNetworkForm />} />
           <Route path="/AddFieldForm" element={<AddFieldForm />} />
+          <Route path="/AddPlanForm" element={<AddPlanForm />} />
           <Route path="/NetworkList" element={<NetworkList />} />
           <Route path="/FieldList" element={<FieldList />} />
           <Route path="/ClientList" element={<ClientList />} />
+          <Route path="/PlansList" element={<PlansList />} />
         </Route>
       </Routes>
     </Router>

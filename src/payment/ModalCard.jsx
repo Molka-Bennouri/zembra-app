@@ -25,21 +25,20 @@ export default function ModalCard({ show, onClose, mode = "add", planId }) {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Une erreur est survenue");
+        setError(data.error || "An error occurred");
         setLoading(false);
         return;
       }
 
       if (data.checkout_url) {
-        // Redirige vers la page Stripe hébergée
         window.location.href = data.checkout_url;
       } else {
-        setError("Impossible de créer la session de paiement");
+        setError("Unable to create the payment session");
         setLoading(false);
       }
 
     } catch (err) {
-      setError("Erreur réseau : " + err.message);
+      setError("Network error: " + err.message);
       setLoading(false);
     }
   };
@@ -49,7 +48,7 @@ export default function ModalCard({ show, onClose, mode = "add", planId }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
 
         <div className="modal-header">
-          <h3>Confirmer le paiement</h3>
+          <h3>Confirm Payment</h3>
           <button className="modal-close" onClick={onClose}>
             <i className="fa-solid fa-xmark" style={{ fontSize: 14 }}></i>
           </button>
@@ -57,7 +56,7 @@ export default function ModalCard({ show, onClose, mode = "add", planId }) {
 
         <div className="modal-body" style={{ padding: "24px", textAlign: "center" }}>
           <p style={{ marginBottom: "16px", color: "#555" }}>
-            Vous allez être redirigé vers la page de paiement sécurisée Stripe.
+            You will be redirected to the secure Stripe payment page.
           </p>
 
           {error && (
@@ -73,7 +72,7 @@ export default function ModalCard({ show, onClose, mode = "add", planId }) {
               onClick={onClose}
               disabled={loading}
             >
-              Annuler
+              Cancel
             </button>
 
             <button
@@ -82,7 +81,7 @@ export default function ModalCard({ show, onClose, mode = "add", planId }) {
               onClick={handleBuy}
               disabled={loading}
             >
-              {loading ? "Redirection..." : "Payer avec Stripe"}
+              {loading ? "Redirecting..." : "Pay with Stripe"}
             </button>
           </div>
         </div>

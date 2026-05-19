@@ -11,7 +11,7 @@ const getNavItems = (role) => {
     return [
       { label: "Dashboard", path: "/AdminDashboard" },
       { label: "Users", path: "/ClientList" },
-      { label: "Plans", path: "/admin/plans" },
+      { label: "Plans", path: "/PlansList" },
       { label: "Networks", path: "/NetworkList" },
       { label: "Fields", path: "/FieldList" },
     ];
