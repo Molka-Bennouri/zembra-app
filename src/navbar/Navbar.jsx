@@ -25,7 +25,6 @@ const navItems = [
     items: [
       { label: "Manage payments", path: "/payment", icon: <i className="fa-regular fa-credit-card"></i>, desc: "Update payment methods" },
       { label: "Payment history", path: "/paymenthistory", icon: <i className="fa-regular fa-clock"></i>, desc: "View past transactions" },
-      { label: "Invoices", path: "/invoices", icon: <i className="fa-regular fa-file-lines"></i>, desc: "Download and manage invoices" },
     ]
   }
 ]

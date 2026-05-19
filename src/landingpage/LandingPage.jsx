@@ -6,9 +6,21 @@ import "./LandingPage.css";
 
 
 const FEATURES = [
-  { icon: "📋", title: "Listing", desc: "Connectez-vous à n'importe quelle plateforme en quelques minutes grâce à notre API RESTful intuitive." },
-  { icon: "📊", title: "Analytics Avancés", desc: "Tableaux de bord en temps réel avec filtres, sentiments et insights actionnables pour votre équipe." },
-  { icon: "🤖", title: "IA & Sentiment", desc: "Analyse automatique du sentiment, détection de tendances et alertes intelligentes en temps réel." },
+  {
+    icon: "📋",
+    title: "Listings",
+    desc: "Receive and sync data from any platform in minutes through our intuitive RESTful API."
+  },
+  {
+    icon: "📊",
+    title: "Real-time Analytics",
+    desc: "Live dashboards with percentage breakdowns and insights from recent queries and activity."
+  },
+  {
+    icon: "🤖",
+    title: "AI & Sentiment Analysis",
+    desc: "Smart sentiment analysis across multiple real reviews with automated insights and trend detection."
+  },
 ];
 
 

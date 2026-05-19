@@ -1,4 +1,4 @@
-const REVIEW_FIELDS_URL = 'http://127.0.0.1:8000/api/review-fields';
+const REVIEW_FIELDS_URL = 'http://127.0.0.1:8000/api/fields?context=review';
 
 export async function fetchReviewFields() {
   const res = await fetch(REVIEW_FIELDS_URL);

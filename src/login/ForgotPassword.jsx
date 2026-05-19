@@ -15,7 +15,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await api.post("/clients/forgot-password", { email });
+      const res = await api.post("/forgot-password", { email });  // ← /clients/forgot-password
       setMessage(res.message);
     } catch (err) {
       setError(err.message || "Failed to send reset link");

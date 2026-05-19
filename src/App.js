@@ -9,7 +9,6 @@ import MatchPage from './listing/match/MatchPage';
 import ProfilePage from "./profile/ProfilePage";
 import ManagePayment from './payment/ManagePayment';
 import PaymentHistory from './payment/PaymentHistory';
-import Invoices from './payment/Invoices';
 import ModalCard from "./payment/ModalCard";
 import QueryHistory from './listing/QueryHistory';
 
@@ -42,7 +41,6 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/payment" element={<ManagePayment />} />
           <Route path="/paymenthistory" element={<PaymentHistory />} />
-          <Route path="/invoices" element={<Invoices />} />
           <Route path="/modalcard" element={<ModalCard />} />
           <Route path="/scrapinghistory" element={<QueryHistory />} />
         </Route>

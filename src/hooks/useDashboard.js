@@ -18,11 +18,31 @@ export default function useDashboard() {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchKpis = useCallback(async () => {
+
     return api.get("/kpis"); // requiresAuth = true par défaut ✅
   }, []);
 
   const fetchRequests = useCallback(async () => {
     return api.get("/dashboard/requests"); // requiresAuth = true par défaut ✅
+
+    const res = await fetch(`${API}/kpis`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+      },
+    });
+    if (!res.ok) throw new Error(`KPIs: ${res.status}`);
+    return res.json();
+  }, []);
+
+  const fetchRequests = useCallback(async () => {
+    const res = await fetch(`${API}/dashboard/requests`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+      },
+    });
+    if (!res.ok) throw new Error(`Requests: ${res.status}`);
+    return res.json();
+
   }, []);
 
   const refresh = useCallback(async (showSpinner = false) => {

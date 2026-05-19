@@ -43,7 +43,7 @@ function Signup() {
     setIsLoading(false);
 
     if (result.success) {
-      navigate("/listing");
+      navigate("/Dashboard");
     } else {
       setError(result.error || "Something went wrong. Please try again.");
     }
@@ -107,7 +107,6 @@ function Signup() {
                 id="fullName"
                 type="text"
                 className="signup-input"
-                placeholder="John Doe"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 autoComplete="name"

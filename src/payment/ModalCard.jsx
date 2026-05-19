@@ -1,77 +1,92 @@
 import { useState } from "react";
 import "./ModalCard.css";
 
-export default function ModalCard({ show, onClose, onAddCard, mode = "add" }) {
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvc, setCvc] = useState("");
-  const [cardholder, setCardholder] = useState("");
+export default function ModalCard({ show, onClose, mode = "add", planId }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   if (!show) return null;
 
-  const handleOverlayClick = () => onClose();
-  const handleContentClick = (e) => e.stopPropagation();
+  const handleBuy = async () => {
+    setLoading(true);
+    setError(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:8000/api/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+        body: JSON.stringify({ plan_id: planId }),
+      });
 
-    // Déterminer le type de carte par les premiers chiffres (simplifié)
-    let type = cardNumber.startsWith("5") ? "mastercard" : "visa";
+      const data = await res.json();
 
-    const newCard = {
-      id: Date.now(),
-      type,
-      last4: cardNumber.slice(-4),
-      expiry,
-      isDefault: false,
-    };
+      if (!res.ok) {
+        setError(data.error || "Une erreur est survenue");
+        setLoading(false);
+        return;
+      }
 
-    onAddCard(newCard);
+      if (data.checkout_url) {
+        // Redirige vers la page Stripe hébergée
+        window.location.href = data.checkout_url;
+      } else {
+        setError("Impossible de créer la session de paiement");
+        setLoading(false);
+      }
 
-    // Réinitialiser le formulaire
-    setCardNumber("");
-    setExpiry("");
-    setCvc("");
-    setCardholder("");
-
-    onClose();
+    } catch (err) {
+      setError("Erreur réseau : " + err.message);
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-content" onClick={handleContentClick}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+
         <div className="modal-header">
-          <h3>{mode === "buy" ? "Validate Payment Method" : "Add Payment Method"}</h3>
+          <h3>Confirmer le paiement</h3>
           <button className="modal-close" onClick={onClose}>
             <i className="fa-solid fa-xmark" style={{ fontSize: 14 }}></i>
           </button>
         </div>
-        <form className="add-card-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Card Number</label>
-            <input value={cardNumber} onChange={e => setCardNumber(e.target.value)} placeholder="1234 5678 9012 3456" />
-          </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Expiry Date</label>
-              <input value={expiry} onChange={e => setExpiry(e.target.value)} placeholder="MM/YY" />
-            </div>
-            <div className="form-group">
-              <label>CVC</label>
-              <input value={cvc} onChange={e => setCvc(e.target.value)} placeholder="123" />
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Cardholder Name</label>
-            <input value={cardholder} onChange={e => setCardholder(e.target.value)} placeholder="John Doe" />
-          </div>
+
+        <div className="modal-body" style={{ padding: "24px", textAlign: "center" }}>
+          <p style={{ marginBottom: "16px", color: "#555" }}>
+            Vous allez être redirigé vers la page de paiement sécurisée Stripe.
+          </p>
+
+          {error && (
+            <p className="card-error" style={{ color: "#e74c3c", marginBottom: "12px" }}>
+              {error}
+            </p>
+          )}
+
           <div className="form-actions">
-            <button type="button" className="btn-cancel" onClick={onClose}>Cancel</button>
-            <button type="submit" className="btn-save">
-              {mode === "buy" ? "Validate Card" : "Add Card"}
+            <button
+              type="button"
+              className="btn-cancel"
+              onClick={onClose}
+              disabled={loading}
+            >
+              Annuler
+            </button>
+
+            <button
+              type="button"
+              className="btn-save"
+              onClick={handleBuy}
+              disabled={loading}
+            >
+              {loading ? "Redirection..." : "Payer avec Stripe"}
             </button>
           </div>
-        </form>
+        </div>
+
       </div>
     </div>
   );
