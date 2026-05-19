@@ -17,6 +17,13 @@ import ForgotPassword from "./login/ForgotPassword";
 import ResetPassword from "./login/ResetPassword";
 import LandingPage from "./landingpage/LandingPage";
 import Dashboard from "./dashboard/Dashboard";
+import AddNetworkForm from "./admin/networks/AddNetworkForm";
+import AddFieldForm from "./admin/fields/AddFieldForm";
+import NetworkList from "./admin/networks/NetworkList";
+import AdminDashboard from "./admin/dashboard/AdminDashboard";
+import FieldList from "./admin/fields/FieldList";
+import ClientList from "./admin/clients/ClientList";
+
 function App() {
   return (
     <Router>
@@ -25,12 +32,10 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        
+
         <Route path="/auth/callback" element={<SSOCallback />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-
-
 
         {/* With navbar */}
         <Route element={<><Navbar /><Outlet /></>}>
@@ -43,6 +48,13 @@ function App() {
           <Route path="/paymenthistory" element={<PaymentHistory />} />
           <Route path="/modalcard" element={<ModalCard />} />
           <Route path="/scrapinghistory" element={<QueryHistory />} />
+
+          <Route path="/AdminDashboard" element={<AdminDashboard />} />
+          <Route path="/AddNetworkForm" element={<AddNetworkForm />} />
+          <Route path="/AddFieldForm" element={<AddFieldForm />} />
+          <Route path="/NetworkList" element={<NetworkList />} />
+          <Route path="/FieldList" element={<FieldList />} />
+          <Route path="/ClientList" element={<ClientList />} />
         </Route>
       </Routes>
     </Router>

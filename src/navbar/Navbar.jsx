@@ -2,32 +2,43 @@ import { useState, useRef, useEffect } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import NotificationPanel from "../notifications/NotificationPanel";
-
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
 
-const navItems = [
-  {
-    label: "Dashboard",
-    path: "/Dashboard",
-  },
-  {
-    label: "API",
-    items: [
-      { label: "Listing details", path: "/listing", icon: <i className="fa-regular fa-file-lines"></i>, desc: "Retrieve detailed listing data" },
-      { label: "Page reviews", path: "/reviews", icon: <i className="fa-regular fa-star"></i>, desc: "Access page-level review data" },
-      { label: "Match listing", path: "/match", icon: <i className="fa-solid fa-magnifying-glass"></i>, desc: "Match and identify listings" },
-    ]
-  },
-  {
-    label: "Payments",
-    items: [
-      { label: "Manage payments", path: "/payment", icon: <i className="fa-regular fa-credit-card"></i>, desc: "Update payment methods" },
-      { label: "Payment history", path: "/paymenthistory", icon: <i className="fa-regular fa-clock"></i>, desc: "View past transactions" },
-    ]
+const getNavItems = (role) => {
+  if (role === "admin") {
+    return [
+      { label: "Dashboard", path: "/AdminDashboard" },
+      { label: "Users", path: "/ClientList" },
+      { label: "Plans", path: "/admin/plans" },
+      { label: "Networks", path: "/NetworkList" },
+      { label: "Fields", path: "/FieldList" },
+    ];
   }
-]
+  return [
+    {
+      label: "Dashboard",
+      path: "/Dashboard",
+    },
+    {
+      label: "API",
+      items: [
+        { label: "Listing details", path: "/listing", icon: <i className="fa-regular fa-file-lines"></i>, desc: "Retrieve detailed listing data" },
+        { label: "Page reviews", path: "/reviews", icon: <i className="fa-regular fa-star"></i>, desc: "Access page-level review data" },
+        { label: "Match listing", path: "/match", icon: <i className="fa-solid fa-magnifying-glass"></i>, desc: "Match and identify listings" },
+      ]
+    },
+    {
+      label: "Payments",
+      items: [
+        { label: "Manage payments", path: "/payment", icon: <i className="fa-regular fa-credit-card"></i>, desc: "Update payment methods" },
+        { label: "Payment history", path: "/paymenthistory", icon: <i className="fa-regular fa-clock"></i>, desc: "View past transactions" },
+        { label: "Invoices", path: "/invoices", icon: <i className="fa-regular fa-file-lines"></i>, desc: "Download and manage invoices" },
+      ]
+    }
+  ];
+};
 
 function NavDropdown({ label, items }) {
   const [open, setOpen] = useState(false)
@@ -82,11 +93,13 @@ function UserDropdown({ userName }) {
   const ref = useRef(null)
   const navigate = useNavigate()
   const { logout } = useAuth()
+  const role = localStorage.getItem("role")
 
   const handleLogout = () => {
     setOpen(false)
-    logout()                            // removes token
-    navigate("/login")                  // redirects
+    logout()
+    localStorage.removeItem("role")
+    navigate("/login")
   }
 
   useEffect(() => {
@@ -112,7 +125,11 @@ function UserDropdown({ userName }) {
 
       <div className={`user-dropdown-menu ${open ? "open" : ""}`}>
         <div className="user-dropdown-arrow" />
-        <Link to="/profile" className="user-dropdown-item" onClick={() => setOpen(false)}>
+        <Link
+          to={role === "admin" ? "/admin/profile" : "/profile"}
+          className="user-dropdown-item"
+          onClick={() => setOpen(false)}
+        >
           <span className="user-menu-icon">
             <i className="fa-regular fa-user text-gray-400" style={{ fontSize: 12 }}></i>
           </span>
@@ -175,25 +192,30 @@ function NotificationDropdown() {
 export default function Navbar() {
   const { profile } = useProfile()
   const userName = profile?.full_name || "User"
+  const role = localStorage.getItem("role")
+  const navItems = getNavItems(role)
 
   return (
     <header className="navbar">
       <div className="navbar-content">
         <div className="navbar-left">
-          <Link to="/Dashboard" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
-  <img src="/zembra-logo.jpg" alt="Zembra" className="navbar-logo-mark" />
-  <span className="navbar-logo-text">Zembra</span>
-</Link>
+          <Link
+            to={role === "admin" ? "/admin/dashboard" : "/Dashboard"}
+            style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}
+          >
+            <img src="/zembra-logo.jpg" alt="Zembra" className="navbar-logo-mark" />
+            <span className="navbar-logo-text">Zembra</span>
+          </Link>
           <div className="navbar-divider" />
           {navItems.map(item =>
-  item.items ? (
-    <NavDropdown key={item.label} label={item.label} items={item.items} />
-  ) : (
-    <Link key={item.label} to={item.path} className="nav-simple-link">
-      {item.label}
-    </Link>
-  )
-)}
+            item.items ? (
+              <NavDropdown key={item.label} label={item.label} items={item.items} />
+            ) : (
+              <Link key={item.label} to={item.path} className="nav-simple-link">
+                {item.label}
+              </Link>
+            )
+          )}
         </div>
 
         <div className="navbar-right">

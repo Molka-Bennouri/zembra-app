@@ -26,7 +26,12 @@ function Login({ onForgotPassword, onSignUp }) {
     setIsLoading(false);
 
     if (result.success) {
-      navigate("/dashboard");
+      const role = localStorage.getItem("role");
+  if (role === "admin") {
+    navigate("/AdminDashboard");
+  } else {
+    navigate("/dashboard");
+  }
     } else {
       setError(result.error || "Invalid email or password");
     }
