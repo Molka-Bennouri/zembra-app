@@ -1,188 +1,356 @@
-.form-container {
-  padding: 32px;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  margin-top: 32px;
-  width: 100%;
-  box-sizing: border-box;
-}
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Nunito:wght@400;500;600&display=swap");
 
-.form-container h2 {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 20px 0;
-  color: #111827;
-  text-align: left;
-}
-
-.form-container .form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-.form-container label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #111827;
-  margin-bottom: 8px;
-  text-align: left;
-}
-
-.form-container input {
-  padding: 10px 12px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #111827;
-  outline: none;
-  font-family: inherit;
-  width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.2s;
-}
-
-.form-container input::placeholder {
-  color: #9ca3af;
-}
-
-.form-container input:focus {
-  border-color: #1d4ed8;
-}
-
-.form-container .section-divider {
-  border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 28px 0;
-}
-
-.form-container .btn-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
-}
-
-.form-container .btn-primary {
-  background: #0046FF;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.form-container .btn-primary:hover {
-  background: #2235b8;
-}
-
-.form-container .btn-secondary {
-  background: #f3f4f6;
-  color: #111827;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.form-container .btn-secondary:hover {
-  background: #e5e7eb;
-}
-
-.form-container .btn-danger {
-  background: #e8457a;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.form-container .btn-danger:hover {
-  background: #d63570;
-}
-
-/* ── Two-column layout ── */
-.two-col-layout {
+/* ── Grid ─────────────────────────────────────────── */
+.af-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 20px;
   align-items: start;
 }
 
-.settings-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 28px;
+@media (max-width: 680px) {
+  .af-grid { grid-template-columns: 1fr; }
 }
 
-.danger-zone {
-  border-top: 1px solid #e5e7eb;
-  padding-top: 20px;
-  margin-top: 20px;
+/* ── Card ─────────────────────────────────────────── */
+.af-card {
+  background: var(--color-card-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Card header ──────────────────────────────────── */
+.af-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.af-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.af-card-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.af-card-title {
+  font-family: "Sora", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.2px;
+}
+
+.af-card-subtitle {
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 1px;
+}
+
+/* ── Card body ────────────────────────────────────── */
+.af-card-body {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+/* ── Card footer ──────────────────────────────────── */
+.af-card-footer {
+  padding: 1rem 1.5rem;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
 }
 
-@media (max-width: 768px) {
-  .two-col-layout {
-    grid-template-columns: 1fr;
-  }
+.af-card-footer--split {
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* ── Modal ── */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+/* ── Field ────────────────────────────────────────── */
+.af-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* ── Label ────────────────────────────────────────── */
+.af-label {
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ── Input ────────────────────────────────────────── */
+.af-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-family: "Nunito", sans-serif;
+  color: var(--color-text-primary);
+  background: var(--color-card-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+
+.af-input::placeholder { color: var(--color-text-muted); }
+.af-input:hover  { border-color: #c4cde8; }
+.af-input:focus  { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(46,90,244,.1); }
+
+/* ── Password input with eye toggle ──────────────── */
+.af-input-eye-wrap {
+  position: relative;
+}
+
+.af-input-eye-wrap .af-input {
+  padding-right: 40px;
+}
+
+.af-eye-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  transition: color 0.15s;
 }
 
-.modal {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
+.af-eye-btn:hover { color: var(--color-text-secondary); }
+
+.af-eye-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Feedback messages ────────────────────────────── */
+.af-msg {
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  animation: af-fade-in 0.2s ease;
+}
+
+.af-msg svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.af-msg--ok {
+  color: #16a34a;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.af-msg--err {
+  color: var(--color-error);
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+@keyframes af-fade-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Buttons ──────────────────────────────────────── */
+.af-btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: "Nunito", sans-serif;
+  cursor: pointer;
+  border: 1px solid transparent;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.af-btn:active { transform: scale(0.98); }
+
+.af-btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.af-btn--primary:hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.af-btn--secondary {
+  background: var(--color-card-background);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.af-btn--secondary:hover {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  border-color: #c4cde8;
+}
+
+.af-btn--danger {
+  background: #e24b4a;
+  color: #fff;
+  border-color: #e24b4a;
+}
+
+.af-btn--danger:hover { background: #c73f3e; border-color: #c73f3e; }
+.af-btn--danger:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+.af-btn--danger-ghost {
+  background: transparent;
+  color: #e24b4a;
+  border-color: transparent;
+  padding: 0 4px;
+  font-size: 13px;
+}
+
+.af-btn--danger-ghost:hover {
+  color: #c73f3e;
+  background: #fef2f2;
+  border-color: #fecaca;
+  border-radius: var(--radius-md);
+}
+
+.af-btn--danger-ghost svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Modal overlay ────────────────────────────────── */
+.af-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+  animation: af-overlay-in 0.2s ease;
+}
+
+@keyframes af-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Modal box ────────────────────────────────────── */
+.af-modal {
+  background: var(--color-card-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(15,23,42,.18);
   width: 100%;
   max-width: 420px;
+  overflow: hidden;
+  animation: af-modal-in 0.22s ease;
+}
+
+@keyframes af-modal-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.af-modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.af-modal-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: #fef2f2;
+  color: #e24b4a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.af-modal-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.af-modal-title {
+  font-family: "Sora", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.af-modal-desc {
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+.af-modal-body {
+  padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.modal h3 {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-.modal p {
-  margin: 0;
-  color: #555;
-  font-size: 0.9rem;
-}
-
-.modal-actions {
+.af-modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-.error-text {
-  color: #e53e3e;
-  font-size: 0.85rem;
-  margin: 0;
+  gap: 10px;
+  padding: 1rem 1.5rem;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
 }

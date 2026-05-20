@@ -1,9 +1,88 @@
-.profile-page {
-  min-height: 100vh;
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Nunito:wght@400;500;600&display=swap");
+
+/* ── Tokens ── */
+:root {
+  --color-primary:         #2e5af4;
+  --color-primary-hover:   #2449d8;
+  --color-primary-light:   #eef2fe;
+  --color-bg:              #f9fafb;
+  --color-card-background: #ffffff;
+  --color-border:          #e2e6f0;
+  --color-text-primary:    #0f172a;
+  --color-text-secondary:  #64748b;
+  --color-text-muted:      #94a3b8;
+  --color-error:           #e24b4a;
+  --radius-md:             10px;
+  --radius-lg:             16px;
+  --shadow-card:           0 1px 3px rgba(46,90,244,.06), 0 4px 24px rgba(46,90,244,.06);
+  --font-display:          "Sora", sans-serif;
+  --font-body:             "Nunito", sans-serif;
 }
 
-.profile-main {
-  max-width: 1200px;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text-primary); }
+
+/* ── Page shell ── */
+.pp-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.pp-main {
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 40px;
+  padding: 2.5rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Loader ── */
+.pp-loader {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--color-bg);
+  font-family: var(--font-body);
+}
+
+.pp-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: pp-spin 0.75s linear infinite;
+}
+
+@keyframes pp-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pp-loader-text {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+}
+
+/* ── Error ── */
+.pp-error {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--color-error);
+  font-family: var(--font-body);
+}
+
+.pp-error svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }

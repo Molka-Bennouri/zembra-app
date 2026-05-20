@@ -1,8 +1,9 @@
-import "./ProfileHeader.css"
+import "./ProfileHeader.css";
 
 export default function ProfileHeader({ user, AccountForms }) {
   return (
-    <>
+    <div className="ph-wrapper">
+
       {/* Hero Section */}
       <section className="hero-section">
         <h1 className="hero-title">Manage Your Profile</h1>
@@ -11,26 +12,31 @@ export default function ProfileHeader({ user, AccountForms }) {
         </p>
       </section>
 
-      {/* Profile Card */}
-      <div className="profile-card">
-        <div className="profile-avatar-container">
-          <div className="profile-avatar">{user.initials}</div>
-        </div>
-        <div className="profile-details">
-          <h1 className="profile-name">{user.fullName}</h1>
-          <div className="profile-meta">
+      {/* ── Profile card ── */}
+      <div className="ph-profile-card">
+        <div className="ph-avatar">{user.initials}</div>
+        <div className="ph-profile-info">
+          <h2 className="ph-profile-name">{user.fullName}</h2>
+          <div className="ph-profile-meta">
+            {user.email && (
+              <span className="ph-meta-email">{user.email}</span>
+            )}
             {user.emailVerified && (
-              <div className="email-verified">
-                <i className="fa-regular fa-circle-check" style={{ fontSize: 12 }}></i>
-                <span>Email verified</span>
-              </div>
+              <span className="ph-verified-badge">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="8" cy="8" r="6.5" />
+                  <polyline points="5 8 7.2 10.2 11 6" />
+                </svg>
+                Verified
+              </span>
             )}
           </div>
         </div>
       </div>
 
-      {/* Forms */}
+      {/* ── Forms ── */}
       <AccountForms />
-    </>
-  )
+
+    </div>
+  );
 }
