@@ -1,9 +1,11 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useClientsList } from "../../hooks/useClientsList.js";
 import { deleteClient } from "../../utils/clientService";
 import './ClientList.css'
 
 export default function ClientList() {
+  const navigate = useNavigate();
   const { clients, loading, error, refetch } = useClientsList();
   const [search, setSearch] = useState("");
   const [deletingId, setDeletingId] = useState(null);
@@ -71,6 +73,16 @@ export default function ClientList() {
             <h1 className="cl-title">Clients</h1>
             <p className="cl-subtitle">Client management</p>
           </div>
+
+          {/* ← Add Client button */}
+          <div className="cl-header-actions">
+            <button
+              className="cl-btn cl-btn-primary"
+              onClick={() => navigate("/admin/clients/create")}
+            >
+              + Add Client
+            </button>
+          </div>
         </div>
 
         {/* Toolbar */}
@@ -92,13 +104,9 @@ export default function ClientList() {
 
         {/* Body */}
         <div className="cl-body">
-          {/* Error */}
           {error && <div className="cl-error">{error}</div>}
-
-          {/* Loading */}
           {loading && <div className="cl-loading">Loading...</div>}
 
-          {/* Table */}
           {!loading && !error && filtered.length > 0 && (
             <div className="cl-table-wrap">
               <table className="cl-table">
@@ -109,7 +117,7 @@ export default function ClientList() {
                     <th>Email</th>
                     <th>Role</th>
                     <th>Provider</th>
-                    <th>Created At</th>
+                    <th>Joined</th>
                     <th>Updated At</th>
                     <th>Actions</th>
                   </tr>
@@ -133,9 +141,7 @@ export default function ClientList() {
                       <td>
                         {client.role ? (
                           <span className="cl-badge">{client.role}</span>
-                        ) : (
-                          "—"
-                        )}
+                        ) : "—"}
                       </td>
 
                       <td>
@@ -143,20 +149,22 @@ export default function ClientList() {
                           <span className="cl-badge cl-badge-alt">
                             {client.provider}
                           </span>
-                        ) : (
-                          "—"
-                        )}
+                        ) : "—"}
                       </td>
 
-                      <td className="cl-mono">
-                        {client.created_at ?? "—"}
-                      </td>
-
-                      <td className="cl-mono">
-                        {client.updated_at ?? "—"}
-                      </td>
+                      <td className="cl-mono">{client.created_at ?? "—"}</td>
+                      <td className="cl-mono">{client.updated_at ?? "—"}</td>
 
                       <td className="cl-actions">
+                        {/* ← Edit button */}
+                        <button
+                          className="cl-action-edit"
+                          onClick={() => navigate(`/admin/clients/${client.id}/edit`)}
+                          disabled={deletingId === client.id}
+                        >
+                          Edit
+                        </button>
+
                         <button
                           className="cl-action-delete"
                           onClick={() => handleDeleteClick(client.id)}
@@ -172,11 +180,8 @@ export default function ClientList() {
             </div>
           )}
 
-          {/* Empty */}
           {!loading && !error && filtered.length === 0 && (
-            <div className="cl-empty">
-              No clients found.
-            </div>
+            <div className="cl-empty">No clients found.</div>
           )}
         </div>
       </div>
