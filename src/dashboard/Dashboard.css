@@ -1,34 +1,40 @@
 /* ============================================================
-   BASE — shared by both dashboards
-   ============================================================ */
+   BASE — Shared Styles
+============================================================ */
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .adm-root {
+  margin: 5px;
   padding: 1.25rem 0;
   font-family: sans-serif;
   color: #111;
-  margin: 5px;
 }
 
-/* ── Titles ── */
+/* ============================================================
+   TITLES
+============================================================ */
+
 .adm-title {
   font-size: 18px;
   font-weight: 500;
 }
 
 .adm-subtitle {
-  font-size: 13px;
-  color: #888;
   margin-top: 2px;
   margin-bottom: 1.25rem;
+  font-size: 13px;
+  color: #888;
 }
 
-/* ── KPI Grid ── */
+/* ============================================================
+   KPI GRID
+============================================================ */
+
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -37,31 +43,32 @@
 }
 
 .kpi {
+  padding: 1rem;
   background: #fff;
   border: 0.5px solid #e8e8e8;
   border-radius: 8px;
-  padding: 1rem;
 }
 
 .kpi-label {
+  margin-bottom: 6px;
   font-size: 12px;
   color: #888;
-  margin-bottom: 6px;
 }
 
 .kpi-value {
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1;
   display: flex;
   align-items: baseline;
   gap: 3px;
+
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
 }
 
 .kpi-denom {
   font-size: 14px;
-  color: #aaa;
   font-weight: 400;
+  color: #aaa;
 }
 
 .kpi-footer {
@@ -76,18 +83,57 @@
   color: #aaa;
 }
 
-/* ── Badges ── */
-.badge {
-  font-size: 11px;
+/* ============================================================
+   BADGES
+============================================================ */
+
+.badge,
+.status-badge,
+.code-badge,
+.err-code,
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+
   padding: 2px 7px;
   border-radius: 6px;
+
+  font-size: 11px;
   font-weight: 500;
 }
 
-.badge-up     { background: #EAF3DE; color: #3B6D11; }
-.badge-down   { background: #FCEBEB; color: #A32D2D; }
+.badge-up,
+.badge-success,
+.badge-active,
+.code-2xx,
+.live-badge {
+  background: #eaf3de;
+  color: #3b6d11;
+}
 
-/* ── Charts Grid ── */
+.badge-down,
+.badge-error,
+.code-5xx,
+.err-code-5xx {
+  background: #fcebeb;
+  color: #a32d2d;
+}
+
+.code-4xx,
+.err-code-4xx {
+  background: #faeeda;
+  color: #854f0b;
+}
+
+.code-badge {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+/* ============================================================
+   CHARTS GRID
+============================================================ */
+
 .charts-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -95,12 +141,15 @@
   margin-bottom: 1rem;
 }
 
-/* ── Card ── */
+/* ============================================================
+   CARD
+============================================================ */
+
 .card {
+  padding: 1rem;
   background: #fff;
   border: 0.5px solid #e8e8e8;
   border-radius: 12px;
-  padding: 1rem 1rem;
 }
 
 .card-title {
@@ -109,83 +158,86 @@
 }
 
 .card-sub {
-  font-size: 12px;
-  color: #888;
   margin-top: 2px;
   margin-bottom: 12px;
+
+  font-size: 12px;
+  color: #888;
 }
 
 /* ============================================================
-   ADMIN — AdminDashboard.jsx
-   ============================================================ */
+   ADMIN DASHBOARD
+============================================================ */
 
-/* ── Bottom Grid ── */
+/* Bottom Grid */
+
 .bottom-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-/* ── Error card ── */
+
+
+/* Error Card */
+
 .error-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 4px;
-}
 
-.live-badge {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: #EAF3DE;
-  color: #3B6D11;
-  font-weight: 500;
+  margin-bottom: 4px;
 }
 
 .error-table {
   width: 100%;
   border-collapse: collapse;
+
   font-size: 12px;
 }
 
 .error-table th {
-  color: #aaa;
-  font-weight: 400;
-  text-align: left;
   padding: 4px 6px;
+
+  text-align: left;
+  font-weight: 400;
+  color: #aaa;
+
   border-bottom: 0.5px solid #eee;
 }
 
 .error-table td {
-  padding: 6px 6px;
+  padding: 6px;
+
   color: #888;
+
   border-bottom: 0.5px solid #f0f0f0;
 }
 
 .err-code {
   padding: 2px 6px;
-  border-radius: 6px;
-  font-weight: 500;
+}
+
+.err-endpoint {
   font-size: 11px;
 }
 
-.err-code-4xx { background: #FAEEDA; color: #854F0B; }
-.err-code-5xx { background: #FCEBEB; color: #A32D2D; }
-
-.err-endpoint { font-size: 11px; }
-.err-count    { font-weight: 500; color: #333; }
-
+.err-count {
+  font-weight: 500;
+  color: #333;
+}
 
 /* ============================================================
-   CLIENT — Dashboard.jsx
-   ============================================================ */
+   CLIENT DASHBOARD
+============================================================ */
 
-/* ── Page header ── */
+/* Page Header */
+
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   margin-bottom: 0.25rem;
 }
 
@@ -200,56 +252,37 @@
   color: #aaa;
 }
 
+/* Refresh Button */
+
 .refresh-btn {
   display: flex;
   align-items: center;
   gap: 5px;
+
   padding: 0.3rem 0.8rem;
+
+  background: #fff;
   border: 0.5px solid #e8e8e8;
   border-radius: 6px;
-  background: #fff;
+
   font-size: 12px;
   font-weight: 500;
+
   cursor: pointer;
   transition: 0.15s;
 }
 
-.refresh-btn:hover { background: #f3f3f3; }
-
-/* ── Status badges ── */
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  padding: 2px 7px;
-  border-radius: 6px;
-  font-weight: 500;
+.refresh-btn:hover {
+  background: #f3f3f3;
 }
 
-.badge-active  { background: #EAF3DE; color: #3B6D11; }
-.badge-success { background: #EAF3DE; color: #3B6D11; }
-.badge-error   { background: #FCEBEB; color: #A32D2D; }
+/* Recent Requests */
 
-/* ── Code badges ── */
-.code-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-family: monospace;
-}
-
-.code-2xx { background: #EAF3DE; color: #3B6D11; }
-.code-4xx { background: #FAEEDA; color: #854F0B; }
-.code-5xx { background: #FCEBEB; color: #A32D2D; }
-
-/* ── Recent Requests ── */
 .req-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+
   margin-bottom: 10px;
 }
 
@@ -257,74 +290,116 @@
   display: flex;
   justify-content: flex-end;
   gap: 4px;
+
   margin-bottom: 8px;
 }
 
 .sd-tab {
   padding: 0.25rem 0.7rem;
+
+  background: transparent;
   border: 0.5px solid #e8e8e8;
   border-radius: 6px;
-  background: transparent;
+
   font-size: 12px;
+  text-transform: capitalize;
+
   cursor: pointer;
   transition: 0.15s;
-  text-transform: capitalize;
 }
 
-.sd-tab:hover    { background: #f3f3f3; }
-.sd-tab--active  { background: #111; border-color: #111; color: #fff; }
+.sd-tab:hover {
+  background: #f3f3f3;
+}
+
+.sd-tab--active {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}
+
+/* Requests Table */
 
 .req-table__head,
 .req-table__row {
   display: grid;
   grid-template-columns: 110px 1fr 90px 70px 150px;
-  padding: 6px 8px;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
+
+  padding: 6px 8px;
 }
 
 .req-table__head {
   background: #f9f9f9;
   border-bottom: 0.5px solid #eee;
+
   font-size: 11px;
+  font-weight: 400;
   color: #aaa;
+
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-weight: 400;
 }
 
 .req-table__row {
-  font-size: 12px;
   border-bottom: 0.5px solid #f0f0f0;
+
+  font-size: 12px;
   transition: 0.1s;
 }
 
-.req-table__row:hover { background: #f9f9f9; }
+.req-table__row:hover {
+  background: #f9f9f9;
+}
 
-.t-network { font-weight: 500; color: #111; }
-.t-slug    { color: #aaa; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.t-muted   { font-size: 11px; color: #aaa; }
+.t-network {
+  font-weight: 500;
+  color: #111;
+}
+
+.t-slug {
+  overflow: hidden;
+
+  font-size: 11px;
+  color: #aaa;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.t-muted {
+  font-size: 11px;
+  color: #aaa;
+}
 
 .table-empty {
   padding: 1.5rem;
+
   text-align: center;
   font-size: 12px;
   color: #aaa;
 }
 
-
 /* ============================================================
    RESPONSIVE
-   ============================================================ */
+============================================================ */
 
 @media (max-width: 1024px) {
-  .kpi-grid    { grid-template-columns: repeat(2, 1fr); }
-  .charts-grid { grid-template-columns: 1fr; }
-  .bottom-grid { grid-template-columns: 1fr; }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-grid,
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
-  .kpi-grid { grid-template-columns: 1fr; }
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
   .req-table__head,
   .req-table__row {
     grid-template-columns: 80px 1fr 70px 50px 110px;
