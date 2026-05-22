@@ -20,7 +20,7 @@ import Dashboard from "./dashboard/Dashboard";
 import AddNetworkForm from "./admin/networks/AddNetworkForm";
 import AddFieldForm from "./admin/fields/AddFieldForm";
 import NetworkList from "./admin/networks/NetworkList";
-import AdminDashboard from "./admin/dashboard/AdminDashboard";
+import AdminDashboard from "./dashboard/AdminDashboard";
 import FieldList from "./admin/fields/FieldList";
 import ClientList from "./admin/clients/ClientList";
 import PlansList from "./admin/plans/PlansList";

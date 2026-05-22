@@ -1,92 +1,90 @@
-import { useState, useEffect, useCallback } from "react";
-const API = "http://127.0.0.1:8000/api";
-const POLL_INTERVAL = 30000;
+function useDashboard() {
+  const [stats, setStats] = useState(EMPTY_STATS);
+  const [requests, setRequests] = useState([]);
+  const [chartData, setChartData] = useState([]); // ajouté
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastUpdate, setLastUpdate] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
-const EMPTY_STATS = {
-  networks: { active: 0, total: 0, list: [] },
-  requests_24h: {
-    total: 0,
-    success: 0,
-    errors: 0,
-  },
-  success_rate: 0,
-};
+  const authHeader = () => ({
+    Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+  });
 
-export default function useDashboard() {
-  const [stats, setStats] = useState(EMPTY_STATS);
-  const [requests, setRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [lastUpdate, setLastUpdate] = useState(null);
-  const [refreshing, setRefreshing] = useState(false);
+  const getJson = useCallback(async (url) => {
+    const res = await fetch(url, {
+      headers: authHeader(),
+    });
 
-  // ── API calls ─────────────────────────
+    if (!res.ok) {
+      throw new Error(`${res.status}`);
+    }
 
-  const fetchKpis = useCallback(async () => {
-    const res = await fetch(`${API}/kpis`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
-    });
-    if (!res.ok) throw new Error(`KPIs: ${res.status}`);
-    return res.json();
-  }, []);
+    return res.json();
+  }, []);
 
-  const fetchRequests = useCallback(async () => {
-    const res = await fetch(`${API}/dashboard/requests`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
-    });
-    if (!res.ok) throw new Error(`Requests: ${res.status}`);
-    return res.json();
-  }, []);
+  const fetchKpis = useCallback(
+    () => getJson(`${API}/kpis`),
+    [getJson]
+  );
 
-  // ── Refresh ───────────────────────────
+  const fetchRequests = useCallback(
+    () => getJson(`${API}/dashboard/requests`),
+    [getJson]
+  );
 
-  const refresh = useCallback(
-    async (showSpinner = false) => {
-      if (showSpinner) setRefreshing(true);
-      setError(null);
+  const fetchChart = useCallback(
+    () => getJson(`${API}/dashboard/chart?days=7`),
+    [getJson]
+  );
 
-      try {
-        const [kpis, reqs] = await Promise.all([
-          fetchKpis(),
-          fetchRequests(),
-        ]);
+  const refresh = useCallback(async (showSpinner = false) => {
+    if (showSpinner) setRefreshing(true);
 
-        setStats(kpis);
-        setRequests(reqs);
-        setLastUpdate(new Date());
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-        setRefreshing(false);
-      }
-    },
-    [fetchKpis, fetchRequests]
-  );
+    setError(null);
 
-  // ── Initial load + polling ────────────
+    try {
+      const [kpis, reqs, chart] =
+        await Promise.all([
+          fetchKpis(),
+          fetchRequests(),
+          fetchChart(),
+        ]);
 
-  useEffect(() => {
-    refresh();
+      setStats(kpis);
+      setRequests(reqs);
+      setChartData(chart);
+      setLastUpdate(new Date());
 
-    const timer = setInterval(() => {
-      refresh();
-    }, POLL_INTERVAL);
+    } catch (e) {
+      setError(e.message);
 
-    return () => clearInterval(timer);
-  }, [refresh]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [fetchKpis, fetchRequests, fetchChart]);
 
-  return {
-    stats,
-    requests,
-    loading,
-    error,
-    lastUpdate,
-    refreshing,
-    refresh,
-  };
+  useEffect(() => {
+    refresh();
+
+    const timer = setInterval(
+      () => refresh(),
+      POLL_INTERVAL
+    );
+
+    return () => clearInterval(timer);
+
+  }, [refresh]);
+
+  return {
+    stats,
+    requests,
+    chartData, // ajouté
+    loading,
+    error,
+    lastUpdate,
+    refreshing,
+    refresh,
+  };
 }
