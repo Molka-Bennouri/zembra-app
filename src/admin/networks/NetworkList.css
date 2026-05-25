@@ -31,8 +31,8 @@
   --shadow-card: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
   --shadow-dialog: 0 8px 40px rgba(0,0,0,.18);
 
-  --font: 'DM Sans', sans-serif;
-  --font-mono: 'Fira Code', 'Cascadia Mono', monospace;
+  --font:      'DM Sans', sans-serif;
+  --font-mono: 'Space Mono', monospace;
 }
 
 /* ── Layout ── */
@@ -51,7 +51,7 @@
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  max-width: 960px;
+  max-width: 1360px;
   margin: 0 auto;
 }
 
