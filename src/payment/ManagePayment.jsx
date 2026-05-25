@@ -4,17 +4,14 @@ import "./ManagePayment.css";
 import { usePlans } from "../hooks/usePlans";
 
 export default function ManagePayment() {
-  const [selectedPlan, setSelectedPlan] = useState("Startup");
   const [selectedPlanId, setSelectedPlanId] = useState(null);
   const [showAddCard, setShowAddCard] = useState(false);
   const [modalMode, setModalMode] = useState("add");
 
   const { plans, loading, error } = usePlans();
 
-  
   const handleBuyPlan = (planId) => {
     setSelectedPlanId(planId);
-    setSelectedPlan(planId);
     setModalMode("buy");
     setShowAddCard(true);
   };
@@ -34,6 +31,7 @@ export default function ManagePayment() {
           <span className="current-plan-label">Current Plan</span>
           <span className="current-plan-name">Startup</span>
         </div>
+
         <div className="current-plan-usage">
           <div className="usage-bar-container">
             <div className="usage-bar" style={{ width: "65%" }} />
@@ -48,9 +46,10 @@ export default function ManagePayment() {
             <div
               key={plan.id}
               className={`plan-card ${
-                selectedPlan === plan.id ? "selected" : ""
+                selectedPlanId === plan.id ? "selected" : ""
               } ${plan.recommended ? "recommended" : ""}`}
             >
+
               {plan.recommended && (
                 <span className="recommended-badge">Recommended</span>
               )}
@@ -74,6 +73,7 @@ export default function ManagePayment() {
               >
                 Buy
               </button>
+
             </div>
           ))}
         </div>
