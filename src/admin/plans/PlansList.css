@@ -3,7 +3,7 @@
   padding: 24px;
   min-height: 100vh;
   background: #f8f9fb;
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   color: #1a1a2e;
 }
@@ -348,6 +348,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
+  width: 140px;
 }
 .pl-action-btn {
   display: inline-flex;

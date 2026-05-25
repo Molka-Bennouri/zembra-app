@@ -44,3 +44,21 @@ export const deleteClient = async (id) => {
     return { error: err.message };
   }
 };
+
+export const updateClient = async (id, payload) => {
+  try {
+    const data = await fetch(`${BASE_URL}/clients/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
+      body: JSON.stringify(payload),
+    }).then(handleResponse);
+
+    const client = { ...data, name: data.full_name };
+    return { client, error: null };
+  } catch (err) {
+    return { client: null, error: err.message };
+  }
+};

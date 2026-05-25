@@ -118,10 +118,10 @@ const AccountForms = () => {
 
   return (
     <>
-      <div className="af-grid">
+      <div className="af-card af-card--split">
 
         {/* ── Card 1: Personal Info ── */}
-        <div className="af-card">
+        <div className="af-split-panel">
           <div className="af-card-header">
             <div className="af-card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -175,8 +175,11 @@ const AccountForms = () => {
           </div>
         </div>
 
+        {/* ── Vertical divider ── */}
+  <div className="af-vertical-divider" />
+
         {/* ── Card 2: Security ── */}
-        <div className="af-card">
+        <div className="af-split-panel">
           <div className="af-card-header">
             <div className="af-card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

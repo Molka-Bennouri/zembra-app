@@ -25,6 +25,8 @@ import FieldList from "./admin/fields/FieldList";
 import ClientList from "./admin/clients/ClientList";
 import PlansList from "./admin/plans/PlansList";
 import AddPlanForm from "./admin/plans/AddPlanForm";
+import EditClientPage from "./admin/clients/EditClientPage";
+import AddClientPage from "./admin/clients/AddClientPage";
 
 function App() {
   return (
@@ -59,6 +61,8 @@ function App() {
           <Route path="/FieldList" element={<FieldList />} />
           <Route path="/ClientList" element={<ClientList />} />
           <Route path="/PlansList" element={<PlansList />} />
+          <Route path="/admin/clients/create"    element={<AddClientPage />} />
+          <Route path="/admin/clients/:id/edit" element={<EditClientPage />} />
         </Route>
       </Routes>
     </Router>
