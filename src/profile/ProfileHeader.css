@@ -8,13 +8,13 @@
 }
 
 /* ── Hero ── */
-/* ── Hero ── */
 .hero-section {
   background: #ebeefb;
   border: 1px solid #ebeefb;
   border-radius: 12px;
   padding: 28px 32px;
   margin-bottom: 20px;
+  margin-top: -30px;
 }
 
 .hero-title {

@@ -354,3 +354,32 @@
   background: var(--color-bg);
   border-top: 1px solid var(--color-border);
 }
+
+.af-card--split {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.af-split-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.af-vertical-divider {
+  width: 1px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+@media (max-width: 680px) {
+  .af-card--split {
+    flex-direction: column;
+  }
+  .af-vertical-divider {
+    width: auto;
+    height: 1px;
+  }
+}
