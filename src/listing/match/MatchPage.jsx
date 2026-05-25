@@ -3,13 +3,16 @@ import './MatchPage.css';
 
 import HeroSection from '../components/HeroSection';
 import Tabs from '../components/Tabs';
-
 import CurlRequest from '../components/CurlRequest';
-
 import MatchQueryBuild from './MatchQueryBuild';
+import QueryHistory from '../QueryHistory';
 
 const MatchPage = () => {
   const [activeTab, setActiveTab] = useState('visual');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const handleQueryExecuted = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
 
   return (
     <div className="api-query-builder">
@@ -26,12 +29,15 @@ const MatchPage = () => {
 
         {/* Content */}
         <div className="tab-content">
-          {activeTab === 'visual' && (
+         {activeTab === 'visual' && (
             <div className="visual-layout">
-              <MatchQueryBuild />
+              <MatchQueryBuild onQueryExecuted={handleQueryExecuted} />
             </div>
           )}
           {activeTab === 'curl' && <CurlRequest />}
+          {activeTab === 'history' && (
+            <QueryHistory refreshTrigger={refreshTrigger} type="match" />
+          )}
         </div>
 
       </main>

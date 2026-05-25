@@ -7,9 +7,9 @@ import { useMatchQuery } from "../../hooks/useMatchQuery";
 import CurlRequest from "../components/CurlRequest";
 import QueryResponse from "../components/QueryResponse";
 
-const API_URL = "https://api.zembra.io/match";
 
-function MatchQueryBuild() {
+
+function MatchQueryBuild({ onQueryExecuted }) {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [lat, setLat] = useState("");
@@ -27,7 +27,7 @@ function MatchQueryBuild() {
   };
 
   // Hook Match Query
-  const { responseData, loading: queryLoading, executeQuery } = useMatchQuery({ apiUrl: API_URL });
+ const { responseData, loading: queryLoading, executeQuery } = useMatchQuery({ onQueryExecuted });
 
   // Networks sélectionnés
   const activeNetworks = Object.keys(selectedNetworks)
@@ -120,7 +120,8 @@ function MatchQueryBuild() {
                   lat,
                   lng,
                   selectedNetworks,
-                  selectedFields
+                  selectedFields,
+                  networks,
                 })}
                 disabled={!name || !address || !activeNetworks.length || queryLoading}
               >

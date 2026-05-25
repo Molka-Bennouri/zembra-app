@@ -1,48 +1,48 @@
 // /hooks/useMatchQuery.js
 import { useState, useCallback } from "react";
+import { api } from "../utils/api";
 
-export const useMatchQuery = ({ apiUrl }) => {
+export const useMatchQuery = ({ onQueryExecuted } = {}) => {
   const [responseData, setResponseData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const executeQuery = useCallback(
-    async ({ name, address, lat, lng, selectedNetworks, selectedFields }) => {
-      if (!name || !address) return;
+  const executeQuery = useCallback(async ({ name, address, lat, lng, selectedNetworks, selectedFields, networks }) => {
+    if (!name || !address) return;
 
-      const payload = {
-        name,
-        address,
-        lat,
-        lng,
-        networks: Object.keys(selectedNetworks).filter((k) => selectedNetworks[k]),
-        fields: Object.keys(selectedFields).filter((k) => selectedFields[k]),
-      };
+    const params = new URLSearchParams();
+    params.set("name", name);
+    params.set("address", address);
+    if (lat) params.set("lat", lat);
+    if (lng) params.set("lng", lng);
 
-      setLoading(true);
-      setError(null);
-      setResponseData(null);
+    // 👇 envoie le slug/name du network, pas l'ID
+    Object.keys(selectedNetworks)
+      .filter((k) => selectedNetworks[k])
+      .forEach((k) => {
+        const net = networks.find((n) => String(n.id) === String(k));
+        if (net?.name) params.append("networks[]", net.name);
+      });
 
-      try {
-        const res = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+    Object.keys(selectedFields)
+      .filter((k) => selectedFields[k])
+      .forEach((f) => params.append("fields[]", f));
 
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    setLoading(true);
+    setError(null);
+    setResponseData(null);
 
-        const json = await res.json();
-        setResponseData(json);
-      } catch (err) {
-        setError(err.message);
-        setResponseData({ error: true, message: err.message });
-      } finally {
-        setLoading(false);
-      }
-    },
-    [apiUrl]
-  );
+    try {
+      const json = await api.get(`/listing/match?${params.toString()}`);
+      setResponseData(json);
+      onQueryExecuted?.();
+    } catch (err) {
+      setError(err.message);
+      setResponseData({ error: true, message: err.message });
+    } finally {
+      setLoading(false);
+    }
+  }, [onQueryExecuted]);  ;
 
   return { responseData, loading, error, executeQuery };
 };
