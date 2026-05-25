@@ -11,6 +11,13 @@ export default function ModalCard({ show, onClose, mode = "add", planId }) {
     setLoading(true);
     setError(null);
 
+    // sécurité simple
+    if (!planId) {
+      setError("Missing plan_id");
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch("http://localhost:8000/api/stripe/checkout", {
         method: "POST",
@@ -50,24 +57,21 @@ export default function ModalCard({ show, onClose, mode = "add", planId }) {
         <div className="modal-header">
           <h3>Confirm Payment</h3>
           <button className="modal-close" onClick={onClose}>
-            <i className="fa-solid fa-xmark" style={{ fontSize: 14 }}></i>
+            ✕
           </button>
         </div>
 
-        <div className="modal-body" style={{ padding: "24px", textAlign: "center" }}>
-          <p style={{ marginBottom: "16px", color: "#555" }}>
-            You will be redirected to the secure Stripe payment page.
-          </p>
+        <div className="modal-body">
+          <p>You will be redirected to Stripe.</p>
 
           {error && (
-            <p className="card-error" style={{ color: "#e74c3c", marginBottom: "12px" }}>
+            <p className="card-error" style={{ color: "#e74c3c" }}>
               {error}
             </p>
           )}
 
           <div className="form-actions">
             <button
-              type="button"
               className="btn-cancel"
               onClick={onClose}
               disabled={loading}
@@ -76,7 +80,6 @@ export default function ModalCard({ show, onClose, mode = "add", planId }) {
             </button>
 
             <button
-              type="button"
               className="btn-save"
               onClick={handleBuy}
               disabled={loading}

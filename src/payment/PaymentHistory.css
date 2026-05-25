@@ -181,7 +181,7 @@
 .table-header,
 .table-row {
   display: grid;
-  grid-template-columns: 140px 1fr 160px 100px 110px 60px;
+  grid-template-columns: 140px 1fr 160px 100px;
   padding: 1rem 1.25rem;
   gap: 1rem;
   align-items: center;
