@@ -15,19 +15,33 @@ const request = async (method, endpoint, data = null, requiresAuth = false) => {
     ...(data ? { body: JSON.stringify(data) } : {}),
   };
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, config);
-
-  if (response.status === 401) {
-    removeToken();
-    window.location.href = "/login";
-    throw new Error("Unauthorized. Please log in again.");
+  let response;
+  try {
+    response = await fetch(`${BASE_URL}${endpoint}`, config);
+  } catch (networkError) {
+    throw new Error("Cannot reach server. Check your connection.");
   }
 
-  const json = await response.json();
+  if (response.status === 401) {
+    if (requiresAuth) {
+      removeToken();
+      window.location.href = "/login";
+      throw new Error("Unauthorized. Please log in again.");
+    }
+  }
+
+  let json = {};
+  try {
+    json = await response.json();
+  } catch {
+    // body was empty or not JSON
+  }
 
   if (!response.ok) {
     const message =
-      json?.message ||
+      json?.message || // Original code only checked (json?.message) which didn't match, so it fell through to the hardcoded fallback
+      json?.detail ||
+      json?.error ||
       Object.values(json?.errors || {}).flat().join(" ") ||
       "Something went wrong.";
     throw new Error(message);

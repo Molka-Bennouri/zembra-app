@@ -19,7 +19,7 @@ function SSOCallback() {
 
     if (token) {
       saveToken(token);
-      navigate("/listing");
+      navigate("/Dashboard");
     } else {
       setError("No token received.");
       setTimeout(() => navigate("/login"), 3000);

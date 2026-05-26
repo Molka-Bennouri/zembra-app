@@ -16,16 +16,17 @@ function Login({ onForgotPassword, onSignUp }) {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
+    if (!email || !password) { // frontend validation before even calling the api
       setError("Please fill in all fields");
-      return;
+      return; // ← stops here, never reaches api.js
     }
 
     setIsLoading(true);
     const result = await login({ email, password });
-    setIsLoading(false);
+    
 
     if (result.success) {
+      setIsLoading(false);
       const role = localStorage.getItem("role");
   if (role === "admin") {
     navigate("/AdminDashboard");
@@ -33,7 +34,8 @@ function Login({ onForgotPassword, onSignUp }) {
     navigate("/dashboard");
   }
     } else {
-      setError(result.error || "Invalid email or password");
+      setError(result.error || "Invalid email or password"); // backup message
+      setIsLoading(false);
     }
   };
 
@@ -94,7 +96,7 @@ function Login({ onForgotPassword, onSignUp }) {
                 className="login-input"
                 placeholder="name@company.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setError(""); }}
                 autoComplete="email"
               />
             </div>
@@ -117,7 +119,7 @@ function Login({ onForgotPassword, onSignUp }) {
                   className="login-input"
                   placeholder="Enter your password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => { setPassword(e.target.value); setError(""); }}
                   autoComplete="current-password"
                 />
                 <button

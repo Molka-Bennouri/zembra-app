@@ -5,7 +5,14 @@ const BASE_URL = "http://127.0.0.1:8000/api/admin";
 const handleResponse = async (res) => {
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.message ?? `HTTP ${res.status}`);
+    console.log("handleResponse error body:", body);
+    const message =
+      body.message ||
+      body.detail ||
+      body.error ||
+      Object.values(body.errors || {}).flat().join(" ") ||
+      "Something went wrong.";
+    throw new Error(message);
   }
   return res.json();
 };

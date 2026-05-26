@@ -43,7 +43,7 @@ function Signup() {
     setIsLoading(false);
 
     if (result.success) {
-      navigate("/Dashboard");
+      navigate("/login");
     } else {
       setError(result.error || "Something went wrong. Please try again.");
     }
