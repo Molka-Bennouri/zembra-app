@@ -12,6 +12,7 @@ export function useAdminDashboard() {
 
   const [chartData, setChartData] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [networksData, setNetworksData] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -36,16 +37,18 @@ export function useAdminDashboard() {
   }, []);
 
   const fetchAll = useCallback(async () => {
-    const [dashboard, chart, errors] =
+    const [dashboard, chart, errors, networks] =
       await Promise.all([
         getJson(`${API}/dashboard`),
         getJson(`${API}/chart?days=7`),
         getJson(`${API}/errors`),
+        getJson(`${API}/networks`),
       ]);
 
     setStats(dashboard.stats);
     setChartData(chart);
     setErrors(errors);
+    setNetworksData(networks);
 
     setLastUpdate(new Date());
   }, [getJson]);
@@ -79,6 +82,7 @@ export function useAdminDashboard() {
     stats,
     chartData,
     errors,
+    networksData,
     loading,
     refreshing,
     error,

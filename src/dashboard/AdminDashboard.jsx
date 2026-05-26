@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 import "./Dashboard.css";
 import { useAdminDashboard } from "../hooks/useAdminDashboard";
 
@@ -60,6 +60,7 @@ export default function AdminDashboard() {
     stats,
     chartData,
     errors,
+    networksData,
     loading,
     error,
   } = useAdminDashboard();
@@ -136,9 +137,42 @@ export default function AdminDashboard() {
     },
   };
 
- 
+  // PIE CHART DATA
+  const colors = ["#6C63FF", "#3ECFCF", "#FF6B6B", "#FFA500", "#4ECDC4", "#95E1D3"];
+  const pieData = {
+    labels: networksData.map((n) => n.network),
+    datasets: [
+      {
+        label: "Network Usage",
+        data: networksData.map((n) => n.count),
+        backgroundColor: colors.slice(0, networksData.length),
+        borderColor: "#fff",
+        borderWidth: 2,
+      },
+    ],
+  };
 
-  
+  const pieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          color: "#888",
+          font: { size: 11 },
+          padding: 15,
+        },
+      },
+      tooltip: {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        padding: 10,
+        displayColors: true,
+      },
+    },
+  };
 
   return (
     <div className="adm-root">
@@ -191,6 +225,23 @@ export default function AdminDashboard() {
             <Bar data={barData} options={barOptions} />
           </div>
         </div>
+
+        {/* NETWORKS */}
+        <div className="card">
+          <div className="card-title">Networks Usage</div>
+          <div className="card-sub">Client network distribution</div>
+
+          <div className="chart-canvas-wrap" style={{ height: "300px" }}>
+            {networksData.length > 0 ? (
+              <Pie data={pieData} options={pieOptions} />
+            ) : (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#888" }}>
+                No network data available
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* ERRORS */}
         <div className="card">
           <div className="error-card-header">
