@@ -7,17 +7,20 @@ import "./LandingPage.css";
 
 const FEATURES = [
   {
-    icon: "📋",
+    icon: "fa-solid fa-list",
+    iconColor: "blue",
     title: "Listings",
     desc: "Receive and sync data from any platform in minutes through our intuitive RESTful API."
   },
   {
-    icon: "📊",
+    icon: "fa-solid fa-chart-bar",
+    iconColor: "teal",
     title: "Real-time Analytics",
     desc: "Live dashboards with percentage breakdowns and insights from recent queries and activity."
   },
   {
-    icon: "🤖",
+    icon: "fa-solid fa-brain",
+    iconColor: "purple",
     title: "AI & Sentiment Analysis",
     desc: "Smart sentiment analysis across multiple real reviews with automated insights and trend detection."
   },
@@ -39,11 +42,13 @@ function useInView(threshold = 0.15) {
   return [ref, inView];
 }
 
-function FeatureCard({ icon, title, desc, delay }) {
+function FeatureCard({ icon, iconColor, title, desc, delay }) {
   const [ref, inView] = useInView();
   return (
     <div ref={ref} className={`lp-feature-card ${inView ? "visible" : ""}`} style={{ transitionDelay: `${delay}ms` }}>
-      <div className="lp-feature-icon">{icon}</div>
+      <div className={`lp-feature-icon-wrap lp-feature-icon-wrap--${iconColor}`}>
+        <i className={icon} aria-hidden="true" />
+      </div>
       <h3 className="lp-feature-title">{title}</h3>
       <p className="lp-feature-desc">{desc}</p>
     </div>
