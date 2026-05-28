@@ -16,10 +16,19 @@ export default function ManagePayment() {
     setShowAddCard(true);
   };
 
+  // Show loader while fetching plans
+  if (loading) {
+    return (
+      <div className="pp-loader">
+        <div className="pp-spinner" />
+        <span className="pp-loader-text">Loading plans…</span>
+      </div>
+    );
+  }
+
   return (
     <div className="payment-page">
 
-      {loading && <p>Loading plans...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <div className="payment-header">
@@ -36,20 +45,21 @@ export default function ManagePayment() {
           <div className="usage-bar-container">
             <div className="usage-bar" style={{ width: "65%" }} />
           </div>
-          <span className="usage-text">6,500 / 10,000 API requests used</span>
+          <span className="usage-text">
+            6,500 / 10,000 API requests used
+          </span>
         </div>
       </div>
 
       <section className="plans-section">
         <div className="plans-grid">
-          {plans.map(plan => (
+          {plans.map((plan) => (
             <div
               key={plan.id}
               className={`plan-card ${
                 selectedPlanId === plan.id ? "selected" : ""
               } ${plan.recommended ? "recommended" : ""}`}
             >
-
               {plan.recommended && (
                 <span className="recommended-badge">Recommended</span>
               )}
@@ -58,12 +68,16 @@ export default function ManagePayment() {
 
               <div className="plan-price">
                 <span className="price-amount">${plan.amount}</span>
-                <span className="price-period">/{plan.duration_days} days</span>
+                <span className="price-period">
+                  /{plan.duration_days} days
+                </span>
               </div>
 
               <ul className="plan-features">
                 {plan.features?.map((f, i) => (
-                  <li key={i} className="plan-feature">{f}</li>
+                  <li key={i} className="plan-feature">
+                    {f}
+                  </li>
                 ))}
               </ul>
 
@@ -73,7 +87,6 @@ export default function ManagePayment() {
               >
                 Buy
               </button>
-
             </div>
           ))}
         </div>
