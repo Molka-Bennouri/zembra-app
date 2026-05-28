@@ -15,7 +15,6 @@ function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [acceptTerms, setAcceptTerms] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,17 +32,13 @@ function Signup() {
       setError("Password must be at least 8 characters");
       return;
     }
-    if (!acceptTerms) {
-      setError("Please accept the terms and conditions");
-      return;
-    }
 
     setIsLoading(true);
     const result = await register({ full_name: fullName, email, password });
     setIsLoading(false);
 
     if (result.success) {
-      navigate("/login");
+      navigate("/Dashboard");
     } else {
       setError(result.error || "Something went wrong. Please try again.");
     }
@@ -192,23 +187,6 @@ function Signup() {
                   </button>
                 </div>
               </div>
-            </div>
-
-            <div className="signup-terms">
-              <label className="signup-checkbox-label">
-                <input
-                  type="checkbox"
-                  className="signup-checkbox"
-                  checked={acceptTerms}
-                  onChange={(e) => setAcceptTerms(e.target.checked)}
-                />
-                <span className="signup-checkbox-text">
-                  I agree to the{" "}
-                  <button type="button" className="signup-link" onClick={() => {}}>Terms of Service</button>
-                  {" "}and{" "}
-                  <button type="button" className="signup-link" onClick={() => {}}>Privacy Policy</button>
-                </span>
-              </label>
             </div>
 
             <button type="submit" className="signup-submit" disabled={isLoading}>
