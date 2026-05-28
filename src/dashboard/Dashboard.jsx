@@ -299,9 +299,11 @@ export default function Dashboard() {
         position: "left",
 
         ticks: {
+          // Show plain numbers under 1000, then compact "k" format above
           callback: (v) =>
-            (v / 1000).toFixed(0) +
-            "k"
+            v >= 1000
+              ? (v / 1000).toFixed(1).replace(/\.0$/, "") + "k"
+              : v
         }
       },
 
@@ -378,7 +380,7 @@ export default function Dashboard() {
         <div className="kpi-grid">
 
           <div className="kpi">
-            <div className="kpi-label">Networks</div>
+            <div className="kpi-label">Used networks</div>
             <div className="kpi-value">
               {loading ? (
                 <Skeleton width={60} height={36} />
@@ -404,7 +406,7 @@ export default function Dashboard() {
 
           <div className="kpi">
             <div className="kpi-label">Success rate</div>
-            <div className="kpi-value" style={{ color: "#1a56db" }}>
+            <div className="kpi-value">
               {loading ? (
                 <Skeleton width={70} height={36} />
               ) : (
@@ -514,7 +516,6 @@ export default function Dashboard() {
 
         </div>
       </div>
-      );
 
     </div>
   );

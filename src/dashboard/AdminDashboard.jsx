@@ -73,9 +73,14 @@ export default function AdminDashboard() {
   }, []);
 
   // loading state
-  if (loading) {
-    return <div className="adm-root">Loading dashboard...</div>;
-  }
+if (loading) {
+  return (
+    <div className="pp-loader">
+      <div className="pp-spinner" />
+      <span className="pp-loader-text">Loading dashboard…</span>
+    </div>
+  );
+}
 
   // error state
   if (error) {

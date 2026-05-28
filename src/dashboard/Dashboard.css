@@ -380,6 +380,39 @@
   color: #aaa;
 }
 
+/* spinner */
+.pp-loader {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: #f8f9fa;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.pp-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #2e5af4;
+  border-radius: 50%;
+  animation: pp-spin 0.75s linear infinite;
+}
+
+@keyframes pp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pp-loader-text {
+  font-size: 14px;
+  color: #94a3b8;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
 /* ============================================================
    RESPONSIVE
 ============================================================ */
