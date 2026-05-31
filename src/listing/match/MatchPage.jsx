@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './MatchPage.css';
+import '../details/ListingPage.css'; /* Reuse the shared API page layout */
 
 import HeroSection from '../components/HeroSection';
 import Tabs from '../components/Tabs';
@@ -15,22 +15,19 @@ const MatchPage = () => {
   };
 
   return (
-    <div className="api-query-builder">
-      <main className="main-content">
+    <div className="api-page-root">
+      <main className="api-main-content">
 
         <HeroSection
-          badge="API Query Builder"
-          title="Build Your Query"
-          description="Create powerful API queries with our intuitive builder. Get insights from listing data in seconds."
-          icon="fa-solid fa-bolt fa-xs"
+          title="Listing Identification"
+          description="Identify and match business profiles across different networks using name, address, and coordinates."
         />
 
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {/* Content */}
-        <div className="tab-content">
+        <div className="api-tab-content">
          {activeTab === 'visual' && (
-            <div className="visual-layout">
+            <div className="api-visual-layout">
               <MatchQueryBuild onQueryExecuted={handleQueryExecuted} />
             </div>
           )}

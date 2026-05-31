@@ -16,26 +16,24 @@ const ListingPage = () => {
   };
 
   return (
-    <div className="api-query-builder">
-      <main className="main-content">
+    <div className="api-page-root">
+      <main className="api-main-content">
         <HeroSection
-          badge="API Query Builder"
-          title="Build Your Query"
-          description="Create powerful API queries with our intuitive builder. Get insights from listing data in seconds."
-          icon="fa-solid fa-bolt fa-xs"
+          title="Listing Data Retrieval"
+          description="Fetch comprehensive details for any listing across all supported networks. Use the visual builder below or copy the cURL command for your backend integration."
         />
 
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <div className="tab-content">
+        <div className="api-tab-content">
           {activeTab === 'visual' && (
-            <div className="visual-layout">
+            <div className="api-visual-layout">
               <QueryBuild onQueryExecuted={handleQueryExecuted} />
             </div>
           )}
           {activeTab === 'history' && (
-  <QueryHistory refreshTrigger={refreshTrigger} type="listing" />
-)}
+            <QueryHistory refreshTrigger={refreshTrigger} type="listing" />
+          )}
         </div>
       </main>
     </div>

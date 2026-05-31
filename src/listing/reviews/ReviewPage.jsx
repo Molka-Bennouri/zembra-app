@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './ReviewPage.css';
+import '../details/ListingPage.css'; /* Reuse the shared API page layout */
 
 import HeroSection from '../components/HeroSection';
 import Tabs from '../components/Tabs';
@@ -16,21 +16,19 @@ const ReviewPage = () => {
   };
 
   return (
-    <div className="api-query-builder">
-      <main className="main-content">
+    <div className="api-page-root">
+      <main className="api-main-content">
 
         <HeroSection
-          badge="API Query Builder"
-          title="Build Your Query"
-          description="Create powerful API queries with our intuitive builder. Get insights from listing data in seconds."
-          icon="fa-solid fa-bolt fa-xs"
+          title="Review Aggregation"
+          description="Extract, filter, and analyze customer reviews from multiple sources. Access ratings, publish dates, and AI-powered sentiment summaries."
         />
 
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <div className="tab-content">
+        <div className="api-tab-content">
           {activeTab === 'visual' && (
-            <div className="visual-layout">
+            <div className="api-visual-layout">
               <ReviewQueryBuilder onQueryExecuted={handleQueryExecuted} />
             </div>
           )}

@@ -7,8 +7,6 @@ import { useMatchQuery } from "../../hooks/useMatchQuery";
 import CurlRequest from "../components/CurlRequest";
 import QueryResponse from "../components/QueryResponse";
 
-
-
 function MatchQueryBuild({ onQueryExecuted }) {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -26,10 +24,8 @@ function MatchQueryBuild({ onQueryExecuted }) {
     }));
   };
 
-  // Hook Match Query
- const { responseData, loading: queryLoading, executeQuery } = useMatchQuery({ onQueryExecuted });
+  const { responseData, loading: queryLoading, executeQuery } = useMatchQuery({ onQueryExecuted });
 
-  // Networks sélectionnés
   const activeNetworks = Object.keys(selectedNetworks)
     .filter(id => selectedNetworks[id])
     .map(id => {
@@ -38,7 +34,6 @@ function MatchQueryBuild({ onQueryExecuted }) {
     })
     .filter(Boolean);
 
-  // Champs query
   const fieldsQuery = [
     ...activeFields,
     name && `name=${name}`,
@@ -47,106 +42,182 @@ function MatchQueryBuild({ onQueryExecuted }) {
     lng && `lng=${lng}`
   ].filter(Boolean);
 
+  const renderNetworkChips = () => {
+    if (networksLoading) {
+      return (
+        <div className="qb-skeleton-list">
+           <div className="skeleton" style={{ width: 80, height: 32, borderRadius: 16 }}></div>
+           <div className="skeleton" style={{ width: 100, height: 32, borderRadius: 16 }}></div>
+        </div>
+      );
+    }
+    if (networksError) {
+      return <p className="qb-error-text"><i className="fa-solid fa-triangle-exclamation"></i> {networksError}</p>;
+    }
+
+    return (
+      <div className="qb-chips-grid">
+        {networks.map(n => {
+          const isSelected = selectedNetworks[n.id] ?? false;
+          return (
+            <button
+              key={n.id}
+              className={`qb-chip ${isSelected ? "active" : ""}`}
+              onClick={() => handleNetworkChange(n.id)}
+            >
+              {isSelected && <i className="fa-solid fa-check qb-chip-icon"></i>}
+              {n.label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const renderFieldChips = () => {
+    if (fieldsLoading) {
+      return (
+        <div className="qb-skeleton-list">
+           <div className="skeleton" style={{ width: 80, height: 32, borderRadius: 16 }}></div>
+           <div className="skeleton" style={{ width: 100, height: 32, borderRadius: 16 }}></div>
+        </div>
+      );
+    }
+    if (fieldsError) {
+      return <p className="qb-error-text"><i className="fa-solid fa-triangle-exclamation"></i> {fieldsError}</p>;
+    }
+
+    return (
+      <div className="qb-chips-grid">
+        {fields.map(f => {
+          const isSelected = selectedFields[f.name] ?? false;
+          return (
+            <button
+              key={f.id}
+              className={`qb-chip ${isSelected ? "active" : ""}`}
+              onClick={() => handleFieldChange(f.name)}
+              title={f.description}
+            >
+              {isSelected && <i className="fa-solid fa-check qb-chip-icon"></i>}
+              {f.label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div className="query-build-container">
-      <div className="query-card">
-        <div className="query-two-col">
+    <div className="qb-container qb-match">
+      <div className="qb-card qb-form-card">
+        <div className="qb-match-layout">
 
-          {/* LEFT COLUMN */}
-          <div className="query-left">
-            <div className="section-block">
-              <div className="card-header">
-                <label className="parameter-label">Business / Profile Name</label>
-                <span className="required-badge">Required</span>
+          <div className="qb-form-section">
+            <h3 className="qb-section-title">Business Profile</h3>
+            <div className="qb-match-profile-grid">
+              <div className="qb-form-group">
+                <label className="qb-label">
+                  Business Name <span className="qb-required">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="qb-input"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
               </div>
-              <input type="text" className="parameter-input" placeholder="Business name" value={name} onChange={e => setName(e.target.value)} />
-            </div>
 
-            <div className="section-block">
-              <div className="card-header">
-                <label className="parameter-label">Business Address</label>
-                <span className="required-badge">Required</span>
+              <div className="qb-form-group">
+                <label className="qb-label">
+                  Business Address <span className="qb-required">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="qb-input"
+                  value={address}
+                  onChange={e => setAddress(e.target.value)}
+                />
               </div>
-              <input type="text" className="parameter-input" placeholder="Full address" value={address} onChange={e => setAddress(e.target.value)} />
-            </div>
 
-            <div className="section-block">
-              <div className="card-header"><label className="parameter-label">Coordinates</label></div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <input type="text" className="parameter-input" placeholder="Latitude" value={lat} onChange={e => setLat(e.target.value)} />
-                <input type="text" className="parameter-input" placeholder="Longitude" value={lng} onChange={e => setLng(e.target.value)} />
+              <div className="qb-form-group">
+                <label className="qb-label">Latitude</label>
+                <input
+                  type="text"
+                  className="qb-input qb-mono-input"
+                  value={lat}
+                  onChange={e => setLat(e.target.value)}
+                />
               </div>
-            </div>
 
-            <div className="section-block">
-              <div className="card-header"><label className="parameter-label">Networks</label></div>
-              {networksLoading && <p className="helper-text">Loading networks...</p>}
-              {networksError && <p className="helper-text" style={{ color: 'red' }}>{networksError}</p>}
-              {!networksLoading && !networksError && (
-                <div className="fields-grid">
-                  {networks.map(n => (
-                    <div className="checkbox-group" key={n.id}>
-                      <input type="checkbox" id={`network-${n.id}`} checked={selectedNetworks[n.id] ?? false} onChange={() => handleNetworkChange(n.id)} className="checkbox-input" />
-                      <label htmlFor={`network-${n.id}`} className="checkbox-label">{n.label}</label>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="qb-form-group">
+                <label className="qb-label">Longitude</label>
+                <input
+                  type="text"
+                  className="qb-input qb-mono-input"
+                  value={lng}
+                  onChange={e => setLng(e.target.value)}
+                />
+              </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="query-right">
-            <div className="section-block" style={{ borderBottom: 'none' }}>
-              <div className="card-header"><h3 className="parameter-label">Fields</h3></div>
-              {fieldsLoading && <p className="helper-text">Loading fields...</p>}
-              {fieldsError && <p className="helper-text" style={{ color: 'red' }}>{fieldsError}</p>}
-              {!fieldsLoading && !fieldsError && (
-                <div className="fields-grid">
-                  {fields.map(f => (
-                    <div className="checkbox-group" key={f.id} title={f.description}>
-                      <input type="checkbox" id={f.name} checked={selectedFields[f.name] ?? false} onChange={() => handleFieldChange(f.name)} className="checkbox-input" />
-                      <label htmlFor={f.name} className="checkbox-label">{f.label}</label>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <button
-                className="execute-btn"
-                onClick={() => executeQuery({
-                  name,
-                  address,
-                  lat,
-                  lng,
-                  selectedNetworks,
-                  selectedFields,
-                  networks,
-                })}
-                disabled={!name || !address || !activeNetworks.length || queryLoading}
-              >
-                <i className="fa-solid fa-bolt fa-xs"></i>
-                {queryLoading ? "Loading..." : "Execute Query"}
-              </button>
-
-
-
+          <div className="qb-form-section">
+            <div className="qb-section-header">
+              <h3 className="qb-section-title">Target Networks</h3>
+              <span className="qb-badge-count">{activeNetworks.length} selected</span>
             </div>
+            {renderNetworkChips()}
+          </div>
+
+          <div className="qb-form-section">
+            <div className="qb-section-header">
+              <h3 className="qb-section-title">Response Fields</h3>
+              <span className="qb-badge-count">{activeFields.length} selected</span>
+            </div>
+            {renderFieldChips()}
+          </div>
+
+          <div className="qb-execute-container qb-match-execute">
+            <button
+              className={`qb-execute-btn ${queryLoading ? "loading" : ""}`}
+              onClick={() => executeQuery({
+                name,
+                address,
+                lat,
+                lng,
+                selectedNetworks,
+                selectedFields,
+                networks,
+              })}
+              disabled={!name || !address || !activeNetworks.length || queryLoading}
+            >
+              {queryLoading ? (
+                <>
+                  <i className="fa-solid fa-circle-notch fa-spin"></i>
+                  Matching...
+                </>
+              ) : (
+                <>
+                  <i className="fa-solid fa-play"></i>
+                  Run Query
+                </>
+              )}
+            </button>
           </div>
 
         </div>
       </div>
-      {/* CURL PREVIEW */}
-      <CurlRequest
-        network={activeNetworks.join(",")}
-        slug=""
-        fields={fieldsQuery}
-        apiKey="YOUR_API_KEY" />
 
+      <div className="qb-preview-grid">
+        <CurlRequest
+          network={activeNetworks.join(",")}
+          slug=""
+          fields={fieldsQuery}
+          apiKey="YOUR_API_KEY" 
+        />
 
-
-      {/* RESPONSE */}
-      <QueryResponse data={responseData} />
+        <QueryResponse data={responseData} />
+      </div>
     </div>
   );
 }

@@ -45,49 +45,51 @@ export default function AiSummary({ reviews }) {
         {loading ? (
           <span className="ai-summary__spinner-wrap">
             <span className="ai-summary__spinner" />
-            Analysing...
+            Analyzing...
           </span>
         ) : (
-          "✨ Analyse Reviews"
+          <>
+            <i className="fa-solid fa-wand-magic-sparkles"></i> AI Sentiment Analysis
+          </>
         )}
       </button>
 
       {error && (
         <div className="ai-summary__error">
-          ⚠️ {error}
+          <i className="fa-solid fa-triangle-exclamation"></i> {error}
         </div>
       )}
 
       {summaries && (
         <div className="ai-summary__results">
-          <h3 className="ai-summary__title">AI Review Analysis</h3>
+          <h3 className="ai-summary__title">Analysis Results</h3>
           <div className="ai-summary__cards">
 
             {summaries.positive && (
-              <div className="ai-summary__card ai-summary__card--positive">
+              <div className="ai-summary__card ai-summary__card--positive card-hover">
                 <div className="ai-summary__card-header">
-                  <span className="ai-summary__icon">✅</span>
-                  <h4>Positive</h4>
+                  <span className="ai-summary__icon"><i className="fa-regular fa-face-smile"></i></span>
+                  <h4>Positive Aspects</h4>
                 </div>
                 <p>{summaries.positive}</p>
               </div>
             )}
 
             {summaries.neutral && (
-              <div className="ai-summary__card ai-summary__card--neutral">
+              <div className="ai-summary__card ai-summary__card--neutral card-hover">
                 <div className="ai-summary__card-header">
-                  <span className="ai-summary__icon">➖</span>
-                  <h4>Neutral</h4>
+                  <span className="ai-summary__icon"><i className="fa-regular fa-face-meh"></i></span>
+                  <h4>Neutral Aspects</h4>
                 </div>
                 <p>{summaries.neutral}</p>
               </div>
             )}
 
             {summaries.negative && (
-              <div className="ai-summary__card ai-summary__card--negative">
+              <div className="ai-summary__card ai-summary__card--negative card-hover">
                 <div className="ai-summary__card-header">
-                  <span className="ai-summary__icon">❌</span>
-                  <h4>Negative</h4>
+                  <span className="ai-summary__icon"><i className="fa-regular fa-face-frown"></i></span>
+                  <h4>Negative Aspects</h4>
                 </div>
                 <p>{summaries.negative}</p>
               </div>

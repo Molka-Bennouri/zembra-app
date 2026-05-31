@@ -1,23 +1,38 @@
 import { useState } from "react"
+import toast from "react-hot-toast"
 import "./QueryResponse.css"
 
 function QueryResponse({ data = null }) {
   const [copied, setCopied] = useState(false)
 
   const defaultData = {
-  status: "waiting",
-  message: "Execute a query to see the response here."
-}
+    status: "waiting",
+    message: "Execute a query to see the response here."
+  }
 
   const responseData = data ?? defaultData
+
+  // Simple heuristic to determine status code for badge (if present)
+  let statusCode = null;
+  if (data && data.status) {
+    if (typeof data.status === 'number') statusCode = data.status;
+    else if (data.status.toLowerCase() === 'success') statusCode = 200;
+    else if (data.status.toLowerCase() === 'error') statusCode = 400;
+  } else if (!data) {
+    statusCode = "waiting";
+  } else {
+    statusCode = 200; // Assuming success if data exists and no status field
+  }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(JSON.stringify(responseData, null, 2))
       setCopied(true)
+      toast.success("Response copied!")
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
       console.error("Failed to copy text:", err)
+      toast.error("Failed to copy")
     }
   }
 
@@ -72,22 +87,26 @@ function QueryResponse({ data = null }) {
   return (
     <div className="response-card">
       <div className="response-header">
+        <div className="response-status-badge">
+          {statusCode === "waiting" ? (
+             <span className="badge-waiting"><i className="fa-regular fa-clock"></i> Waiting</span>
+          ) : statusCode >= 200 && statusCode < 300 ? (
+             <span className="badge-success"><i className="fa-solid fa-check"></i> {statusCode} OK</span>
+          ) : (
+             <span className="badge-error"><i className="fa-solid fa-triangle-exclamation"></i> {statusCode || 'Error'}</span>
+          )}
+        </div>
         <h3 className="response-title">Query Response</h3>
+        <button className="response-copy-btn" onClick={handleCopy} aria-label="Copy response">
+          <i className={`fa-regular ${copied ? "fa-circle-check" : "fa-copy"}`}></i>
+        </button>
       </div>
       <div className="response-content">
-        <div className="response-code-block">
-          <pre className="response-pre">
-            <code className="response-code">
-              {highlightJson(responseData)}
-            </code>
-          </pre>
-        </div>
-      </div>
-      <div className="response-footer">
-        <button className="response-copy-button" onClick={handleCopy}>
-          <i className="fa-regular fa-copy"></i>
-          {copied ? "Copied!" : "Copy Response"}
-        </button>
+        <pre className="response-pre">
+          <code className="response-code">
+            {highlightJson(responseData)}
+          </code>
+        </pre>
       </div>
     </div>
   )
