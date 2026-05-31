@@ -1,0 +1,71 @@
+/* ============================================================
+   TABS CSS — Dark Theme
+============================================================ */
+
+.tabs-section {
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.tabs-container {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  gap: 4px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.tab.active {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color-light);
+}
+
+.tab-icon {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.tab.active .tab-icon {
+  opacity: 1;
+  color: #2E5AF4;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .tabs-container {
+    display: flex;
+    width: 100%;
+  }
+  
+  .tab {
+    flex: 1;
+    padding: 10px 16px;
+  }
+}

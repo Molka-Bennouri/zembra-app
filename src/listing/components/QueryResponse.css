@@ -1,0 +1,128 @@
+/* ============================================================
+   QUERY RESPONSE CSS — Dark Terminal Aesthetic
+============================================================ */
+
+.response-card {
+  width: 100%;
+  background: var(--terminal-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-sans);
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.response-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--terminal-header);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.response-status-badge {
+  position: absolute;
+  left: 16px;
+}
+
+.response-status-badge span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-waiting {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+}
+
+.badge-success {
+  background: rgba(39, 201, 63, 0.15);
+  color: #27C93F;
+}
+
+.badge-error {
+  background: rgba(255, 95, 86, 0.15);
+  color: #FF5F56;
+}
+
+.response-title {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.response-copy-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 14px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 12px;
+}
+
+.response-copy-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Code block ─────────────────────────────────────────── */
+.response-content {
+  padding: 16px 20px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.response-pre {
+  margin: 0;
+}
+
+.response-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #F1F3F9;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── JSON Syntax Highlighting ───────────────────────────── */
+.json-null {
+  color: #A0A4B8;
+  font-style: italic;
+}
+
+.json-boolean {
+  color: #FF5E7E; /* Pink */
+  font-weight: 500;
+}
+
+.json-number {
+  color: #FFBD2E; /* Yellow/Orange */
+}
+
+.json-string {
+  color: #2DE0A5; /* Green */
+}
+
+.json-key {
+  color: #5D93E1; /* Blue */
+  font-weight: 500;
+}

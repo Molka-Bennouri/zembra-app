@@ -1,0 +1,126 @@
+/* ============================================================
+   CURL REQUEST CSS — Dark Terminal Aesthetic
+============================================================ */
+
+.curl-card {
+  width: 100%;
+  background: var(--terminal-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-sans);
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.curl-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--terminal-header);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.curl-window-controls {
+  display: flex;
+  gap: 6px;
+  position: absolute;
+  left: 16px;
+}
+
+.curl-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.curl-dot.red { background: #FF5F56; }
+.curl-dot.yellow { background: #FFBD2E; }
+.curl-dot.green { background: #27C93F; }
+
+.curl-title {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.curl-copy-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 14px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 12px;
+}
+
+.curl-copy-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Code block ─────────────────────────────────────────── */
+.curl-content {
+  padding: 16px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.curl-pre {
+  margin: 0;
+}
+
+.curl-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.curl-line {
+  display: flex;
+  padding: 0 16px;
+}
+
+.curl-line:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.curl-line-number {
+  color: var(--text-muted);
+  opacity: 0.5;
+  width: 32px;
+  flex-shrink: 0;
+  text-align: right;
+  padding-right: 16px;
+  user-select: none;
+}
+
+.curl-line-content {
+  color: #F1F3F9;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+/* ── Syntax Highlighting ────────────────────────────────── */
+.curl-flag {
+  color: #FF5E7E; /* Pink/Red for flags like -X, -H */
+}
+
+.curl-string {
+  color: #2DE0A5; /* Green for strings */
+}
+
+.curl-url {
+  color: #4361EE; /* Accent color for URL */
+}
