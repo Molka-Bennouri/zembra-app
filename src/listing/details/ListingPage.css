@@ -1,16 +1,33 @@
-.api-query-builder {
+/* ============================================================
+   API PAGE CSS — Shared Layout for API Pages
+============================================================ */
+
+.api-page-root {
   width: 100%;
   min-height: 100vh;
+  background-color: var(--bg-primary);
 }
 
-/* Main Content */
-.main-content {
-  padding: 40px;
+.api-main-content {
+  padding: 32px;
   max-width: 1200px;
   margin: 0 auto;
 }
-.visual-layout {
+
+.api-tab-content {
+  margin-top: 16px;
+}
+
+.api-visual-layout {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .api-main-content {
+    padding: 16px;
+    padding-top: 64px; /* Space for mobile nav */
+  }
 }

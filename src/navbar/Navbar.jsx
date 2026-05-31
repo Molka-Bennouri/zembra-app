@@ -1,227 +1,253 @@
+/* ============================================================
+   SIDEBAR NAVIGATION COMPONENT
+   Redesign: Replaces top navbar with fixed left sidebar.
+   Preserves: role-based nav items, auth logic, profile hook.
+============================================================ */
+
 import { useState, useRef, useEffect } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import NotificationPanel from "../notifications/NotificationPanel";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
 
+/* ── Navigation config by role ─────────────────────────────── */
 const getNavItems = (role) => {
   if (role === "admin") {
     return [
-      { label: "Dashboard", path: "/AdminDashboard" },
-      { label: "Users", path: "/ClientList" },
-      { label: "Plans", path: "/PlansList" },
-      { label: "Networks", path: "/NetworkList" },
-      { label: "Fields", path: "/FieldList" },
+      { label: "Dashboard", path: "/AdminDashboard", icon: "fa-solid fa-chart-line" },
+      { label: "Users", path: "/ClientList", icon: "fa-solid fa-users" },
+      { label: "Plans", path: "/PlansList", icon: "fa-solid fa-tags" },
+      { label: "Networks", path: "/NetworkList", icon: "fa-solid fa-network-wired" },
+      { label: "Fields", path: "/FieldList", icon: "fa-solid fa-table-cells" },
     ];
   }
+
   return [
     {
       label: "Dashboard",
       path: "/Dashboard",
+      icon: "fa-solid fa-chart-line",
     },
     {
       label: "API",
+      icon: "fa-solid fa-code",
       items: [
-        { label: "Listing details", path: "/listing", icon: <i className="fa-regular fa-file-lines"></i>, desc: "Retrieve detailed listing data" },
-        { label: "Page reviews", path: "/reviews", icon: <i className="fa-regular fa-star"></i>, desc: "Access page-level review data" },
-        { label: "Match listing", path: "/match", icon: <i className="fa-solid fa-magnifying-glass"></i>, desc: "Match and identify listings" },
-      ]
+        { label: "Listing Details", path: "/listing", icon: "fa-regular fa-file-lines" },
+        { label: "Page Reviews", path: "/reviews", icon: "fa-regular fa-star" },
+        { label: "Match Listing", path: "/match", icon: "fa-solid fa-magnifying-glass" },
+      ],
+    },
+    {
+      label: "History",
+      path: "/scrapinghistory",
+      icon: "fa-solid fa-clock-rotate-left",
     },
     {
       label: "Payments",
+      icon: "fa-solid fa-credit-card",
       items: [
-        { label: "Manage payments", path: "/payment", icon: <i className="fa-regular fa-credit-card"></i>, desc: "Update payment methods" },
-        { label: "Payment history", path: "/paymenthistory", icon: <i className="fa-regular fa-clock"></i>, desc: "View past transactions" },
-      ]
-    }
+        { label: "Manage Payments", path: "/payment", icon: "fa-regular fa-credit-card" },
+        { label: "Payment History", path: "/paymenthistory", icon: "fa-regular fa-clock" },
+      ],
+    },
   ];
 };
 
-function NavDropdown({ label, items }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef(null)
+/* ── Sidebar Component ─────────────────────────────────────── */
+export default function Navbar() {
+  const { profile } = useProfile();
+  const userName = profile?.full_name || "User";
+  const userEmail = profile?.email || "";
+  const role = localStorage.getItem("role");
+  const navItems = getNavItems(role);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({});
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const userRef = useRef(null);
+
+  // Get initials for avatar
+  const initials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
+  // Close user dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
-    }
-    document.addEventListener("mousedown", handler)
-    return () => document.removeEventListener("mousedown", handler)
-  }, [])
+      if (userRef.current && !userRef.current.contains(e.target))
+        setUserDropdownOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
-  return (
-    <div ref={ref} className="nav-dropdown">
-      <button
-        className={`nav-dropdown-trigger ${open ? "active" : ""}`}
-        onClick={() => setOpen(v => !v)}
-      >
-        {label}
-        <i className={`fa-solid fa-chevron-down nav-chevron ${open ? "rotated" : ""}`} style={{ fontSize: 8 }}></i>
-      </button>
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
-      <div className={`nav-dropdown-menu ${open ? "open" : ""}`}>
-        <div className="nav-dropdown-arrow" />
-        {items.map((item, i) =>
-          item.path ? (
-            <Link key={i} to={item.path} className="nav-dropdown-item" onClick={() => setOpen(false)}>
-              <span className="nav-item-icon">{item.icon}</span>
-              <span className="nav-item-text">
-                <span className="nav-item-label">{item.label}</span>
-                <span className="nav-item-desc">{item.desc}</span>
-              </span>
-            </Link>
-          ) : (
-            <button key={i} className="nav-dropdown-item" onClick={() => setOpen(false)}>
-              <span className="nav-item-icon">{item.icon}</span>
-              <span className="nav-item-text">
-                <span className="nav-item-label">{item.label}</span>
-                <span className="nav-item-desc">{item.desc}</span>
-              </span>
-            </button>
-          )
-        )}
-      </div>
-    </div>
-  )
-}
+  const toggleSection = (label) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [label]: !prev[label],
+    }));
+  };
 
-function UserDropdown({ userName }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef(null)
-  const navigate = useNavigate()
-  const { logout } = useAuth()
-  const role = localStorage.getItem("role")
+  const isActive = (path) => {
+    return location.pathname.toLowerCase() === path.toLowerCase();
+  };
+
+  const isParentActive = (items) => {
+    return items?.some((item) => isActive(item.path));
+  };
 
   const handleLogout = () => {
-    setOpen(false)
-    logout()
-    localStorage.removeItem("role")
-    navigate("/login")
-  }
+    logout();
+    localStorage.removeItem("role");
+    navigate("/login");
+  };
 
+  // Dispatch custom event for content margin adjustment
   useEffect(() => {
-    const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
-    }
-    document.addEventListener("mousedown", handler)
-    return () => document.removeEventListener("mousedown", handler)
-  }, [])
+    window.dispatchEvent(new CustomEvent("sidebar-toggle", { detail: { collapsed } }));
+  }, [collapsed]);
 
   return (
-    <div ref={ref} className="user-dropdown">
+    <>
+      {/* Mobile hamburger */}
       <button
-        className={`user-dropdown-trigger ${open ? "active" : ""}`}
-        onClick={() => setOpen(v => !v)}
+        className="mobile-hamburger"
+        onClick={() => setMobileOpen(true)}
+        aria-label="Open menu"
       >
-        <div className="user-avatar-small">
-          <i className="fa-regular fa-user" style={{ fontSize: 16, color: '#9ca3af' }}></i>
-        </div>
-        <span className="user-name">{userName}</span>
-        <i className={`fa-solid fa-chevron-down nav-chevron ${open ? "rotated" : ""}`} style={{ fontSize: 8 }}></i>
+        <i className="fa-solid fa-bars"></i>
       </button>
 
-      <div className={`user-dropdown-menu ${open ? "open" : ""}`}>
-        <div className="user-dropdown-arrow" />
+      {/* Mobile backdrop */}
+      <div
+        className={`sidebar-backdrop ${mobileOpen ? "visible" : ""}`}
+        onClick={() => setMobileOpen(false)}
+      />
+
+      {/* Sidebar */}
+      <aside className={`sidebar ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}>
+        {/* Logo */}
         <Link
-          to={role === "admin" ? "/admin/profile" : "/profile"}
-          className="user-dropdown-item"
-          onClick={() => setOpen(false)}
+          to={role === "admin" ? "/AdminDashboard" : "/Dashboard"}
+          className="sidebar-logo"
         >
-          <span className="user-menu-icon">
-            <i className="fa-regular fa-user text-gray-400" style={{ fontSize: 12 }}></i>
-          </span>
-          <span className="user-menu-label">Profile</span>
+          <img src="/zembra-logo.jpg" alt="Zembra" className="sidebar-logo-mark" />
+          <span className="sidebar-logo-text">Zembra</span>
         </Link>
-        <div className="user-menu-divider" />
-        <button className="user-dropdown-item logout" onClick={handleLogout}>
-          <span className="user-menu-icon">
-            <i className="fa-solid fa-arrow-right-from-bracket" style={{ fontSize: 12 }}></i>
-          </span>
-          <span className="user-menu-label">Logout</span>
+
+        {/* Collapse toggle (desktop only) */}
+        <button
+          className="sidebar-toggle"
+          onClick={() => setCollapsed(!collapsed)}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          <i className={`fa-solid fa-chevron-${collapsed ? "right" : "left"}`} style={{ fontSize: 10 }}></i>
         </button>
-      </div>
-    </div>
-  )
-}
 
-function NotificationDropdown() {
-  const [open, setOpen] = useState(false)
-  const ref = useRef(null)
+        {/* Navigation */}
+        <nav className="sidebar-nav">
+          <div className="sidebar-section-label">Navigation</div>
 
-  useEffect(() => {
-    const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
-    }
-    document.addEventListener("mousedown", handler)
-    return () => document.removeEventListener("mousedown", handler)
-  }, [])
+          {navItems.map((item) => {
+            // Item with sub-items (expandable)
+            if (item.items) {
+              const isExpanded = expandedSections[item.label] || isParentActive(item.items);
 
-  return (
-    <div ref={ref} style={{ position: "relative" }}>
-      <button
-        className="notification-btn"
-        onClick={() => setOpen(v => !v)}
-      >
-        <i className="fa-regular fa-bell" style={{ fontSize: 17 }}></i>
-        <span className="notification-badge" />
-      </button>
+              return (
+                <div key={item.label}>
+                  <button
+                    className={`sidebar-item ${isParentActive(item.items) ? "active" : ""}`}
+                    onClick={() => toggleSection(item.label)}
+                  >
+                    <span className="sidebar-item-icon">
+                      <i className={item.icon}></i>
+                    </span>
+                    <span className="sidebar-item-label">{item.label}</span>
+                    <i
+                      className={`fa-solid fa-chevron-down sidebar-expand-icon ${isExpanded ? "rotated" : ""}`}
+                    ></i>
+                    <span className="sidebar-tooltip">{item.label}</span>
+                  </button>
 
-      {open && (
-        <div style={{
-          position: "absolute",
-          top: "calc(100% + 12px)",
-          right: 0,
-          zIndex: 1000,
-          width: "380px",
-          background: "white",
-          borderRadius: "12px",
-          boxShadow: "0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)",
-          border: "1px solid #e5e7eb",
-          overflow: "hidden",
-        }}>
-          <NotificationPanel />
-        </div>
-      )}
-    </div>
-  )
-}
+                  <div className={`sidebar-subnav ${isExpanded ? "open" : ""}`}>
+                    {item.items.map((sub) => (
+                      <Link
+                        key={sub.path}
+                        to={sub.path}
+                        className={`sidebar-subitem ${isActive(sub.path) ? "active" : ""}`}
+                      >
+                        <i className={sub.icon} style={{ fontSize: 12 }}></i>
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
 
-export default function Navbar() {
-  const { profile } = useProfile()
-  const userName = profile?.full_name || "User"
-  const role = localStorage.getItem("role")
-  const navItems = getNavItems(role)
-
-  return (
-    <header className="navbar">
-      <div className="navbar-content">
-        <div className="navbar-left">
-          <Link
-            to={role === "admin" ? "/admin/dashboard" : "/Dashboard"}
-            style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}
-          >
-            <img src="/zembra-logo.jpg" alt="Zembra" className="navbar-logo-mark" />
-            <span className="navbar-logo-text">Zembra</span>
-          </Link>
-          <div className="navbar-divider" />
-          {navItems.map(item =>
-            item.items ? (
-              <NavDropdown key={item.label} label={item.label} items={item.items} />
-            ) : (
-              <Link key={item.label} to={item.path} className="nav-simple-link">
-                {item.label}
+            // Simple nav item
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`sidebar-item ${isActive(item.path) ? "active" : ""}`}
+              >
+                <span className="sidebar-item-icon">
+                  <i className={item.icon}></i>
+                </span>
+                <span className="sidebar-item-label">{item.label}</span>
+                <span className="sidebar-tooltip">{item.label}</span>
               </Link>
-            )
-          )}
-        </div>
+            );
+          })}
+        </nav>
 
-        <div className="navbar-right">
-          <NotificationDropdown />
-          <UserDropdown userName={userName} />
+        {/* User section */}
+        <div className="sidebar-user" ref={userRef}>
+          <button
+            className="sidebar-user-trigger"
+            onClick={() => setUserDropdownOpen((v) => !v)}
+          >
+            <div className="sidebar-user-avatar">{initials}</div>
+            <div className="sidebar-user-info">
+              <span className="sidebar-user-name">{userName}</span>
+              <span className="sidebar-user-email">{userEmail}</span>
+            </div>
+          </button>
+
+          <div className={`sidebar-user-dropdown ${userDropdownOpen ? "open" : ""}`}>
+            <Link
+              to={role === "admin" ? "/admin/profile" : "/profile"}
+              className="sidebar-user-dropdown-item"
+              onClick={() => setUserDropdownOpen(false)}
+            >
+              <i className="fa-regular fa-user" style={{ fontSize: 13 }}></i>
+              Profile
+            </Link>
+            <div className="sidebar-user-dropdown-divider" />
+            <button
+              className="sidebar-user-dropdown-item logout"
+              onClick={handleLogout}
+            >
+              <i className="fa-solid fa-arrow-right-from-bracket" style={{ fontSize: 13 }}></i>
+              Log out
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
-  )
+      </aside>
+    </>
+  );
 }

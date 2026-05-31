@@ -1,16 +1,20 @@
+/* ============================================================
+   TABS CSS — Dark Theme
+============================================================ */
+
 .tabs-section {
-  margin-bottom: 40px;
-  background-color: #e5e7eb;
-  padding: 5px;
-  border-radius: 10px;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 24px;
+  width: 100%;
 }
 
 .tabs-container {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  background: var(--bg-card);
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  gap: 4px;
 }
 
 .tab {
@@ -18,20 +22,50 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 245px;
-  background: none;
+  padding: 10px 24px;
+  background: transparent;
   border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  color: black;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
   white-space: nowrap;
 }
 
+.tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
 .tab.active {
-  color: #1f2937;
-  background-color: #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color-light);
+}
+
+.tab-icon {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.tab.active .tab-icon {
+  opacity: 1;
+  color: #2E5AF4;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .tabs-container {
+    display: flex;
+    width: 100%;
+  }
+  
+  .tab {
+    flex: 1;
+    padding: 10px 16px;
+  }
 }

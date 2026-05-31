@@ -325,198 +325,137 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="adm-root">
-
-      <div className="page-header">
+    <div className="dash-root">
+      {/* ── Page Header ── */}
+      <div className="dash-header">
         <div>
-          <h1 className="adm-title">
-            Dashboard
-          </h1>
-
-          <p className="adm-subtitle">
-            Overview of your scraping activity
-          </p>
+          <h1 className="dash-title">Dashboard</h1>
+          <p className="dash-subtitle">Overview of your scraping activity</p>
         </div>
-
-        <div className="header-right">
-
+        <div className="dash-header-right">
           {error && (
-            <span className="error-badge">
-              ⚠ {error}
+            <span className="dash-error-badge">
+              <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: 11 }}></i>
+              {error}
             </span>
           )}
-
-          <span className="last-update">
-            {lastUpdate
-              ? `Updated at ${lastUpdate.toLocaleTimeString()}`
-              : "Loading..."}
+          <span className="dash-last-update">
+            {lastUpdate ? `Updated ${lastUpdate.toLocaleTimeString()}` : "Loading..."}
           </span>
-
-          <button
-            className={`refresh-btn ${refreshing
-                ? "refreshing"
-                : ""
-              }`}
-            onClick={() =>
-              refresh(true)
-            }
-          >
-            {refreshing
-              ? "↻ Refreshing..."
-              : "↻ Refresh"}
+          <button className={`dash-refresh-btn ${refreshing ? "refreshing" : ""}`} onClick={() => refresh(true)}>
+            <i className={`fa-solid fa-arrows-rotate ${refreshing ? "fa-spin" : ""}`}></i>
+            <span>{refreshing ? "Refreshing..." : "Refresh"}</span>
           </button>
-
         </div>
       </div>
 
+      {/* ── KPI Cards ── */}
+      <div className="dash-kpi-grid">
+        <div className="dash-kpi card-hover">
+          <div className="dash-kpi-icon" style={{ background: "rgba(108, 99, 255, 0.1)", color: "#6C63FF" }}>
+            <i className="fa-solid fa-network-wired"></i>
+          </div>
+          <div className="dash-kpi-body">
+            <div className="dash-kpi-label">Used Networks</div>
+            <div className="dash-kpi-value">
+              {loading ? <Skeleton width={60} height={32} /> : <><CountUp target={stats.networks.active} /><span className="dash-kpi-suffix">/ {stats.networks.total}</span></>}
+            </div>
+            <div className="dash-kpi-subtext">Active networks</div>
+          </div>
+        </div>
+        <div className="dash-kpi card-hover">
+          <div className="dash-kpi-icon" style={{ background: "rgba(34, 197, 94, 0.1)", color: "#22C55E" }}>
+            <i className="fa-solid fa-arrow-right-arrow-left"></i>
+          </div>
+          <div className="dash-kpi-body">
+            <div className="dash-kpi-label">Requests (24h)</div>
+            <div className="dash-kpi-value">
+              {loading ? <Skeleton width={60} height={32} /> : <CountUp target={stats.requests_24h.total} />}
+            </div>
+            <div className="dash-kpi-subtext">{stats.requests_24h.success} succeeded, {stats.requests_24h.errors} failed</div>
+          </div>
+        </div>
+        <div className="dash-kpi card-hover">
+          <div className="dash-kpi-icon" style={{ background: "rgba(245, 158, 11, 0.1)", color: "#F59E0B" }}>
+            <i className="fa-solid fa-check-circle"></i>
+          </div>
+          <div className="dash-kpi-body">
+            <div className="dash-kpi-label">Success Rate</div>
+            <div className="dash-kpi-value">
+              {loading ? <Skeleton width={60} height={32} /> : <><CountUp target={Math.round(stats.success_rate)} /><span className="dash-kpi-suffix">%</span></>}
+            </div>
+            <div className="dash-kpi-subtext">Overall success rate</div>
+          </div>
+        </div>
+      </div>
 
-
-      <div className="adm-root">
-
-
-
-
-        {/* ── KPIs ── */}
-        <div className="kpi-grid">
-
-          <div className="kpi">
-            <div className="kpi-label">Used networks</div>
-            <div className="kpi-value">
-              {loading ? (
-                <Skeleton width={60} height={36} />
-              ) : (
-                <>
-                  <CountUp target={stats.networks.active} />
-                  <span className="kpi-denom">/ {stats.networks.total}</span>
-                </>
-              )}
+      {/* ── Charts Row ── */}
+      <div className="dash-charts-grid">
+        <div className="dash-card">
+          <div className="dash-card-header">
+            <div>
+              <h3 className="dash-card-title">Request Volume</h3>
+              <p className="dash-card-sub">Last 7 days</p>
+            </div>
+            <div className="dash-chart-legend">
+              <span className="dash-legend-item"><span className="dash-legend-dot" style={{ background: "#6C63FF" }}></span> Requests</span>
+              <span className="dash-legend-item"><span className="dash-legend-dot dash-legend-dot-line" style={{ background: "#22C55E" }}></span> Success rate</span>
             </div>
           </div>
-
-          <div className="kpi">
-            <div className="kpi-label">Requests (24h)</div>
-            <div className="kpi-value">
-              {loading ? (
-                <Skeleton width={80} height={36} />
-              ) : (
-                <CountUp target={stats.requests_24h.total} />
-              )}
-            </div>
+          <div className="dash-chart-wrap">
+            <Bar data={barData} options={barOptions} />
           </div>
-
-          <div className="kpi">
-            <div className="kpi-label">Success rate</div>
-            <div className="kpi-value">
-              {loading ? (
-                <Skeleton width={70} height={36} />
-              ) : (
-                <>
-                  <CountUp target={Math.round(stats.success_rate)} />
-                  <span style={{ fontSize: 16, color: "#aaa", fontWeight: 400 }}>%</span>
-                </>
-              )}
-            </div>
-          </div>
-
         </div>
 
-        {/* ── CHARTS ROW ── */}
-        <div className="charts-grid">
-
-          <div className="card">
-            <div className="card-title">Request volume</div>
-            <div className="card-sub">Last 7 days</div>
-            <ChartLegend items={[
-              { label: "Requests", color: "#6C63FF" },
-              { label: "Success rate %", color: "#3ECFCF" },
-            ]} />
-            <div className="chart-canvas-wrap">
-              <Bar data={barData} options={barOptions} />
+        <div className="dash-card">
+          <div className="dash-card-header">
+            <div>
+              <h3 className="dash-card-title">Recent Requests</h3>
+              <p className="dash-card-sub">{filtered.length} entries</p>
             </div>
+            <a href="/scrapinghistory" className="dash-view-all">View all <i className="fa-solid fa-arrow-right" style={{ fontSize: 10 }}></i></a>
           </div>
 
-          <div className="card">
-            <div className="req-header">
-              <div className="card-title">Recent requests</div>
-              <span className="kpi-sub">{filtered.length} entries shown</span>
-            </div>
+          <div className="dash-filter-tabs">
+            {["all", "success", "error"].map((t) => (
+              <button key={t} className={`dash-filter-tab ${activeTab === t ? "active" : ""}`} onClick={() => setActiveTab(t)}>
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </button>
+            ))}
+          </div>
 
-            <div className="sd-tabs">
-              {["all", "success", "error"].map((t) => (
-                <button
-                  key={t}
-                  className={`sd-tab ${activeTab === t ? "sd-tab--active" : ""
-                    }`}
-                  onClick={() => setActiveTab(t)}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-
+          <div className="dash-request-list">
             {loading ? (
-              <div
-                style={{
-                  padding: "16px 0",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
-              >
-                {[1, 2, 3].map((i) => (
-                  <Skeleton key={i} height={40} />
-                ))}
+              <div className="dash-skeleton-list">
+                {[1, 2, 3].map((i) => <Skeleton key={i} height={56} style={{ borderRadius: 10 }} />)}
               </div>
             ) : filtered.length === 0 ? (
-              <p className="table-empty">No requests found</p>
-            ) : (
-              <div className="req-table">
-                <div className="req-table__head">
-                  <span>Network</span>
-                  <span>Slug</span>
-                  <span>Status</span>
-                  <span>Code</span>
-                  <span>Executed</span>
-                </div>
-
-                {filtered.slice(0, 5).map((r) => {
-                  const codeCls =
-                    r.status_code >= 500
-                      ? "code-5xx"
-                      : r.status_code >= 400
-                        ? "code-4xx"
-                        : "code-2xx";
-
-                  const date = r.created_at
-                    ? new Date(r.created_at).toLocaleString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                    : "—";
-
-                  return (
-                    <div key={r.id} className="req-table__row">
-                      <span className="t-network">{r.network}</span>
-                      <span className="t-slug">{r.slug}</span>
-                      <span className={`status-badge badge-${r.status}`}>
-                        {r.status}
-                      </span>
-                      <span className={`code-badge ${codeCls}`}>
-                        {r.status_code ?? "—"}
-                      </span>
-                      <span className="t-muted">{date}</span>
-                    </div>
-                  );
-                })}
+              <div className="dash-empty">
+                <i className="fa-regular fa-folder-open"></i>
+                <p>No requests found</p>
               </div>
+            ) : (
+              filtered.slice(0, 5).map((r) => {
+                const codeCls = r.status_code >= 500 ? "code-5xx" : r.status_code >= 400 ? "code-4xx" : "code-2xx";
+                const date = r.created_at ? new Date(r.created_at).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) : "—";
+                return (
+                  <div key={r.id} className="dash-request-card card-hover">
+                    <div className="dash-req-left">
+                      <span className="dash-req-network">{r.network}</span>
+                      <span className="dash-req-slug">{r.slug}</span>
+                    </div>
+                    <div className="dash-req-right">
+                      <span className={`dash-status-pill pill-${r.status}`}>{r.status}</span>
+                      <span className={`dash-code-badge ${codeCls}`}>{r.status_code ?? "—"}</span>
+                      <span className="dash-req-time">{date}</span>
+                    </div>
+                  </div>
+                );
+              })
             )}
           </div>
-
         </div>
       </div>
-
     </div>
   );
 }

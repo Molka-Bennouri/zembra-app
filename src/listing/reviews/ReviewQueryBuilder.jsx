@@ -12,6 +12,26 @@ import AiSummary from "./ai/AiSummary";
 
 const API_BASE = `${api.getBaseUrl()}`;
 
+// Helper to map network names to icons
+const getNetworkIcon = (networkName) => {
+  const icons = {
+    Airbnb: "fa-brands fa-airbnb",
+    Google_Maps: "fa-brands fa-google",
+    Yelp: "fa-brands fa-yelp",
+  };
+  return icons[networkName] || "fa-solid fa-globe";
+};
+
+// Helper for input placeholder based on network
+const getSlugPlaceholder = (networkName) => {
+  const placeholders = {
+    Airbnb: "e.g., room/12345678",
+    Google_Maps: "e.g., place/ChIJ... (Place ID)",
+    Yelp: "e.g., biz/some-restaurant-new-york",
+  };
+  return placeholders[networkName] || "slug-per-network";
+};
+
 function ReviewQueryBuilder({ onQueryExecuted }) {
   const [network, setNetwork] = useState("");
   const [slug, setSlug] = useState("");
@@ -51,7 +71,7 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
       sortBy,
       sortDirection,
       minRating,
-    maxRating,
+      maxRating,
       postedBefore: postedBefore ? Math.floor(new Date(postedBefore).getTime() / 1000) : null,
       postedAfter: postedAfter ? Math.floor(new Date(postedAfter).getTime() / 1000) : null,
     });
@@ -60,215 +80,253 @@ function ReviewQueryBuilder({ onQueryExecuted }) {
 
   const reviewTexts = responseData?.reviews ?? [];
 
+  const renderFieldChips = () => {
+    if (fieldsLoading) {
+      return (
+        <div className="qb-skeleton-list">
+           <div className="skeleton" style={{ width: 80, height: 32, borderRadius: 16 }}></div>
+           <div className="skeleton" style={{ width: 100, height: 32, borderRadius: 16 }}></div>
+        </div>
+      );
+    }
+    if (fieldsError) {
+      return <p className="qb-error-text"><i className="fa-solid fa-triangle-exclamation"></i> {fieldsError}</p>;
+    }
+
+    return (
+      <div className="qb-chips-grid">
+        {reviewFields.map((field) => {
+          const isSelected = selectedFields[field.name] ?? false;
+          return (
+            <button
+              key={field.id}
+              className={`qb-chip ${isSelected ? "active" : ""}`}
+              onClick={() => handleFieldChange(field.name)}
+              title={field.description}
+            >
+              {isSelected && <i className="fa-solid fa-check qb-chip-icon"></i>}
+              {field.label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div className="query-build-container">
-      <div className="query-card">
-        <div className="query-two-col">
+    <div className="qb-container qb-balanced">
+      <div className="qb-card qb-form-card">
+        <div className="qb-balanced-layout">
 
-          {/* LEFT COLUMN */}
-          <div className="query-left">
-
-            {/* Network */}
-            <div className="section-block">
-              <div className="card-header">
-                <label className="parameter-label">Network</label>
-              </div>
-              <select
-                className="dropdown-select"
-                value={network}
-                onChange={(e) => setNetwork(e.target.value)}
-              >
-                <option value=""></option>
-                {networks.map(n => (
-                  <option key={n.id} value={n.id}>{n.label}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Slug */}
-            <div className="section-block">
-              <div className="card-header">
-                <label className="parameter-label">Slug / Page ID</label>
-                <span className="required-badge">Required</span>
-              </div>
-              <input
-                type="text"
-                className="parameter-input"
-                placeholder="slug-per-network"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                disabled={!network}
-              />
-              {slug ? (
-                <p className="helper-text" style={{ color: validation.valid ? "green" : "red" }}>
-                  {validation.message}
-                </p>
-              ) : (
-                <p className="helper-text">Unique identifier for your listing</p>
-              )}
-            </div>
-
-            {/* Fields */}
-            <div className="section-block">
-              <div className="card-header">
-                <h3 className="parameter-label">Fields</h3>
-              </div>
-              {fieldsLoading && <p className="helper-text">Loading fields...</p>}
-              {fieldsError && <p className="helper-text" style={{ color: 'red' }}>{fieldsError}</p>}
-              {!fieldsLoading && !fieldsError && (
-                <div className="fields-grid">
-                  {reviewFields.map(f => (
-                    <div className="checkbox-group" key={f.id} title={f.description}>
-                      <input
-                        type="checkbox"
-                        id={f.name}
-                        checked={selectedFields[f.name] ?? false}
-                        onChange={() => handleFieldChange(f.name)}
-                        className="checkbox-input"
-                      />
-                      <label htmlFor={f.name} className="checkbox-label">{f.label}</label>
-                    </div>
-                  ))}
+          <div className="qb-form-section qb-balanced-target">
+            <h3 className="qb-section-title">Target Setup</h3>
+            <div className="qb-balanced-target-row">
+              <div className="qb-form-group">
+                <label className="qb-label">
+                  Network <span className="qb-required">*</span>
+                </label>
+                <div className="qb-select-wrapper">
+                  {networkName && (
+                    <i className={`${getNetworkIcon(networkName)} qb-select-icon`} />
+                  )}
+                  <select
+                    className={`qb-input qb-select ${networkName ? "has-icon" : ""}`}
+                    value={network}
+                    onChange={(e) => setNetwork(e.target.value)}
+                  >
+                    <option value="" disabled>Select a platform</option>
+                    {networks.map(n => (
+                      <option key={n.id} value={n.id}>{n.label}</option>
+                    ))}
+                  </select>
                 </div>
-              )}
+              </div>
+
+              <div className="qb-form-group">
+                <label className="qb-label">
+                  Slug / Page ID <span className="qb-required">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="qb-input qb-mono-input"
+                  placeholder={getSlugPlaceholder(networkName)}
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  disabled={!network}
+                />
+                {slug && (
+                  <div className={`qb-validation-msg ${validation.valid ? "valid" : "invalid"}`}>
+                    <i className={`fa-solid ${validation.valid ? "fa-circle-check" : "fa-circle-exclamation"}`}></i>
+                    {validation.message}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="query-right">
+          <div className="qb-balanced-columns">
+            <div className="qb-form-section qb-balanced-side">
+              <h3 className="qb-section-title">Review Filters</h3>
 
-            {/* Include Raw */}
-            <div className="section-block">
-              <div className="card-header">
-                <label className="parameter-label">Include Raw Data</label>
-              </div>
-              <div className="checkbox-group">
-                <input
-                  type="checkbox"
-                  checked={includeRaw}
-                  onChange={() => setIncludeRaw(!includeRaw)}
-                  className="checkbox-input"
-                />
-                <label className="checkbox-label">Enable</label>
+              <div className="qb-balanced-filter-grid">
+                <div className="qb-form-group">
+                  <label className="qb-label">Sort Attribute</label>
+                  <div className="qb-select-wrapper">
+                    <select className="qb-input qb-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                      <option value="">Default</option>
+                      <option value="timestamp">Publish time</option>
+                      <option value="rating">Rating</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="qb-form-group">
+                  <label className="qb-label">Sort Direction</label>
+                  <div className="qb-select-wrapper">
+                    <select className="qb-input qb-select" value={sortDirection} onChange={(e) => setSortDirection(e.target.value)}>
+                      <option value="">Default</option>
+                      <option value="ASC">Ascending</option>
+                      <option value="DESC">Descending</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="qb-form-group">
+                  <label className="qb-label">Min Rating</label>
+                  <div className="qb-select-wrapper">
+                    <select className="qb-input qb-select" onChange={e => setMinRating(e.target.value || null)}>
+                      <option value="">Any</option>
+                      <option value="2">2 Stars</option>
+                      <option value="3">3 Stars</option>
+                      <option value="4">4 Stars</option>
+                      <option value="5">5 Stars</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="qb-form-group">
+                  <label className="qb-label">Max Rating</label>
+                  <div className="qb-select-wrapper">
+                    <select className="qb-input qb-select" onChange={e => setMaxRating(e.target.value || null)}>
+                      <option value="">Any</option>
+                      <option value="1">1 Star</option>
+                      <option value="2">2 Stars</option>
+                      <option value="3">3 Stars</option>
+                      <option value="4">4 Stars</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="qb-form-group">
+                  <label className="qb-label">Posted After</label>
+                  <input
+                    type="date"
+                    className="qb-input"
+                    value={postedAfter}
+                    onChange={(e) => setPostedAfter(e.target.value)}
+                  />
+                </div>
+
+                <div className="qb-form-group">
+                  <label className="qb-label">Posted Before</label>
+                  <input
+                    type="date"
+                    className="qb-input"
+                    value={postedBefore}
+                    onChange={(e) => setPostedBefore(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Filters */}
-            <div className="section-block">
-              <div className="card-header">
-                <h3 className="parameter-label">Review Filters</h3>
+            <div className="qb-form-section qb-balanced-fields">
+              <div className="qb-section-header">
+                <h3 className="qb-section-title">Response Fields</h3>
+                <span className="qb-badge-count">{activeFields.length} selected</span>
               </div>
 
-              <label>Sorting attribute</label>
-              <select
-                className="dropdown-select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value=""></option>
-                <option value="timestamp">Publish time</option>
-                <option value="rating">Rating</option>
-              </select>
+              <div className="qb-fields-container">
+                {renderFieldChips()}
+              </div>
 
-              <label>Sorting direction</label>
-              <select
-                className="dropdown-select"
-                value={sortDirection}
-                onChange={(e) => setSortDirection(e.target.value)}
-              >
-                <option value=""></option>
-                <option value="ASC">Ascending</option>
-                <option value="DESC">Descending</option>
-              </select>
-              <label>Min rating</label>
-<select className="dropdown-select" onChange={e => setMinRating(e.target.value || null)}>
-  <option value="">select an option</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-</select>
+              <div className="qb-balanced-options">
+                <h3 className="qb-section-title">Options</h3>
+                <div className="qb-chips-grid">
+                  <button
+                    className={`qb-chip ${includeRaw ? "active" : ""}`}
+                    onClick={() => setIncludeRaw(!includeRaw)}
+                  >
+                    {includeRaw ? <i className="fa-solid fa-check qb-chip-icon"></i> : <i className="fa-solid fa-code qb-chip-icon"></i>}
+                    Include Raw Data
+                  </button>
+                </div>
+              </div>
 
-<label>Max rating</label>
-<select className="dropdown-select" onChange={e => setMaxRating(e.target.value || null)}>
-  <option value="">select an option</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-</select>
+              {status && status !== 'idle' && (
+                <div className="qb-form-group">
+                  {status === 'pending' && (
+                    <p className="qb-validation-msg" style={{ color: 'var(--warning)' }}>
+                      <i className="fa-solid fa-circle-notch fa-spin"></i> Processing with Zembra backend...
+                    </p>
+                  )}
+                  {status === 'completed' && (
+                    <p className="qb-validation-msg valid">
+                      <i className="fa-solid fa-circle-check"></i> Reviews fetched successfully!
+                    </p>
+                  )}
+                  {status === 'error' && (
+                    <p className="qb-validation-msg invalid">
+                      <i className="fa-solid fa-circle-exclamation"></i> Something went wrong.
+                    </p>
+                  )}
+                </div>
+              )}
 
-              <label>Posted before</label>
-              <input
-                id="postedBefore"
-                type="date"
-                className="parameter-input"
-                value={postedBefore}
-                onChange={(e) => setPostedBefore(e.target.value)}
-              />
-
-              <label>Posted after</label>
-              <input
-                id="postedAfter"
-                type="date"
-                className="parameter-input"
-                value={postedAfter}
-                onChange={(e) => setPostedAfter(e.target.value)}
-              />
+              <div className="qb-execute-container qb-balanced-execute">
+                <button
+                  className={`qb-execute-btn ${queryLoading ? "loading" : ""}`}
+                  onClick={handleExecute}
+                  disabled={!networkName || !slug || !validation.valid || queryLoading}
+                >
+                  {queryLoading ? (
+                    <>
+                      <i className="fa-solid fa-circle-notch fa-spin"></i>
+                      Fetching reviews...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-play"></i>
+                      Run Query
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
-
-            {/* Status indicator */}
-            {status === 'pending' && (
-              <p className="helper-text" style={{ color: 'orange' }}>
-                ⏳ Waiting for Zembra to process...
-              </p>
-            )}
-            {status === 'completed' && (
-              <p className="helper-text" style={{ color: 'green' }}>
-                ✅ Reviews fetched successfully!
-              </p>
-            )}
-            {status === 'error' && (
-              <p className="helper-text" style={{ color: 'red' }}>
-                ❌ Something went wrong.
-              </p>
-            )}
-
-            {/* Execute Button */}
-            <div className="section-block" style={{ borderBottom: 'none', paddingBottom: 0 }}>
-              <button
-                className="execute-btn"
-                onClick={handleExecute}
-                disabled={!networkName || !slug || !validation.valid || queryLoading}
-              >
-                <i className="fa-solid fa-bolt fa-xs"></i>
-                {queryLoading ? "Fetching reviews..." : "Execute Query"}
-              </button>
-            </div>
-
           </div>
         </div>
       </div>
 
       {/* CURL Request */}
-      <CurlRequest
-        method="POST"
-        api={`https://api.zembra.io/reviews/?network=${encodeURIComponent(networkName)}&slug=${encodeURIComponent(slug)}&monitoring=none`}
-        fields={activeFields}
-        includeRaw={includeRaw}
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        postedBefore={postedBefore}
-        postedAfter={postedAfter}
-      />
+      <div className="qb-preview-grid">
+        <CurlRequest
+          method="POST"
+          api={`https://api.zembra.io/reviews/?network=${encodeURIComponent(networkName)}&slug=${encodeURIComponent(slug)}&monitoring=none`}
+          fields={activeFields}
+          includeRaw={includeRaw}
+          sortBy={sortBy}
+          sortDirection={sortDirection}
+          postedBefore={postedBefore}
+          postedAfter={postedAfter}
+        />
 
-      {/* Query Response */}
-      <QueryResponse data={responseData?.zembra ?? responseData} />
+        {/* Query Response */}
+        <QueryResponse data={responseData?.zembra ?? responseData} />
 
-      {/* AI Summary */}
-      {reviewTexts.length > 0 && (
-        <AiSummary reviews={reviewTexts} />
-      )}
+        {/* AI Summary */}
+        {reviewTexts.length > 0 && (
+          <AiSummary reviews={reviewTexts} />
+        )}
+      </div>
     </div>
   );
 }

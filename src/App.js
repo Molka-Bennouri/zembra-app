@@ -1,38 +1,85 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
-import './App.css';
-import Login from './login/Login';
-import Signup from './login/Signup'
-import Navbar from "./navbar/Navbar";
-import ListingPage from './listing/details/ListingPage';
-import ReviewPage from './listing/reviews/ReviewPage';
-import MatchPage from './listing/match/MatchPage';
-import ProfilePage from "./profile/ProfilePage";
-import ManagePayment from './payment/ManagePayment';
-import PaymentHistory from './payment/PaymentHistory';
-import ModalCard from "./payment/ModalCard";
-import QueryHistory from './listing/QueryHistory';
+<<<<<<< Updated upstream
+import logo from './logo.svg';
+=======
+/* ============================================================
+   APP.JS — Main Router
+   Updated: layout uses sidebar + content wrapper
+============================================================ */
 
-import SSOCallback from "./login/SSOCallback";
-import ForgotPassword from "./login/ForgotPassword";
-import ResetPassword from "./login/ResetPassword";
-import LandingPage from "./landingpage/LandingPage";
-import Dashboard from "./dashboard/Dashboard";
-import AddNetworkForm from "./admin/networks/AddNetworkForm";
-import AddFieldForm from "./admin/fields/AddFieldForm";
-import NetworkList from "./admin/networks/NetworkList";
-import AdminDashboard from "./dashboard/AdminDashboard";
-import FieldList from "./admin/fields/FieldList";
-import ClientList from "./admin/clients/ClientList";
-import PlansList from "./admin/plans/PlansList";
-import AddPlanForm from "./admin/plans/AddPlanForm";
-import EditClientPage from "./admin/clients/EditClientPage";
-import AddClientPage from "./admin/clients/AddClientPage";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
+>>>>>>> Stashed changes
+import './App.css';
+
+/* ── Layout wrapper: sidebar + content area ─────────────────── */
+function SidebarLayout() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => {
+      setSidebarCollapsed(e.detail.collapsed);
+    };
+    window.addEventListener("sidebar-toggle", handler);
+    return () => window.removeEventListener("sidebar-toggle", handler);
+  }, []);
+
+  return (
+    <>
+      <Navbar />
+      <div className={`app-content ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}>
+        <Outlet />
+      </div>
+    </>
+  );
+}
 
 function App() {
   return (
+<<<<<<< Updated upstream
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+=======
     <Router>
+      {/* Global toast notifications */}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#FFFFFF',
+            color: '#111827',
+            border: '1px solid rgba(0,0,0,0.08)',
+            borderRadius: '12px',
+            fontSize: '13px',
+            fontFamily: "'Inter', sans-serif",
+            boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+          },
+          success: {
+            iconTheme: { primary: '#22C55E', secondary: '#FFFFFF' },
+          },
+          error: {
+            iconTheme: { primary: '#EF4444', secondary: '#FFFFFF' },
+          },
+        }}
+      />
+
       <Routes>
-        {/* No navbar */}
+        {/* No sidebar */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -41,8 +88,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* With navbar */}
-        <Route element={<><Navbar /><Outlet /></>}>
+        {/* With sidebar */}
+        <Route element={<SidebarLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/listing" element={<ListingPage />} />
           <Route path="/reviews" element={<ReviewPage />} />
@@ -66,6 +113,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
+>>>>>>> Stashed changes
   );
 }
 

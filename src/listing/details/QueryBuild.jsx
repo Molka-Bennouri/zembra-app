@@ -1,3 +1,9 @@
+/* ============================================================
+   QUERY BUILDER — Visual Builder for Listing API
+   Redesign: Postman/Stripe API Explorer aesthetics, dark theme,
+   toggle chip buttons instead of checkboxes.
+============================================================ */
+
 import { useState } from "react";
 import "./QueryBuild.css";
 
@@ -5,12 +11,32 @@ import { useNetworks } from "../../hooks/useNetworks";
 import { useFields } from "../../hooks/useFields";
 import { validateSlug } from "../../utils/validateSlug";
 import { useQuery } from "../../hooks/useQuery";
-import {api} from "../../utils/api";
+import { api } from "../../utils/api";
 
 import CurlRequest from "../components/CurlRequest";
 import QueryResponse from "../components/QueryResponse";
 
 const API_BASE = `${api.getBaseUrl()}/listing`;
+
+// Helper to map network names to icons
+const getNetworkIcon = (networkName) => {
+  const icons = {
+    Airbnb: "fa-brands fa-airbnb",
+    Google_Maps: "fa-brands fa-google",
+    Yelp: "fa-brands fa-yelp",
+  };
+  return icons[networkName] || "fa-solid fa-globe";
+};
+
+// Helper for input placeholder based on network
+const getSlugPlaceholder = (networkName) => {
+  const placeholders = {
+    Airbnb: "e.g., room/12345678",
+    Google_Maps: "e.g., place/ChIJ... (Place ID)",
+    Yelp: "e.g., biz/some-restaurant-new-york",
+  };
+  return placeholders[networkName] || "slug-per-network";
+};
 
 function QueryBuild({ onQueryExecuted }) {
   const { networks = [] } = useNetworks();
@@ -41,115 +67,139 @@ function QueryBuild({ onQueryExecuted }) {
     if (onQueryExecuted) onQueryExecuted();
   };
 
+  // Group fields logically if needed, but for now we render them flat as before, just styled as chips
+  const renderFieldChips = () => {
+    if (fieldsLoading) {
+      return (
+        <div className="qb-skeleton-list">
+           <div className="skeleton" style={{ width: 80, height: 32, borderRadius: 16 }}></div>
+           <div className="skeleton" style={{ width: 100, height: 32, borderRadius: 16 }}></div>
+           <div className="skeleton" style={{ width: 90, height: 32, borderRadius: 16 }}></div>
+        </div>
+      );
+    }
+    if (fieldsError) {
+      return <p className="qb-error-text"><i className="fa-solid fa-triangle-exclamation"></i> {fieldsError}</p>;
+    }
+
+    return (
+      <div className="qb-chips-grid">
+        {fields.map((field) => {
+          const isSelected = selectedFields[field.name] ?? false;
+          return (
+            <button
+              key={field.id}
+              className={`qb-chip ${isSelected ? "active" : ""}`}
+              onClick={() => handleFieldChange(field.name)}
+              title={field.description}
+            >
+              {isSelected && <i className="fa-solid fa-check qb-chip-icon"></i>}
+              {field.label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div className="query-build-container">
-
-      {/* QUERY BUILDER */}
-      <div className="query-card">
-        <div className="query-two-col">
-
-          {/* LEFT : Network & Slug */}
-          <div className="query-left">
-
-            {/* NETWORK */}
-            <div className="section-block">
-              <div className="card-header">
-                <label className="parameter-label">Network</label>
+    <div className="qb-container">
+      
+      {/* ── Visual Form ── */}
+      <div className="qb-card qb-form-card">
+        <div className="qb-form-grid">
+          
+          {/* Form Left: Target */}
+          <div className="qb-form-section">
+            <h3 className="qb-section-title">Target Setup</h3>
+            
+            <div className="qb-form-group">
+              <label className="qb-label">
+                Network <span className="qb-required">*</span>
+              </label>
+              <div className="qb-select-wrapper">
+                {networkName && (
+                  <i className={`${getNetworkIcon(networkName)} qb-select-icon`} />
+                )}
+                <select
+                  className={`qb-input qb-select ${networkName ? "has-icon" : ""}`}
+                  value={network}
+                  onChange={(e) => setNetwork(e.target.value)}
+                >
+                  <option value="" disabled>Select a platform</option>
+                  {networks.map((n) => (
+                    <option key={n.id} value={n.id}>{n.label}</option>
+                  ))}
+                </select>
               </div>
-              <select
-                className="dropdown-select"
-                value={network}
-                onChange={(e) => setNetwork(e.target.value)}
-              >
-                <option value=""></option>
-                {networks.map((n) => (
-                  <option key={n.id} value={n.id}>{n.label}</option>
-                ))}
-              </select>
-              <p className="helper-text">Please select a network</p>
             </div>
 
-            {/* SLUG */}
-            <div className="section-block">
-              <div className="card-header">
-                <label className="parameter-label">Slug / Page ID</label>
-                <span className="required-badge">Required</span>
-              </div>
+            <div className="qb-form-group">
+              <label className="qb-label">
+                Slug / Page ID <span className="qb-required">*</span>
+              </label>
               <input
                 type="text"
-                className="parameter-input"
-                placeholder="slug-per-network"
+                className="qb-input qb-mono-input"
+                placeholder={getSlugPlaceholder(networkName)}
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
                 disabled={!network}
               />
-              {slug ? (
-                <p
-                  className="helper-text"
-                  style={{ color: validation.valid ? "green" : "red" }}
-                >
+              {slug && (
+                <div className={`qb-validation-msg ${validation.valid ? "valid" : "invalid"}`}>
+                  <i className={`fa-solid ${validation.valid ? "fa-circle-check" : "fa-circle-exclamation"}`}></i>
                   {validation.message}
-                </p>
-              ) : (
-                <p className="helper-text">Unique identifier for your listing</p>
-              )}
-            </div>
-
-          </div>
-
-          {/* RIGHT : Response Fields */}
-          <div className="query-right">
-            <div className="section-block" style={{ borderBottom: "none" }}>
-              <div className="card-header">
-                <h3 className="parameter-label">Response Fields</h3>
-              </div>
-
-              {fieldsLoading && <p className="helper-text">Loading fields...</p>}
-              {fieldsError && <p className="helper-text" style={{ color: "red" }}>{fieldsError}</p>}
-
-              {!fieldsLoading && !fieldsError && (
-                <div className="fields-grid">
-                  {fields.map((field) => (
-                    <div className="checkbox-group" key={field.id} title={field.description}>
-                      <input
-                        type="checkbox"
-                        id={field.name}
-                        checked={selectedFields[field.name] ?? false}
-                        onChange={() => handleFieldChange(field.name)}
-                        className="checkbox-input"
-                      />
-                      <label htmlFor={field.name} className="checkbox-label">{field.label}</label>
-                    </div>
-                  ))}
                 </div>
               )}
+            </div>
+          </div>
 
-              <div className="section-block" style={{ borderBottom: "none", paddingBottom: 0 }}>
-                <button
-                  className="execute-btn"
-                  onClick={handleExecute}
-                  disabled={!networkName || !slug || !validation.valid || queryLoading}
-                >
-                  <i className="fa-solid fa-bolt fa-xs"></i>
-                  {queryLoading ? "Executing..." : "Execute Query"}
-                </button>
-              </div>
-
+          {/* Form Right: Fields */}
+          <div className="qb-form-section qb-fields-section">
+            <div className="qb-section-header">
+              <h3 className="qb-section-title">Response Fields</h3>
+              <span className="qb-badge-count">{activeFields.length} selected</span>
+            </div>
+            
+            <div className="qb-fields-container">
+              {renderFieldChips()}
+            </div>
+            
+            <div className="qb-execute-container">
+              <button
+                className={`qb-execute-btn ${queryLoading ? "loading" : ""}`}
+                onClick={handleExecute}
+                disabled={!networkName || !slug || !validation.valid || queryLoading}
+              >
+                {queryLoading ? (
+                  <>
+                    <i className="fa-solid fa-circle-notch fa-spin"></i>
+                    Executing...
+                  </>
+                ) : (
+                  <>
+                    <i className="fa-solid fa-play"></i>
+                    Run Query
+                  </>
+                )}
+              </button>
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* CURL PREVIEW */}
-      <CurlRequest
-  method="GET"
-  api={`https://api.zembra.io/listing/${networkName}/?slug=${encodeURIComponent(slug)}`}
-  fields={activeFields}
-/>
-
-      {/* RESPONSE */}
-      <QueryResponse data={responseData} />
+      {/* ── cURL & Response Preview (handled by components) ── */}
+      <div className="qb-preview-grid">
+        <CurlRequest
+          method="GET"
+          api={`https://api.zembra.io/listing/${networkName}/?slug=${encodeURIComponent(slug)}`}
+          fields={activeFields}
+        />
+        
+        <QueryResponse data={responseData} />
+      </div>
 
     </div>
   );

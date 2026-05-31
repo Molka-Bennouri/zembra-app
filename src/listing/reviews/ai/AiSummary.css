@@ -1,31 +1,36 @@
 /* AiSummary.css */
 .ai-summary {
-  margin-top: 16px;
+  margin-top: 24px;
 }
 
 /* Button */
 .ai-summary__btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 18px;
-  background-color: #6c47ff;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #2E5AF4 0%, #2349d6 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 12px rgba(46, 90, 244, 0.25);
 }
 
 .ai-summary__btn:hover:not(:disabled) {
-  background-color: #5835e0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(46, 90, 244, 0.35);
 }
 
 .ai-summary__btn:disabled {
   opacity: 0.65;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Spinner */
@@ -36,12 +41,12 @@
 }
 
 .ai-summary__spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: white;
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -50,90 +55,102 @@
 
 /* Error */
 .ai-summary__error {
-  margin-top: 12px;
-  padding: 10px 14px;
-  background-color: #fef2f2;
-  border: 1px solid #fca5a5;
-  border-radius: 8px;
-  color: #b91c1c;
+  margin-top: 16px;
+  padding: 12px 16px;
+  background-color: var(--error-light);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--error);
   font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Results */
 .ai-summary__results {
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .ai-summary__title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1e1e2e;
-  margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
 }
 
 /* Cards */
 .ai-summary__cards {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
 .ai-summary__card {
-  flex: 1;
-  min-width: 220px;
-  padding: 16px 18px;
-  border-radius: 10px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
   border: 1px solid transparent;
+  background: var(--bg-card);
 }
 
 .ai-summary__card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .ai-summary__card-header h4 {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   margin: 0;
+  color: var(--text-primary);
 }
 
 .ai-summary__icon {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .ai-summary__card p {
-  font-size: 13px;
-  line-height: 1.7;
-  color: #444;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 /* Card variants */
 .ai-summary__card--positive {
-  background-color: #f0fdf4;
-  border-color: #86efac;
+  background-color: #F0FDF4; /* Very light green */
+  border-color: #BBF7D0;
 }
 
-.ai-summary__card--positive .ai-summary__card-header h4 {
-  color: #15803d;
+.ai-summary__card--positive .ai-summary__icon {
+  color: #16A34A;
 }
 
 .ai-summary__card--neutral {
-  background-color: #fefce8;
-  border-color: #fde047;
+  background-color: #FEFCE8; /* Very light yellow */
+  border-color: #FEF08A;
 }
 
-.ai-summary__card--neutral .ai-summary__card-header h4 {
-  color: #a16207;
+.ai-summary__card--neutral .ai-summary__icon {
+  color: #CA8A04;
 }
 
 .ai-summary__card--negative {
-  background-color: #fef2f2;
-  border-color: #fca5a5;
+  background-color: #FEF2F2; /* Very light red */
+  border-color: #FECACA;
 }
 
-.ai-summary__card--negative .ai-summary__card-header h4 {
-  color: #b91c1c;
+.ai-summary__card--negative .ai-summary__icon {
+  color: #DC2626;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ai-summary__cards {
+    grid-template-columns: 1fr;
+  }
 }

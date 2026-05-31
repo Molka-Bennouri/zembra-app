@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { generateCurlCode } from "../../utils/curlUtils"; 
 import "./CurlRequest.css";
 
@@ -10,9 +11,11 @@ function CurlRequest({ method, api, fields, apiKey, sortBy, sortDirection, poste
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
+      toast.success("cURL command copied!");
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy text:", err);
+      toast.error("Failed to copy");
     }
   };
 
@@ -34,26 +37,28 @@ function CurlRequest({ method, api, fields, apiKey, sortBy, sortDirection, poste
   return (
     <div className="curl-card">
       <div className="curl-header">
+        <div className="curl-window-controls">
+          <span className="curl-dot red"></span>
+          <span className="curl-dot yellow"></span>
+          <span className="curl-dot green"></span>
+        </div>
         <h3 className="curl-title">cURL Request</h3>
+        <button className="curl-copy-btn" onClick={handleCopy} aria-label="Copy code">
+          <i className={`fa-regular ${copied ? "fa-circle-check" : "fa-copy"}`}></i>
+        </button>
       </div>
 
       <div className="curl-content">
-        <div className="curl-code-block">
-          <pre className="curl-pre">
-            <code className="curl-code">
-              {code.split("\n").map((line, index) => (
-                <span key={index} className="curl-line">{highlightCurlSyntax(line)}</span>
-              ))}
-            </code>
-          </pre>
-        </div>
-      </div>
-
-      <div className="curl-footer">
-        <button className="curl-button" onClick={handleCopy}>
-          <i className="fa-regular fa-copy"></i>
-          {copied ? "Copied" : "Copy"}
-        </button>
+        <pre className="curl-pre">
+          <code className="curl-code">
+            {code.split("\n").map((line, index) => (
+              <div key={index} className="curl-line">
+                <span className="curl-line-number">{index + 1}</span>
+                <span className="curl-line-content">{highlightCurlSyntax(line)}</span>
+              </div>
+            ))}
+          </code>
+        </pre>
       </div>
     </div>
   );

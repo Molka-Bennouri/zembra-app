@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,30 +6,185 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f9fafb;
 }
 
-:root {
-  --color-primary:       #2E5AF4;
-  --color-primary-hover: #2449d8;
-  --color-primary-light: #ebeefb;
-  --color-light-blue:    #3b82f6;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+=======
+/* ============================================================
+   ZEMBRA DESIGN SYSTEM — Global Styles & Tokens
+   Redesign: dark navy theme, Inter font, premium aesthetic
+============================================================ */
 
-  /* Background */
-  --color-bg:               #f9fafb;
-  --color-card-background:  #ffffff;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ── Design Tokens ────────────────────────────────────────── */
+:root {
+  /* Primary palette */
+  --accent:            #6C63FF;
+  --accent-hover:      #5A52D5;
+  --accent-light:      rgba(108, 99, 255, 0.12);
+  --accent-glow:       rgba(108, 99, 255, 0.25);
+
+  /* Semantic colors */
+  --success:           #22C55E;
+  --success-light:     rgba(34, 197, 94, 0.15);
+  --error:             #EF4444;
+  --error-light:       rgba(239, 68, 68, 0.15);
+  --warning:           #F59E0B;
+  --warning-light:     rgba(245, 158, 11, 0.15);
+
+  /* Light surfaces */
+  --bg-primary:        transparent;
+  --bg-secondary:      #FFFFFF;
+  --bg-card:           #FFFFFF;
+  --bg-elevated:       #F8F9FC;
+  --bg-hover:          #F3F4F6;
+  --bg-input:          #FFFFFF;
+
+  /* Light content surface */
+  --surface:           #FFFFFF;
 
   /* Text */
-  --color-text:        #111827;
-  --color-text-light:  #f9fafb;
-  --color-text-helper: #5b606c;
+  --text-primary:      #111827;
+  --text-secondary:    #4B5563;
+  --text-muted:        #6B7280;
+  --text-accent:       #6C63FF;
+  --text-inverse:      #FFFFFF;
 
   /* Borders */
-  --color-card-border: 1px solid #e5e7eb;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --border-color:      rgba(0, 0, 0, 0.08);
+  --border-color-light:rgba(0, 0, 0, 0.12);
+  --border-color-focus:#6C63FF;
 
   /* Radius */
-  --radius-card: 10px;
+  --radius-xs:         4px;
+  --radius-sm:         6px;
+  --radius-md:         8px;
+  --radius-lg:         12px;
+  --radius-xl:         16px;
+  --radius-pill:       9999px;
+
+  /* Shadows */
+  --shadow-sm:         0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md:         0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-lg:         0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-accent:     0 4px 16px rgba(108, 99, 255, 0.25);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  /* Transitions */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Sidebar */
+  --sidebar-width:     240px;
+  --sidebar-collapsed: 64px;
+
+  /* Typography */
+  --font-sans:         'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:         'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* Terminal */
+  --terminal-bg:       #1E1E2E;
+  --terminal-header:   #181825;
+}
+
+/* ── Base Reset ───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: radial-gradient(circle at top left, #ffffff 0%, #f4f0ff 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── Scrollbar (dark theme) ───────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+/* ── Typography Scale ─────────────────────────────────────── */
+h1 { font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+h3 { font-size: 16px; font-weight: 600; line-height: 1.4; }
+h4 { font-size: 14px; font-weight: 600; line-height: 1.4; }
+
+p { color: var(--text-secondary); line-height: 1.6; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+
+/* ── Skeleton Loader ──────────────────────────────────────── */
+@keyframes skeleton-pulse {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 0.8; }
+  100% { opacity: 0.4; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-hover) 50%, var(--bg-elevated) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Focus Ring ───────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection {
+  background: var(--accent-light);
+  color: var(--text-primary);
+}
+
+/* ── Utility: Card Hover ──────────────────────────────────── */
+.card-hover {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+>>>>>>> Stashed changes
 }
