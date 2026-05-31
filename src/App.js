@@ -1,15 +1,7 @@
-<<<<<<< Updated upstream
 import logo from './logo.svg';
-=======
-/* ============================================================
-   APP.JS — Main Router
-   Updated: layout uses sidebar + content wrapper
-============================================================ */
-
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
->>>>>>> Stashed changes
 import './App.css';
 
 /* ── Layout wrapper: sidebar + content area ─────────────────── */
@@ -36,26 +28,7 @@ function SidebarLayout() {
 
 function App() {
   return (
-<<<<<<< Updated upstream
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-=======
     <Router>
-      {/* Global toast notifications */}
       <Toaster
         position="top-right"
         toastOptions={{
@@ -83,7 +56,6 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
         <Route path="/auth/callback" element={<SSOCallback />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -99,7 +71,6 @@ function App() {
           <Route path="/paymenthistory" element={<PaymentHistory />} />
           <Route path="/modalcard" element={<ModalCard />} />
           <Route path="/scrapinghistory" element={<QueryHistory />} />
-
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/AddNetworkForm" element={<AddNetworkForm />} />
           <Route path="/AddFieldForm" element={<AddFieldForm />} />
@@ -108,12 +79,11 @@ function App() {
           <Route path="/FieldList" element={<FieldList />} />
           <Route path="/ClientList" element={<ClientList />} />
           <Route path="/PlansList" element={<PlansList />} />
-          <Route path="/admin/clients/create"    element={<AddClientPage />} />
+          <Route path="/admin/clients/create" element={<AddClientPage />} />
           <Route path="/admin/clients/:id/edit" element={<EditClientPage />} />
         </Route>
       </Routes>
     </Router>
->>>>>>> Stashed changes
   );
 }
 

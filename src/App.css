@@ -31,38 +31,3 @@
     margin-left: 0;
   }
 }
-<<<<<<< Updated upstream
-=======
-
-/* ── Page loader ──────────────────────────────────────────── */
-.loader-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  width: 100%;
-}
-
-.loader-container.full-page {
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: var(--bg-primary);
-  z-index: 999;
-}
-
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border-color);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
->>>>>>> Stashed changes
