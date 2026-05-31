@@ -1,17 +1,3 @@
-<<<<<<< Updated upstream
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-=======
 /* ============================================================
    ZEMBRA DESIGN SYSTEM — Global Styles & Tokens
    Redesign: dark navy theme, Inter font, premium aesthetic
@@ -186,5 +172,4 @@ a:hover { color: var(--accent-hover); }
 .card-hover:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-card-hover);
->>>>>>> Stashed changes
 }

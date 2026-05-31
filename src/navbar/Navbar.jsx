@@ -139,23 +139,23 @@ export default function Navbar() {
 
       {/* Sidebar */}
       <aside className={`sidebar ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}>
-        {/* Logo */}
-        <Link
-          to={role === "admin" ? "/AdminDashboard" : "/Dashboard"}
-          className="sidebar-logo"
-        >
-          <img src="/zembra-logo.jpg" alt="Zembra" className="sidebar-logo-mark" />
-          <span className="sidebar-logo-text">Zembra</span>
-        </Link>
+        <div className="sidebar-header">
+          <Link
+            to={role === "admin" ? "/AdminDashboard" : "/Dashboard"}
+            className="sidebar-logo"
+          >
+            <img src="/zembra-logo.jpg" alt="Zembra" className="sidebar-logo-mark" />
+            <span className="sidebar-logo-text">Zembra</span>
+          </Link>
 
-        {/* Collapse toggle (desktop only) */}
-        <button
-          className="sidebar-toggle"
-          onClick={() => setCollapsed(!collapsed)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          <i className={`fa-solid fa-chevron-${collapsed ? "right" : "left"}`} style={{ fontSize: 10 }}></i>
-        </button>
+          <button
+            className="sidebar-toggle"
+            onClick={() => setCollapsed(!collapsed)}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            <i className={`fa-solid fa-chevron-${collapsed ? "right" : "left"}`} style={{ fontSize: 10 }}></i>
+          </button>
+        </div>
 
         {/* Navigation */}
         <nav className="sidebar-nav">
