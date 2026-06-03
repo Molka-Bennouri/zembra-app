@@ -100,7 +100,7 @@ export default function LandingPage() {
           </p>
           <div className={`lp-hero-actions ${hv}`}>
             <button className="lp-btn-primary" style={{ padding: "16px 36px", fontSize: 16 }} onClick={() => navigate('/signup')}>
-              GET STARTED FOR FREE →
+              GET STARTED →
             </button>
           </div>
         </div>

@@ -26,7 +26,7 @@ const getNavItems = (role) => {
   return [
     {
       label: "Dashboard",
-      path: "/Dashboard",
+      path: "/dashboard",
       icon: "fa-solid fa-chart-line",
     },
     {
@@ -53,6 +53,49 @@ const getNavItems = (role) => {
     },
   ];
 };
+
+function NotificationDropdown({ collapsed }) {
+  const [open, setOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="sidebar-notifications" ref={ref}>
+      <button
+        type="button"
+        className={`sidebar-notification-btn ${open ? "active" : ""}`}
+        onClick={() => setOpen((v) => !v)}
+        aria-label="Notifications"
+        aria-expanded={open}
+      >
+        <span className="sidebar-item-icon">
+          <i className="fa-regular fa-bell"></i>
+        </span>
+        <span className="sidebar-item-label">Notifications</span>
+        {unreadCount > 0 && (
+          <span className="sidebar-notification-count">
+            {unreadCount > 99 ? "99+" : unreadCount}
+          </span>
+        )}
+        <span className="sidebar-tooltip">Notifications</span>
+      </button>
+
+      {open && (
+        <div className={`sidebar-notification-panel ${collapsed ? "collapsed-anchor" : ""}`}>
+          <NotificationPanel onUnreadCountChange={setUnreadCount} />
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ── Sidebar Component ─────────────────────────────────────── */
 export default function Navbar() {
@@ -141,7 +184,7 @@ export default function Navbar() {
       <aside className={`sidebar ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="sidebar-header">
           <Link
-            to={role === "admin" ? "/AdminDashboard" : "/Dashboard"}
+            to={role === "admin" ? "/AdminDashboard" : "/dashboard"}
             className="sidebar-logo"
           >
             <img src="/zembra-logo.jpg" alt="Zembra" className="sidebar-logo-mark" />
@@ -214,6 +257,8 @@ export default function Navbar() {
             );
           })}
         </nav>
+
+        <NotificationDropdown collapsed={collapsed} />
 
         {/* User section */}
         <div className="sidebar-user" ref={userRef}>

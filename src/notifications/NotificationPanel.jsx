@@ -9,28 +9,43 @@ const getHeaders = () => ({
     ...getAuthHeaders(),
 });
 
-export default function NotificationPanel() {
+const POLL_INTERVAL_MS = 30000;
+
+export default function NotificationPanel({ onUnreadCountChange, poll = true }) {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchNotifications = useCallback(async () => {
+    const fetchNotifications = useCallback(async (silent = false) => {
         try {
-            setLoading(true);
+            if (!silent) setLoading(true);
             const res = await fetch(API_BASE, { headers: getHeaders() });
             if (!res.ok) throw new Error('Failed to fetch');
             const data = await res.json();
             setNotifications(data.map(n => ({ ...n, seen: n.seen })));
+            setError(null);
         } catch (err) {
-            setError('Could not load notifications');
+            if (!silent) setError('Could not load notifications');
         } finally {
-            setLoading(false);
+            if (!silent) setLoading(false);
         }
     }, []);
 
     useEffect(() => {
         fetchNotifications();
     }, [fetchNotifications]);
+
+    useEffect(() => {
+        if (!poll) return undefined;
+        const interval = setInterval(() => fetchNotifications(true), POLL_INTERVAL_MS);
+        return () => clearInterval(interval);
+    }, [poll, fetchNotifications]);
+
+    const unreadCount = notifications.filter(n => !n.seen).length;
+
+    useEffect(() => {
+        onUnreadCountChange?.(unreadCount);
+    }, [unreadCount, onUnreadCountChange]);
 
     const markAsRead = async (id) => {
         await fetch(`${API_BASE}/${id}/seen`, { method: 'PATCH', headers: getHeaders() });
@@ -41,9 +56,7 @@ export default function NotificationPanel() {
 
     const markAllAsRead = async () => {
         await fetch(`${API_BASE}/mark-all-seen`, { method: 'PATCH', headers: getHeaders() });
-        setNotifications(prev => 
-    prev.map(n => ({ ...n, seen: true }))
-);
+        setNotifications(prev => prev.map(n => ({ ...n, seen: true })));
     };
 
     const deleteNotification = async (id) => {
@@ -55,8 +68,6 @@ export default function NotificationPanel() {
         setNotifications([]);
         await fetch(API_BASE, { method: 'DELETE', headers: getHeaders() });
     };
-
-    const unreadCount = notifications.filter(n => !n.seen).length;
 
     const formatTime = (dateStr) => {
         const diff = (Date.now() - new Date(dateStr)) / 1000;
