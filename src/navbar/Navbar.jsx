@@ -69,7 +69,9 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({});
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);  // ← AJOUT
   const userRef = useRef(null);
+  const notifRef = useRef(null);  // ← AJOUT
 
   // Get initials for avatar
   const initials = userName
@@ -79,11 +81,13 @@ export default function Navbar() {
     .toUpperCase()
     .slice(0, 2);
 
-  // Close user dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e) => {
       if (userRef.current && !userRef.current.contains(e.target))
         setUserDropdownOpen(false);
+      if (notifRef.current && !notifRef.current.contains(e.target))  // ← AJOUT
+        setNotifOpen(false);  // ← AJOUT
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -214,6 +218,25 @@ export default function Navbar() {
             );
           })}
         </nav>
+
+        {/* ── Notifications ── AJOUT ───────────────────────────── */}
+        <div className="sidebar-notif" ref={notifRef}>
+          <button
+            className={`sidebar-item ${notifOpen ? "active" : ""}`}
+            onClick={() => setNotifOpen((v) => !v)}
+          >
+            <span className="sidebar-item-icon">
+              <i className="fa-solid fa-bell"></i>
+            </span>
+            <span className="sidebar-item-label">Notifications</span>
+            <span className="sidebar-tooltip">Notifications</span>
+          </button>
+
+          {notifOpen && (
+            <NotificationPanel onClose={() => setNotifOpen(false)} />
+          )}
+        </div>
+        {/* ─────────────────────────────────────────────────────── */}
 
         {/* User section */}
         <div className="sidebar-user" ref={userRef}>

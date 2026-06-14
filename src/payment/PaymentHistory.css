@@ -341,6 +341,11 @@
   font-size: 13px;
 }
 
+/* 5-column layout when invoice button is present */
+.ph-table--with-actions .ph-table-row {
+  grid-template-columns: 1fr 2fr 1fr 1fr 48px;
+}
+
 .ph-table-row--head {
   font-size: 11px;
   font-weight: 600;
@@ -418,6 +423,39 @@
   color: var(--warning);
 }
 
+/* ── Invoice download button ────────────────────────────── */
+.ph-col-invoice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ph-invoice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  font-size: 13px;
+}
+
+.ph-invoice-btn:hover:not(:disabled) {
+  background: #2E5AF4;
+  border-color: #2E5AF4;
+  color: #fff;
+}
+
+.ph-invoice-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .ph-kpi-grid {
@@ -458,13 +496,19 @@
     display: none;
   }
 
-  .ph-table-row:not(.ph-table-row--head) {
-    grid-template-columns: 1fr;
+  .ph-table-row:not(.ph-table-row--head),
+  .ph-table--with-actions .ph-table-row:not(.ph-table-row--head) {
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
     padding: 16px;
   }
 
   .ph-col-desc {
     white-space: normal;
+    grid-column: 1 / -1;
+  }
+
+  .ph-col-invoice {
+    justify-content: flex-end;
   }
 }

@@ -462,3 +462,16 @@
 .sidebar.collapsed .sidebar-item:hover .sidebar-tooltip {
   display: block;
 }
+/* Notification panel positionné par rapport au bouton */
+.sidebar-notif {
+  position: relative;
+}
+
+.sidebar-notif {
+  position: relative;
+}
+
+/* Évite que le overflow:hidden de la sidebar coupe le panel */
+.sidebar {
+  overflow: visible !important;
+}
