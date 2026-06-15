@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
@@ -29,6 +29,11 @@ import PlansList from "./admin/plans/PlansList";
 import AddPlanForm from "./admin/plans/AddPlanForm";
 import EditClientPage from "./admin/clients/EditClientPage";
 import AddClientPage from "./admin/clients/AddClientPage";
+
+function PaymentSuccessRedirect() {
+  const { search } = useLocation();
+  return <Navigate to={`/paymenthistory${search}`} replace />;
+}
 
 function SidebarLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -83,6 +88,8 @@ function App() {
         <Route path="/auth/callback" element={<SSOCallback />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/payment/success" element={<PaymentSuccessRedirect />} />
+        <Route path="/payment/cancel" element={<Navigate to="/payment" replace />} />
 
         <Route element={<SidebarLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />

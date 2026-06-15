@@ -9,7 +9,7 @@ export const useProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       console.log("Token:", localStorage.getItem("jwt_token"))
-      console.log("Fetching:", `http://127.0.0.1:8000/api/me`)
+      console.log("Fetching:", "http://127.0.0.1:8000/api/me")
       try {
         const data = await api.get("/me")
 
